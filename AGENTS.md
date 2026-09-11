@@ -49,12 +49,14 @@ Note: the Laravel skeleton ships its own `AGENTS.md` / `CLAUDE.md` boilerplate �
 | PostgreSQL 17.11 (Homebrew) | running on port 5432; DB `claz` created |
 | Redis | not needed locally |
 | Local admin login | admin@claz.site / claz-admin-2026 (local only, regenerate for prod) |
+| Test DB | `claz_testing` (phpunit.xml points tests at Postgres; sqlite is not used because of PG-specific indexes) |
 
 ## Progress
 
 - [x] Milestone 1 — skeleton: git repo, Laravel project, Filament 5.8 panel, admin user, local Postgres
 - [x] Milestone 2 — DB schema: 14 migrations (categories, tools, criteria, tool_criteria, articles, tags, article_tag, comparisons + items + scores, tool_links, click_events, vs_pages, banners, comments, settings), domain enums in `app/Enums`, CriteriaSeeder (7 default criteria)
-- [ ] Milestone 3 — Filament CRUD: Tools, Criteria, Categories, Tags
+- [x] Milestone 3 — Filament CRUD: Tools, Criteria, Categories, Tags (per-locale tabs, slug auto-generation via `App\Support\Slugger`, criteria values relation manager on Tools)
+- [ ] Milestone 4 — Articles: TipTap editor, covers, draft/publish
 
 ## Architecture
 
@@ -106,6 +108,7 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 - Validation lives in FormRequests; logic lives in Actions/Services — no fat models
 - Migrations are atomic with meaningful names; `migrate:fresh --seed` is local-only
 - Slugs use a custom slug helper that handles non-Latin scripts when locales are added (Str::slug is not enough for non-English locales)
+- When overriding `Filament\Resources\Resource` properties, repeat the parent's type with fully-qualified names (`\UnitEnum|string|null`, `\BackedEnum|string|null`) — unqualified names in the child namespace fail class compilation on PHP 8.5
 - Secrets only in `.env` (never committed); keep `.env.example` up to date
 - Git: `main` + feature branches, Conventional Commits (feat/fix/chore/docs)
 - Pest tests for key flows: article publishing, VS page, `/go` redirect, comment pre-moderation
