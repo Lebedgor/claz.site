@@ -168,6 +168,8 @@ All long-form articles (comparisons, deep reviews) follow the design system intr
 - Target volume: 25–30k characters without spaces of body text
 - JSON-LD (Article + ItemList + Review/AggregateRating) is generated automatically by the controllers — no manual markup
 
+**Editor decision (fixed):** articles are edited with the Filament RichEditor (file attachments upload to `storage/app/public/uploads/editor/`, public disk) plus the "Media library" admin page (upload / preview / copy URL / delete). Third-party WYSIWYG replacements (awcodes/filament-tiptap-editor, CKEditor, TinyMCE) are incompatible with Filament 5 or would flatten the custom `ex-article` markup on re-save — do not swap editors for design-heavy articles; edit their HTML source via Media library Copy URL instead.
+
 **Technical pitfalls (check before saving):**
 - Balanced inline tags in `body_html`: every `<b>` needs `</b>` (not `</strong>` — mismatched pairs make all following text bold)
 - No stray `HTML;`-like lines inside nowdoc blocks in seeders (terminates the heredoc early → ParseError)
