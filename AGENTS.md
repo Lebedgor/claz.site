@@ -56,7 +56,11 @@ Note: the Laravel skeleton ships its own `AGENTS.md` / `CLAUDE.md` boilerplate �
 - [x] Milestone 1 — skeleton: git repo, Laravel project, Filament 5.8 panel, admin user, local Postgres
 - [x] Milestone 2 — DB schema: 14 migrations (categories, tools, criteria, tool_criteria, articles, tags, article_tag, comparisons + items + scores, tool_links, click_events, vs_pages, banners, comments, settings), domain enums in `app/Enums`, CriteriaSeeder (7 default criteria)
 - [x] Milestone 3 — Filament CRUD: Tools, Criteria, Categories, Tags (per-locale tabs, slug auto-generation via `App\Support\Slugger`, criteria values relation manager on Tools)
-- [ ] Milestone 4 — Articles: TipTap editor, covers, draft/publish
+- [x] Milestone 4 — Articles: TipTap editor (Filament RichEditor), covers (public disk), draft/publish actions, reading time via `App\Support\ReadingTime`, models `Article`/`Comparison`/`Comment`
+- [x] Milestone 5 — Comparisons: nested repeaters on the article edit page (blocks → tools), sortable (`sort_order`/`position`), snapshot sync via `App\Actions\SyncComparisonScores` ("Sync scores" header action copies live `tool_criteria` values into `comparison_scores` and removes stale rows)
+- [x] Milestone 6 — Public site: home / category / article / tool pages (Blade + Tailwind v4), Livewire tools catalog with type filter and search, comparison table rendered from snapshots via `App\Services\ArticleRenderer` (`[[comparison:id]]` placeholders, unreferenced blocks appended), SEO: canonical/OG/Twitter/hreflang (per `config/app.php` `locales`), JSON-LD (WebSite, Article, ItemList, Product), route-model binding by per-locale slug
+- [x] Milestone 7 — VS pages + `/go/{code}` tracking (public comparison-table links already point to `/go/{code}`)
+- [ ] Milestone 8 — Comments with pre-moderation + banners
 
 ## Architecture
 
@@ -97,12 +101,13 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 6. Roles: single admin-owner; the `role` column on users reserves room for future authors/editors
 7. i18n as described in "Languages & i18n": English default, JSONB translatable columns, locale-prefixed URLs for non-default locales
 8. Per-locale slug uniqueness is enforced with expression unique indexes `((slug->>'en'))` + GIN (jsonb_path_ops) on `slug` columns; add one expression index per new locale when it ships
-9. Laravel pluralizes `criteria` as `criterias` — always pass the table name explicitly: `constrained('criteria')`
+9. Laravel pluralizes `criteria` as `criterias` — always pass the table name explicitly: `constrained('criteria')`; the same for relations: `belongsTo(Criterion::class, 'criteria_id')` (Laravel would derive `criterion_id`)
 10. Tools and articles use RESTRICT foreign keys from `comparison_items` / `vs_pages` so referenced tools cannot be deleted accidentally
+11. Never pass pre-encoded JSON strings to translatable attributes — always pass arrays (spatie double-encodes strings, which breaks per-locale slug lookups); seeder lookups use `where('slug->en', ...)` instead of raw JSON matches
 
 ## Code rules
 
-- Style: Laravel Pint (default), PHPStan/Larastan level 6 — before committing run `./vendor/bin/pint && ./vendor/bin/phpstan`
+- Style: Laravel Pint (default), PHPStan/Larastan level 6 — before committing run `./vendor/bin/pint && ./vendor/bin/phpstan`; `phpstan.neon` must keep `parseModelCastsMethod: true` (otherwise Larastan does not resolve `casts()` enum casts)
 - No code comments except complex places
 - DB enum values are PHP enum classes + casts; no magic strings
 - Validation lives in FormRequests; logic lives in Actions/Services — no fat models
@@ -118,10 +123,11 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 
 1. [x] Skeleton: git init, Laravel project, Filament, admin login, local DB
 2. [x] DB schema: migrations for all tables + criteria seeds
-3. [ ] Filament CRUD: Tools, Criteria, Categories, Tags
-4. [ ] Articles: TipTap editor, covers, draft/publish
-5. [ ] Comparisons: comparison tables in articles (snapshot, sortable items)
-6. [ ] Public site: home / category / article / tool pages + SEO markup
-7. [ ] VS pages + `/go/{code}` tracking
+3. [x] Filament CRUD: Tools, Criteria, Categories, Tags
+4. [x] Articles: TipTap editor, covers, draft/publish
+5. [x] Comparisons: comparison tables in articles (snapshot, sortable items)
+6. [x] Public site: home / category / article / tool pages + SEO markup
+7. [x] VS pages + `/go/{code}` tracking
+8. [ ] Comments with pre-moderation + banners
 8. [ ] Comments with pre-moderation + banners
 9. [ ] Polish: sitemap/RSS, tests, CI, move to VPS (Docker Compose)

@@ -6,3 +6,4 @@ parameters:
         - app
         - database
     level: 6
+    parseModelCastsMethod: true
