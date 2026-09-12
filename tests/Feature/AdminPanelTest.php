@@ -123,7 +123,7 @@ it('renders article edit page with category and tags', function () {
 
     $article->tags()->attach($tag->getKey());
 
-    $this->get('/admin/articles/'.$article->getKey().'/edit')->assertOk();
-    $this->get('/admin/categories/'.$category->getKey().'/edit')->assertOk();
-    $this->get('/admin/tags/'.$tag->getKey().'/edit')->assertOk();
+    $this->get('/admin/articles/'.$article->getKey().'/edit')->assertOk()
+        ->assertDontSee('\\" image\\"', false);
+    $this->get('/admin/criteria/'.$criterion->getKey().'/edit')->assertOk();
 });
