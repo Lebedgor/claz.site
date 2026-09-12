@@ -142,7 +142,7 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 6. Create the admin user: `docker compose exec app php artisan tinker --execute="App\Models\User::create(['name' => 'Admin', 'email' => '...', 'password' => '...']);"`
 7. Updates: `git pull && docker compose up -d --build` (migrations run on app start); `docker compose logs -f app caddy horizon` to watch
 
-CI (GitHub Actions) runs Pint, PHPStan level 6 and Pest on PHP 8.4 against a Postgres 17 service on every push/PR.
+CI (GitHub Actions) is provided but **disabled**: the workflow lives at `.github/workflows/ci.yml.disabled` (Pint + PHPStan level 6 + Pest on PHP 8.4 against a Postgres 17 service). Quality gates run locally before commits (Pint + PHPStan + Pest). To re-enable CI, rename the file back to `ci.yml`.
 
 ## Article formatting standard (long-form reviews)
 
