@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ToolStatus;
 use App\Enums\ToolType;
+use App\Models\Concerns\HasPublicSlugRouting;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,26 +15,12 @@ use Spatie\Translatable\HasTranslations;
 #[Fillable(['type', 'status', 'name', 'slug', 'vendor', 'description', 'logo', 'rating_avg', 'published_at'])]
 class Tool extends Model
 {
+    use HasPublicSlugRouting;
     use HasTranslations;
     use SoftDeletes;
 
     /** @var list<string> */
     public array $translatable = ['name', 'slug', 'description'];
-
-    public function resolveRouteBinding($value, $field = null)
-    {
-        $column = $field ?? (is_numeric($value) ? $this->getKeyName() : 'slug->'.app()->getLocale());
-
-        return $this->where($column, $value)->first();
-    }
-
-    public function getRouteKey(): mixed
-    {
-        $locale = app()->getLocale();
-        $slug = $this->getTranslation('slug', $locale);
-
-        return is_array($slug) ? strval($slug[$locale] ?? '') : strval($slug);
-    }
 
     protected function casts(): array
     {

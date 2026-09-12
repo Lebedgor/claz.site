@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPublicSlugRouting;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,25 +12,11 @@ use Spatie\Translatable\HasTranslations;
 #[Fillable(['parent_id', 'name', 'slug', 'description', 'sort_order'])]
 class Category extends Model
 {
+    use HasPublicSlugRouting;
     use HasTranslations;
 
     /** @var list<string> */
     public array $translatable = ['name', 'slug', 'description'];
-
-    public function resolveRouteBinding($value, $field = null)
-    {
-        $column = $field ?? (is_numeric($value) ? $this->getKeyName() : 'slug->'.app()->getLocale());
-
-        return $this->where($column, $value)->first();
-    }
-
-    public function getRouteKey(): mixed
-    {
-        $locale = app()->getLocale();
-        $slug = $this->getTranslation('slug', $locale);
-
-        return is_array($slug) ? strval($slug[$locale] ?? '') : strval($slug);
-    }
 
     protected function casts(): array
     {

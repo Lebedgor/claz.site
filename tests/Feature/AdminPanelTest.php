@@ -19,6 +19,23 @@ uses(RefreshDatabase::class);
 it('renders admin resources for the admin', function () {
     actingAs(User::factory()->create());
 
+    Tool::create([
+        'type' => ToolType::Plugin,
+        'status' => ToolStatus::Published,
+        'name' => ['en' => 'Row Tool'],
+        'slug' => ['en' => 'row-tool'],
+    ]);
+
+    Category::create([
+        'name' => ['en' => 'Row Category'],
+        'slug' => ['en' => 'row-category'],
+    ]);
+
+    Article::create([
+        'title' => ['en' => 'Row Article'],
+        'slug' => ['en' => 'row-article'],
+    ]);
+
     $this->get('/admin')->assertOk();
     $this->get('/admin/tools')->assertOk();
     $this->get('/admin/tools/create')->assertOk();
