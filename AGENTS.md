@@ -168,7 +168,7 @@ All long-form articles (comparisons, deep reviews) follow the design system intr
 - Target volume: 25–30k characters without spaces of body text
 - JSON-LD (Article + ItemList + Review/AggregateRating) is generated automatically by the controllers — no manual markup
 
-**Editor decision (fixed):** articles are edited with the Filament RichEditor (file attachments upload to `storage/app/public/uploads/editor/`, public disk) plus the "Media library" admin page (upload / preview / copy URL / delete). Third-party WYSIWYG replacements (awcodes/filament-tiptap-editor, CKEditor, TinyMCE) are incompatible with Filament 5 or would flatten the custom `ex-article` markup on re-save — do not swap editors for design-heavy articles; edit their HTML source via Media library Copy URL instead.
+**Editor decision (fixed):** article `body_html` is edited as **HTML source** in a Filament `CodeEditor` field (language: html) — a WYSIWYG round-trip (TipTap RichEditor) flattens the custom `ex-article` markup (classes, grid wrappers, cards, SVG) on save, which happened in practice. Media workflow: upload via the "Media library" admin page, insert with Copy URL; app screenshots come from official vendor/App Store sources. Third-party WYSIWYG replacements (awcodes/filament-tiptap-editor, CKEditor, TinyMCE) are incompatible with Filament 5 or would flatten the custom markup — do not swap the CodeEditor back to RichEditor for design-heavy articles.
 
 **Technical pitfalls (check before saving):**
 - Balanced inline tags in `body_html`: every `<b>` needs `</b>` (not `</strong>` — mismatched pairs make all following text bold)

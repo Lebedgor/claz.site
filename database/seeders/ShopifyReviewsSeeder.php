@@ -258,7 +258,6 @@ class ShopifyReviewsSeeder extends Seeder
 <a href="#faq" style="text-decoration:none; color:inherit;"><div class="ex-nav-btn" style="background:#f0fdf4; border:1px solid #bbf7d0;">❓ <b>FAQ</b><div class="ex-nav-sub">Six honest answers</div></div></a>
 </div>
 <p>In this guide we dig into <b>Judge.me, Loox, Yotpo, Junip, Okendo, Stamped and Ali Reviews</b> — the seven apps that together hold the overwhelming majority of the Shopify reviews market. We compared their pricing structures, collection engines, display widgets, syndication pipelines, integrations and support quality, and scored each of them on the same seven criteria so you can see exactly where one wins and another falls short.</p>
-<figure class="ex-fig"><img src="/storage/uploads/article/intro-shopping.jpg" alt="Shopper choosing products in an online store" loading="lazy"><figcaption>Reviews are the cheapest conversion lever a Shopify store has.</figcaption></figure>
 
 <h2 id="pipeline">🧩 What a review app actually does</h2>
 <p>Before comparing vendors, it helps to separate the four jobs a review app performs, because apps are strong or weak at very different stages of that pipeline:</p>
@@ -282,7 +281,6 @@ class ShopifyReviewsSeeder extends Seeder
 </div>
 <p>We also weighed what merchants themselves report: each app's recent App Store reviews were sampled for recurring praise and recurring complaints — support speed, outages, billing surprises — and those signals flowed into the Support and Performance scores. Where a vendor's own marketing made a claim we could not verify from merchant evidence, we marked it as a vendor claim rather than a tested fact.</p>
 <p>Prices, plan limits and feature lists are current as of <b>September 2026</b> and were taken directly from the Shopify App Store listings and vendor pricing pages. Public App Store ratings are quoted as of the same date. One honest disclaimer: no two stores are alike, so treat our scores as a starting grid — a visual-first fashion brand and a high-ticket B2B store will weight things differently. Interface screenshots below belong to their respective vendors and are shown for identification purposes in this review.</p>
-<figure class="ex-fig"><img src="/storage/uploads/article/methodology.jpg" alt="Laptop with code and evaluation data during the testing process" loading="lazy"><figcaption>Every app was scored on the same seven weighted criteria.</figcaption></figure>
 
 <h2 id="comparison">⚖️ Quick comparison: the seven apps at a glance</h2>
 <p>Here is the full head-to-head table with criteria scores, overall ratings and verdicts. We will unpack every row in detail below.</p>
@@ -484,7 +482,6 @@ class ShopifyReviewsSeeder extends Seeder
 <hr>
 <h2 id="migration">🔄 Migrating between review apps without losing reviews</h2>
 <p>Switching costs are lower than most merchants fear, and every app in this list has a story here. <b>Judge.me</b> ships importers for Yotpo, Loox, Amazon, Etsy and AliExpress. <b>Junip</b> offers official migration from Yotpo, Judge.me and Okendo — and its team has been known to hand-roll migrations for merchants. <b>Ali Reviews</b> supports CSV import from Loox, Yotpo and Judge.me. <b>Loox</b> advertises easy migration and import from other apps, and <b>Okendo</b> runs managed onboarding on higher tiers that includes data migration.</p>
-<figure class="ex-fig"><img src="/storage/uploads/article/migration.jpg" alt="Lines of code used by a review migration script" loading="lazy"><figcaption>Export to CSV first — then let the new app's importer do the heavy lifting.</figcaption></figure>
 <div class="ex-dashed"><b>Rule 1:</b> export everything to CSV before you uninstall anything.</div>
 <div class="ex-dashed"><b>Rule 2:</b> keep the old app installed in "display-only" mode until the new one is verified on your live theme.</div>
 <div class="ex-dashed"><b>Rule 3:</b> re-submit your product sitemap to Google after the swap so rich snippets re-crawl cleanly.</div>

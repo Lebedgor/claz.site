@@ -13,11 +13,11 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\CodeEditor;
+use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\RichEditor\RichEditorTool;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -26,7 +26,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,37 +49,7 @@ class ArticleResource extends Resource
                         TextInput::make('slug.en')->label('Slug')->maxLength(255)
                             ->helperText('Leave empty to generate from the title'),
                         Textarea::make('excerpt.en')->label('Excerpt')->rows(3),
-                        RichEditor::make('body_html.en')->label('Body')->columnSpanFull()
-                            ->fileAttachmentsDisk('public')
-                            ->fileAttachmentsDirectory('uploads/editor')
-                            ->fileAttachmentsVisibility('public')
-                            ->fileAttachmentsAcceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->fileAttachmentsMaxSize(4096)
-                            ->toolbarButtons([
-                                'attachFiles', 'bold', 'italic', 'underline', 'strike', 'subscript', 'superscript',
-                                'h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd', 'blockquote', 'codeBlock',
-                                'bulletList', 'orderedList', 'link', 'horizontalRule', 'table', 'clearFormatting',
-                                'image-width-25', 'image-width-50', 'image-width-75', 'image-width-100',
-                                'undo', 'redo',
-                            ])
-                            ->tools([
-                                RichEditorTool::make('image-width-25')
-                                    ->label('Image width 25%')
-                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === \'image\') { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === \'image\') pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes(\'image\', { width: \'25%\' }).run(); })()')
-                                    ->icon(Heroicon::ArrowsPointingIn),
-                                RichEditorTool::make('image-width-50')
-                                    ->label('Image width 50%')
-                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === \'image\') { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === \'image\') pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes(\'image\', { width: \'50%\' }).run(); })()')
-                                    ->icon(Heroicon::ArrowsPointingOut),
-                                RichEditorTool::make('image-width-75')
-                                    ->label('Image width 75%')
-                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === \'image\') { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === \'image\') pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes(\'image\', { width: \'75%\' }).run(); })()')
-                                    ->icon(Heroicon::Bars3),
-                                RichEditorTool::make('image-width-100')
-                                    ->label('Image width 100%')
-                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === \'image\') { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === \'image\') pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes(\'image\', { width: \'100%\' }).run(); })()')
-                                    ->icon(Heroicon::ArrowsRightLeft),
-                            ]),
+                        CodeEditor::make('body_html.en')->label('Body (HTML)')->columnSpanFull()->language(Language::Html),
                     ]),
                     Tab::make('SEO')->schema([
                         TextInput::make('meta_title.en')->label('Meta title')->maxLength(255),
