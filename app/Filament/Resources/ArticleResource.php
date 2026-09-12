@@ -66,19 +66,19 @@ class ArticleResource extends Resource
                             ->tools([
                                 RichEditorTool::make('image-width-25')
                                     ->label('Image width 25%')
-                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'25%\' }).run()')
+                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === "image") { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === "image") pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes("image", { width: "25%" }).run(); })()')
                                     ->icon(Heroicon::ArrowsPointingIn),
                                 RichEditorTool::make('image-width-50')
                                     ->label('Image width 50%')
-                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'50%\' }).run()')
+                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === "image") { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === "image") pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes("image", { width: "50%" }).run(); })()')
                                     ->icon(Heroicon::ArrowsPointingOut),
                                 RichEditorTool::make('image-width-75')
                                     ->label('Image width 75%')
-                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'75%\' }).run()')
+                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === "image") { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === "image") pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes("image", { width: "75%" }).run(); })()')
                                     ->icon(Heroicon::Bars3),
                                 RichEditorTool::make('image-width-100')
                                     ->label('Image width 100%')
-                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'100%\' }).run()')
+                                    ->jsHandler('(() => { const editor = $getEditor(); if (!editor) return; const sel = editor.state.selection; let pos = null; if (sel.node && sel.node.type.name === "image") { pos = sel.from; } else { editor.state.doc.nodesBetween(Math.max(0, sel.from - 2), sel.from + 2, (node, p) => { if (pos === null && node.type.name === "image") pos = p; }); } if (pos === null) return; editor.chain().focus().setNodeSelection(pos).updateAttributes("image", { width: "100%" }).run(); })()')
                                     ->icon(Heroicon::ArrowsRightLeft),
                             ]),
                     ]),
