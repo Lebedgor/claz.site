@@ -48,7 +48,18 @@ class ArticleResource extends Resource
                         TextInput::make('slug.en')->label('Slug')->maxLength(255)
                             ->helperText('Leave empty to generate from the title'),
                         Textarea::make('excerpt.en')->label('Excerpt')->rows(3),
-                        RichEditor::make('body_html.en')->label('Body')->columnSpanFull(),
+                        RichEditor::make('body_html.en')->label('Body')->columnSpanFull()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('uploads/editor')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsAcceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->fileAttachmentsMaxSize(4096)
+                            ->toolbarButtons([
+                                'attachFiles', 'bold', 'italic', 'underline', 'strike', 'subscript', 'superscript',
+                                'h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd', 'blockquote', 'codeBlock',
+                                'bulletList', 'orderedList', 'link', 'horizontalRule', 'table', 'clearFormatting',
+                                'undo', 'redo',
+                            ]),
                     ]),
                     Tab::make('SEO')->schema([
                         TextInput::make('meta_title.en')->label('Meta title')->maxLength(255),

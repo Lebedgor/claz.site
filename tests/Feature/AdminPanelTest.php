@@ -44,6 +44,7 @@ it('renders admin resources for the admin', function () {
     $this->get('/admin/tags')->assertOk();
     $this->get('/admin/articles')->assertOk();
     $this->get('/admin/articles/create')->assertOk();
+    $this->get('/admin/media-library')->assertOk();
 });
 
 it('renders tool edit page with attached criteria values', function () {
