@@ -54,7 +54,7 @@
             </p>
         @endif
 
-        <div class="mt-8 space-y-4 leading-relaxed text-zinc-800 [&_a]:font-medium [&_a]:text-indigo-600 [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-zinc-900 [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-zinc-900 [&_img]:rounded-xl [&_li]:mt-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mt-3 [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:pl-6">
+        <div class="mt-8 space-y-4 leading-relaxed text-zinc-800 [&_a]:font-medium [&_a]:text-indigo-600 [&_figure]:mt-8 [&_figcaption]:mt-2 [&_figcaption]:text-center [&_figcaption]:text-xs [&_figcaption]:text-zinc-500 [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-zinc-900 [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-zinc-900 [&_img]:rounded-xl [&_li]:mt-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mt-3 [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:pl-6">
             {!! $body !!}
         </div>
 
@@ -72,4 +72,52 @@
 
         <livewire:article-comments :article="$article" :wire:key="'comments-'.$article->getKey()" />
     </article>
+
+    <div id="media-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true">
+        <button id="lightbox-close" type="button" aria-label="Close"
+                class="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xl text-white hover:bg-white/20">
+            &times;
+        </button>
+        <figure class="max-w-6xl">
+            <img id="lightbox-img" src="" alt="" class="mx-auto max-h-[85vh] w-auto rounded-xl">
+            <figcaption id="lightbox-caption" class="mt-3 text-center text-sm text-zinc-300"></figcaption>
+        </figure>
+    </div>
+
+    <script>
+        (() => {
+            const box = document.getElementById('media-lightbox');
+            const image = document.getElementById('lightbox-img');
+            const caption = document.getElementById('lightbox-caption');
+
+            const open = (source, alt, text) => {
+                image.src = source;
+                image.alt = alt ?? '';
+                caption.textContent = text ?? '';
+                box.classList.remove('hidden');
+                box.classList.add('flex');
+                document.body.classList.add('overflow-hidden');
+            };
+
+            const close = () => {
+                box.classList.add('hidden');
+                box.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+                image.src = '';
+            };
+
+            document.querySelectorAll('article img').forEach((media) => {
+                media.classList.add('cursor-zoom-in');
+                media.addEventListener('click', () => {
+                    const figure = media.closest('figure');
+                    open(media.src, media.alt, figure?.querySelector('figcaption')?.textContent ?? '');
+                });
+            });
+
+            box.addEventListener('click', close);
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') close();
+            });
+        })();
+    </script>
 </x-layouts.public>
