@@ -73,24 +73,33 @@
         <livewire:article-comments :article="$article" :wire:key="'comments-'.$article->getKey()" />
     </article>
 
-    <div id="media-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true">
+    <div id="media-lightbox"
+         class="fixed inset-0 z-50 hidden items-center justify-center bg-zinc-950/95 p-4 backdrop-blur-sm opacity-0 transition-opacity duration-200"
+         role="dialog" aria-modal="true" aria-label="Media viewer">
         <button id="lightbox-close" type="button" aria-label="Close"
-                class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xl text-white hover:bg-white/20">
-            &times;
+                class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+            </svg>
         </button>
         <button id="lightbox-prev" type="button" aria-label="Previous"
-                class="absolute left-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20">
-            &lsaquo;
+                class="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+            </svg>
         </button>
         <button id="lightbox-next" type="button" aria-label="Next"
-                class="absolute right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20">
-            &rsaquo;
+                class="absolute right-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+            </svg>
         </button>
-        <figure class="max-w-6xl">
-            <img id="lightbox-img" src="" alt="" class="mx-auto max-h-[80vh] w-auto rounded-xl">
-            <figcaption class="mt-3 text-center">
-                <span id="lightbox-caption" class="text-sm text-zinc-300"></span>
-                <span id="lightbox-counter" class="mt-1 block text-xs text-zinc-500"></span>
+        <figure class="max-w-6xl" id="lightbox-figure">
+            <img id="lightbox-img" src="" alt=""
+                 class="mx-auto max-h-[78vh] w-auto rounded-xl bg-zinc-900 shadow-2xl ring-1 ring-white/10">
+            <figcaption class="mt-4 text-center">
+                <span id="lightbox-caption" class="block text-sm text-zinc-200"></span>
+                <span id="lightbox-counter" class="mt-2 hidden text-xs font-medium text-zinc-400"></span>
             </figcaption>
         </figure>
     </div>
@@ -98,12 +107,17 @@
     <script>
         (() => {
             const box = document.getElementById('media-lightbox');
+            const figure = document.getElementById('lightbox-figure');
             const image = document.getElementById('lightbox-img');
             const caption = document.getElementById('lightbox-caption');
             const counter = document.getElementById('lightbox-counter');
+            const prevButton = document.getElementById('lightbox-prev');
+            const nextButton = document.getElementById('lightbox-next');
+            const closeButton = document.getElementById('lightbox-close');
             const media = Array.from(document.querySelectorAll('article img'));
 
             let index = 0;
+            let lastFocus = null;
 
             const render = () => {
                 const current = media[index];
@@ -111,22 +125,41 @@
                 image.alt = current.alt ?? '';
                 caption.textContent = current.closest('figure')?.querySelector('figcaption')?.textContent ?? '';
                 counter.textContent = media.length > 1 ? (index + 1) + ' / ' + media.length : '';
+
+                const single = media.length <= 1;
+                prevButton.classList.toggle('hidden', single);
+                nextButton.classList.toggle('hidden', single);
+
+                [index - 1, index + 1].forEach((offset) => {
+                    const neighbor = media[(offset + media.length) % media.length];
+                    if (neighbor && !neighbor.complete) {
+                        new Image().src = neighbor.src;
+                    }
+                });
             };
 
             const open = (target) => {
                 index = media.indexOf(target);
                 if (index < 0) return;
+
+                lastFocus = document.activeElement;
                 render();
                 box.classList.remove('hidden');
                 box.classList.add('flex');
+                requestAnimationFrame(() => box.classList.remove('opacity-0'));
                 document.body.classList.add('overflow-hidden');
+                closeButton.focus();
             };
 
             const close = () => {
-                box.classList.add('hidden');
-                box.classList.remove('flex');
+                box.classList.add('opacity-0');
+                setTimeout(() => {
+                    box.classList.add('hidden');
+                    box.classList.remove('flex');
+                    image.src = '';
+                }, 200);
                 document.body.classList.remove('overflow-hidden');
-                image.src = '';
+                lastFocus?.focus();
             };
 
             const step = (delta) => {
@@ -140,17 +173,18 @@
                 item.addEventListener('click', () => open(item));
             });
 
-            document.getElementById('lightbox-prev').addEventListener('click', (event) => {
+            prevButton.addEventListener('click', (event) => {
                 event.stopPropagation();
                 step(-1);
             });
 
-            document.getElementById('lightbox-next').addEventListener('click', (event) => {
+            nextButton.addEventListener('click', (event) => {
                 event.stopPropagation();
                 step(1);
             });
 
-            document.getElementById('lightbox-close').addEventListener('click', close);
+            figure.addEventListener('click', (event) => event.stopPropagation());
+            closeButton.addEventListener('click', close);
             box.addEventListener('click', close);
 
             document.addEventListener('keydown', (event) => {
