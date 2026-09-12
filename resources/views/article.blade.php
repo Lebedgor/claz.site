@@ -75,12 +75,23 @@
 
     <div id="media-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true">
         <button id="lightbox-close" type="button" aria-label="Close"
-                class="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xl text-white hover:bg-white/20">
+                class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-xl text-white hover:bg-white/20">
             &times;
         </button>
+        <button id="lightbox-prev" type="button" aria-label="Previous"
+                class="absolute left-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20">
+            &lsaquo;
+        </button>
+        <button id="lightbox-next" type="button" aria-label="Next"
+                class="absolute right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20">
+            &rsaquo;
+        </button>
         <figure class="max-w-6xl">
-            <img id="lightbox-img" src="" alt="" class="mx-auto max-h-[85vh] w-auto rounded-xl">
-            <figcaption id="lightbox-caption" class="mt-3 text-center text-sm text-zinc-300"></figcaption>
+            <img id="lightbox-img" src="" alt="" class="mx-auto max-h-[80vh] w-auto rounded-xl">
+            <figcaption class="mt-3 text-center">
+                <span id="lightbox-caption" class="text-sm text-zinc-300"></span>
+                <span id="lightbox-counter" class="mt-1 block text-xs text-zinc-500"></span>
+            </figcaption>
         </figure>
     </div>
 
@@ -89,11 +100,23 @@
             const box = document.getElementById('media-lightbox');
             const image = document.getElementById('lightbox-img');
             const caption = document.getElementById('lightbox-caption');
+            const counter = document.getElementById('lightbox-counter');
+            const media = Array.from(document.querySelectorAll('article img'));
 
-            const open = (source, alt, text) => {
-                image.src = source;
-                image.alt = alt ?? '';
-                caption.textContent = text ?? '';
+            let index = 0;
+
+            const render = () => {
+                const current = media[index];
+                image.src = current.src;
+                image.alt = current.alt ?? '';
+                caption.textContent = current.closest('figure')?.querySelector('figcaption')?.textContent ?? '';
+                counter.textContent = media.length > 1 ? (index + 1) + ' / ' + media.length : '';
+            };
+
+            const open = (target) => {
+                index = media.indexOf(target);
+                if (index < 0) return;
+                render();
                 box.classList.remove('hidden');
                 box.classList.add('flex');
                 document.body.classList.add('overflow-hidden');
@@ -106,17 +129,35 @@
                 image.src = '';
             };
 
-            document.querySelectorAll('article img').forEach((media) => {
-                media.classList.add('cursor-zoom-in');
-                media.addEventListener('click', () => {
-                    const figure = media.closest('figure');
-                    open(media.src, media.alt, figure?.querySelector('figcaption')?.textContent ?? '');
-                });
+            const step = (delta) => {
+                if (media.length === 0) return;
+                index = (index + delta + media.length) % media.length;
+                render();
+            };
+
+            media.forEach((item) => {
+                item.classList.add('cursor-zoom-in');
+                item.addEventListener('click', () => open(item));
             });
 
+            document.getElementById('lightbox-prev').addEventListener('click', (event) => {
+                event.stopPropagation();
+                step(-1);
+            });
+
+            document.getElementById('lightbox-next').addEventListener('click', (event) => {
+                event.stopPropagation();
+                step(1);
+            });
+
+            document.getElementById('lightbox-close').addEventListener('click', close);
             box.addEventListener('click', close);
+
             document.addEventListener('keydown', (event) => {
+                if (box.classList.contains('hidden')) return;
                 if (event.key === 'Escape') close();
+                if (event.key === 'ArrowLeft') step(-1);
+                if (event.key === 'ArrowRight') step(1);
             });
         })();
     </script>
