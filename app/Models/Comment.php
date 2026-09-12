@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CommentStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -15,6 +16,12 @@ class Comment extends Model
         return [
             'status' => CommentStatus::class,
         ];
+    }
+
+    /** @param Builder<Comment> $query */
+    public function scopeApproved($query): void
+    {
+        $query->where('status', CommentStatus::Approved->value);
     }
 
     /** @return BelongsTo<Article, $this> */

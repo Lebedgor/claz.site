@@ -67,5 +67,9 @@
                 @endforeach
             </div>
         @endif
+
+        <x-banner placement="sidebar" />
+
+        <livewire:article-comments :article="$article" :wire:key="'comments-'.$article->getKey()" />
     </article>
 </x-layouts.public>

@@ -31,6 +31,9 @@
         </div>
     @endif
 </header>
+<div class="mx-auto max-w-6xl px-4">
+    <x-banner placement="header" />
+</div>
 <main class="mx-auto max-w-6xl px-4 py-8">
     {{ $slot }}
 </main>

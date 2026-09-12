@@ -50,6 +50,17 @@ return [
         'intro' => 'Side-by-side comparison of :a and :b — features, criteria scores and pricing at a glance.',
         'conclusion' => 'The right choice depends on your workflow: weigh the criteria above against what you actually need day to day.',
     ],
+    'comments' => [
+        'title' => 'Comments',
+        'empty' => 'No comments yet. Be the first!',
+        'leave' => 'Leave a comment',
+        'name' => 'Name',
+        'email' => 'Email (not published)',
+        'body' => 'Your comment',
+        'submit' => 'Submit comment',
+        'pending_notice' => 'Thanks! Your comment is awaiting moderation.',
+        'too_many' => 'You are commenting too fast. Please try again later.',
+    ],
     'footer' => [
         'rights' => 'All rights reserved.',
     ],

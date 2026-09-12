@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\BannerPlacement;
 use App\Models\Article;
 use App\Models\Comparison;
 
@@ -35,6 +36,8 @@ class ArticleRenderer
             ->map(fn (Comparison $comparison): string => view('components.comparison-table', ['comparison' => $comparison])->render())
             ->implode('');
 
-        return $html.$extra;
+        $banner = view('components.banner', ['placement' => BannerPlacement::InArticle->value])->render();
+
+        return $html.$extra.$banner;
     }
 }

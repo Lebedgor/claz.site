@@ -60,7 +60,8 @@ Note: the Laravel skeleton ships its own `AGENTS.md` / `CLAUDE.md` boilerplate �
 - [x] Milestone 5 — Comparisons: nested repeaters on the article edit page (blocks → tools), sortable (`sort_order`/`position`), snapshot sync via `App\Actions\SyncComparisonScores` ("Sync scores" header action copies live `tool_criteria` values into `comparison_scores` and removes stale rows)
 - [x] Milestone 6 — Public site: home / category / article / tool pages (Blade + Tailwind v4), Livewire tools catalog with type filter and search, comparison table rendered from snapshots via `App\Services\ArticleRenderer` (`[[comparison:id]]` placeholders, unreferenced blocks appended), SEO: canonical/OG/Twitter/hreflang (per `config/app.php` `locales`), JSON-LD (WebSite, Article, ItemList, Product), route-model binding by per-locale slug
 - [x] Milestone 7 — VS pages + `/go/{code}` tracking (public comparison-table links already point to `/go/{code}`)
-- [ ] Milestone 8 — Comments with pre-moderation + banners
+- [x] Milestone 8 — Comments with pre-moderation (guest form on Livewire + honeypot + rate limit + HTMLPurifier, `CommentsResource` with approve/reject bulk actions, `SiteStats` dashboard widget) + banners (`Banner` model with placement/date/active scoping, `<x-banner>` component wired into layout header / article sidebar / article body via `ArticleRenderer`, `BannerResource`)
+- [ ] Milestone 9 — Polish: sitemap/RSS, tests, CI, move to VPS (Docker Compose)
 
 ## Architecture
 
@@ -128,6 +129,5 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 5. [x] Comparisons: comparison tables in articles (snapshot, sortable items)
 6. [x] Public site: home / category / article / tool pages + SEO markup
 7. [x] VS pages + `/go/{code}` tracking
-8. [ ] Comments with pre-moderation + banners
-8. [ ] Comments with pre-moderation + banners
+8. [x] Comments with pre-moderation + banners
 9. [ ] Polish: sitemap/RSS, tests, CI, move to VPS (Docker Compose)
