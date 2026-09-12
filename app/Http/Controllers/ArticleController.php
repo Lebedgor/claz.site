@@ -14,6 +14,8 @@ class ArticleController extends Controller
         abort_unless($article->status === ArticleStatus::Published, 404);
         abort_unless($article->published_at !== null && $article->published_at->lte(now()), 404);
 
+        $locale = app()->getLocale();
+
         $article->load([
             'category',
             'tags',
@@ -43,15 +45,30 @@ class ArticleController extends Controller
                 '@context' => 'https://schema.org',
                 '@type' => 'ItemList',
                 'name' => $comparison->getTranslation('title', app()->getLocale()),
-                'itemListElement' => $comparison->items->map(fn ($item, $index): array => [
-                    '@type' => 'ListItem',
-                    'position' => $index + 1,
-                    'item' => [
-                        '@type' => 'Product',
-                        'name' => $item->tool?->getTranslation('name', app()->getLocale()),
-                        'url' => $item->tool !== null ? route('tools.show', $item->tool) : null,
-                    ],
-                ])->all(),
+                'itemListElement' => $comparison->items->map(function ($item, $index) use ($locale): array {
+                    $review = $item->score !== null ? [
+                        '@type' => 'Review',
+                        'author' => ['@type' => 'Organization', 'name' => config('app.name')],
+                        'reviewRating' => [
+                            '@type' => 'Rating',
+                            'ratingValue' => (float) $item->score,
+                            'bestRating' => 10,
+                            'worstRating' => 0,
+                        ],
+                        'reviewBody' => strval($item->getTranslation('verdict', $locale)) ?: null,
+                    ] : null;
+
+                    return [
+                        '@type' => 'ListItem',
+                        'position' => $index + 1,
+                        'item' => [
+                            '@type' => 'Product',
+                            'name' => $item->tool?->getTranslation('name', $locale),
+                            'url' => $item->tool !== null ? route('tools.show', $item->tool) : null,
+                            'review' => $review,
+                        ],
+                    ];
+                })->all(),
             ];
         }
 

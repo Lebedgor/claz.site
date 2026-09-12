@@ -139,6 +139,7 @@ it('renders article page with comparison table and seo markup', function () {
         ->assertSee('/go/ai-helper')
         ->assertSee('"@type":"Article"', false)
         ->assertSee('"@type":"ItemList"', false)
+        ->assertSee('"@type":"Review"', false)
         ->assertSee('hreflang="en"', false);
 });
 
@@ -174,13 +175,15 @@ it('renders tools index with type filter', function () {
         ->assertSee('No tools found.');
 });
 
-it('renders tool page with criteria and 404s on unknown slug', function () {
+it('renders tool page with criteria and review structured data', function () {
     seedPublicFixture();
 
     $this->get('/tools/ai-helper')->assertOk()
         ->assertSee('Ease of use')
         ->assertSee('Try AI Helper')
-        ->assertSee('Mentioned in articles');
+        ->assertSee('Mentioned in articles')
+        ->assertSee('"@type":"AggregateRating"', false)
+        ->assertSee('"@type":"Review"', false);
 
     $this->get('/tools/unknown')->assertNotFound();
 });

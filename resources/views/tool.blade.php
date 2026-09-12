@@ -14,14 +14,6 @@
             default => strval(is_scalar($decoded) ? $decoded : $raw),
         };
     };
-
-    $jsonLd = [[
-        '@context' => 'https://schema.org',
-        '@type' => 'Product',
-        'name' => $tool->getTranslation('name', $locale),
-        'description' => strval($tool->getTranslation('description', $locale)),
-        'url' => route('tools.show', $tool),
-    ]];
 @endphp
 
 <x-layouts.public>
