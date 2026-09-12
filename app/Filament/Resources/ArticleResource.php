@@ -17,6 +17,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\RichEditor\RichEditorTool;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -25,6 +26,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -58,7 +60,26 @@ class ArticleResource extends Resource
                                 'attachFiles', 'bold', 'italic', 'underline', 'strike', 'subscript', 'superscript',
                                 'h2', 'h3', 'alignStart', 'alignCenter', 'alignEnd', 'blockquote', 'codeBlock',
                                 'bulletList', 'orderedList', 'link', 'horizontalRule', 'table', 'clearFormatting',
+                                'image-width-25', 'image-width-50', 'image-width-75', 'image-width-100',
                                 'undo', 'redo',
+                            ])
+                            ->tools([
+                                RichEditorTool::make('image-width-25')
+                                    ->label('Image width 25%')
+                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'25%\' }).run()')
+                                    ->icon(Heroicon::ArrowsPointingIn),
+                                RichEditorTool::make('image-width-50')
+                                    ->label('Image width 50%')
+                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'50%\' }).run()')
+                                    ->icon(Heroicon::ArrowsPointingOut),
+                                RichEditorTool::make('image-width-75')
+                                    ->label('Image width 75%')
+                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'75%\' }).run()')
+                                    ->icon(Heroicon::Bars3),
+                                RichEditorTool::make('image-width-100')
+                                    ->label('Image width 100%')
+                                    ->jsHandler('$getEditor()?.chain().focus().updateAttributes(\'image\', { width: \'100%\' }).run()')
+                                    ->icon(Heroicon::ArrowsRightLeft),
                             ]),
                     ]),
                     Tab::make('SEO')->schema([
