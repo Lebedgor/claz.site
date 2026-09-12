@@ -288,9 +288,51 @@ class ShopifyReviewsSeeder extends Seeder
 <p>Here is the full head-to-head table with criteria scores, overall ratings and verdicts. We will unpack every row in detail below.</p>
 [[comparison:COMPARISON_ID]]
 <div class="ex-dashed"><b>How to read the table:</b> the overall score is a weighted average of the criteria — features and ease of use count three times, performance and pricing twice, support once. Free plan and open source are marked separately.</div>
+<div class="ex-grid" style="margin-top:14px;">
+<div class="ex-card ex-card-neutral" style="margin:0;">
+<div style="font-weight:700; margin-bottom:10px;">💸 Estimated monthly cost — at 2,000 orders</div>
+<svg viewBox="0 0 640 252" style="width:100%; height:auto;" role="img" aria-label="💸 Estimated monthly cost — at 2,000 orders">
+<rect x="96" y="8" width="480" height="22" rx="4" fill="#06b6d4"/><text x="582" y="23" font-size="12" font-weight="600" fill="#334155">$350</text>
+<text x="88" y="23" font-size="12" text-anchor="end" fill="#475569">Loox</text>
+<rect x="96" y="42" width="410" height="22" rx="4" fill="#7c3aed"/><text x="512" y="57" font-size="12" font-weight="600" fill="#334155">$299</text>
+<text x="88" y="57" font-size="12" text-anchor="end" fill="#475569">Okendo</text>
+<rect x="96" y="76" width="273" height="22" rx="4" fill="#f59e0b"/><text x="375" y="91" font-size="12" font-weight="600" fill="#334155">$199</text>
+<text x="88" y="91" font-size="12" text-anchor="end" fill="#475569">Stamped</text>
+<rect x="96" y="110" width="163" height="22" rx="4" fill="#fb923c"/><text x="265" y="125" font-size="12" font-weight="600" fill="#334155">$119</text>
+<text x="88" y="125" font-size="12" text-anchor="end" fill="#475569">Yotpo</text>
+<rect x="96" y="144" width="40" height="22" rx="4" fill="#8b5cf6"/><text x="142" y="159" font-size="12" font-weight="600" fill="#334155">$29</text>
+<text x="88" y="159" font-size="12" text-anchor="end" fill="#475569">Junip</text>
+<rect x="96" y="178" width="21" height="22" rx="4" fill="#94a3b8"/><text x="123" y="193" font-size="12" font-weight="600" fill="#334155">$15</text>
+<text x="88" y="193" font-size="12" text-anchor="end" fill="#475569">Ali Reviews</text>
+<rect x="96" y="212" width="21" height="22" rx="4" fill="#10b981"/><text x="123" y="227" font-size="12" font-weight="600" fill="#334155">$15</text>
+<text x="88" y="227" font-size="12" text-anchor="end" fill="#475569">Judge.me</text>
+</svg>
+<div style="font-size:12px; color:#64748b; margin-top:6px;">Estimates from published tier pricing, September 2026. Volumes beyond included limits move to the next tier.</div>
+</div>
+<div class="ex-card ex-card-neutral" style="margin:0;">
+<div style="font-weight:700; margin-bottom:10px;">💸 Estimated monthly cost — at 10,000 orders</div>
+<svg viewBox="0 0 640 252" style="width:100%; height:auto;" role="img" aria-label="💸 Estimated monthly cost — at 10,000 orders">
+<rect x="96" y="8" width="480" height="22" rx="4" fill="#06b6d4"/><text x="582" y="23" font-size="12" font-weight="600" fill="#334155">$1,700</text>
+<text x="88" y="23" font-size="12" text-anchor="end" fill="#475569">Loox</text>
+<rect x="96" y="42" width="113" height="22" rx="4" fill="#f59e0b"/><text x="215" y="57" font-size="12" font-weight="600" fill="#334155">$399</text>
+<text x="88" y="57" font-size="12" text-anchor="end" fill="#475569">Stamped</text>
+<rect x="96" y="76" width="22" height="22" rx="4" fill="#8b5cf6"/><text x="124" y="91" font-size="12" font-weight="600" fill="#334155">$79</text>
+<text x="88" y="91" font-size="12" text-anchor="end" fill="#475569">Junip</text>
+<rect x="96" y="110" width="14" height="22" rx="4" fill="#94a3b8"/><text x="116" y="125" font-size="12" font-weight="600" fill="#334155">$50</text>
+<text x="88" y="125" font-size="12" text-anchor="end" fill="#475569">Ali Reviews</text>
+<rect x="96" y="144" width="6" height="22" rx="4" fill="#10b981"/><text x="108" y="159" font-size="12" font-weight="600" fill="#334155">$15</text>
+<text x="88" y="159" font-size="12" text-anchor="end" fill="#475569">Judge.me</text>
+<rect x="96" y="178" width="150" height="22" rx="4" fill="none" stroke="#cbd5e1" stroke-dasharray="4 3"/><text x="254" y="193" font-size="12" fill="#64748b">custom — talk to sales</text>
+<text x="88" y="193" font-size="12" text-anchor="end" fill="#475569">Okendo</text>
+<rect x="96" y="212" width="150" height="22" rx="4" fill="none" stroke="#cbd5e1" stroke-dasharray="4 3"/><text x="254" y="227" font-size="12" fill="#64748b">custom — talk to sales</text>
+<text x="88" y="227" font-size="12" text-anchor="end" fill="#475569">Yotpo</text>
+</svg>
+<div style="font-size:12px; color:#64748b; margin-top:6px;">"Custom" = negotiated enterprise pricing; Okendo and Yotpo quote individually past their top published tiers.</div>
+</div>
+</div>
 
 <h2 id="judgeme">🏆 Judge.me — the value king of Shopify reviews</h2>
-<div class="ex-card ex-card-green"><b>🏆 Our pick: the default choice for most stores.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">Unlimited reviews on a free plan, one flat $15 tier with no order caps, and a 5.0★ rating from 46,800 merchants — the most-reviewed review app on Shopify.</div></div>
+<div class="ex-card ex-card-green"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #bbf7d0;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 5.0 · 46,800 App Store reviews</div><b>🏆 Our pick: the default choice for most stores.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">Unlimited reviews on a free plan, one flat $15 tier with no order caps, and a 5.0★ rating from 46,800 merchants — the most-reviewed review app on Shopify.</div></div>
 <p><b>Judge.me</b> holds the <b>Built for Shopify</b> badge and won a Shopify Build Award. Its free plan is famously generous: unlimited product and store reviews, unlimited photo and video review collection, all core widgets, Google Shopping sync with rich snippets, and an importer from competing apps — with no order caps whatsoever.</p>
 <p>The paid plan, <b>Judge.me Awesome at a flat $15 per month</b>, is where the app becomes almost unfair competition. There is no order-volume pricing: $15 covers you at 200 orders a month and at 20,000. For that price you get AI-generated review replies and summaries, automatic translation into 38 languages, coupons and referral incentives, Q&amp;A widgets, testimonial sliders, custom CSS, and syndication to Google Shopping, Meta and TikTok. Judge.me claims around 130 integrations, including Klaviyo, Gorgias, AfterShip, LoyaltyLion and PageFly, plus native hooks into Shopify Flow and Checkout.</p>
 <div class="images-block">
@@ -314,7 +356,7 @@ class ShopifyReviewsSeeder extends Seeder
 
 <hr>
 <h2 id="loox">📸 Loox — visual social proof with an AI engine</h2>
-<div class="ex-card ex-card-cyan"><b>📸 Best for visual brands.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">Fashion, beauty, jewelry, food and home-decor stores that want product pages built around customer photos. Rating: 4.9★ from 9,596 reviews, 94% five-star, Built for Shopify.</div></div>
+<div class="ex-card ex-card-cyan"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #a5f3fc;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.9 · 9,596 App Store reviews</div><b>📸 Best for visual brands.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">Fashion, beauty, jewelry, food and home-decor stores that want product pages built around customer photos. Rating: 4.9★ from 9,596 reviews, 94% five-star, Built for Shopify.</div></div>
 <p><b>Loox</b> has been around since 2015, and its entire pitch is that <b>visual</b> reviews — photos and videos from real customers — convert dramatically better than text. Everything in the product is built around collecting and showcasing them.</p>
 <p>The <b>free Beginner plan</b> covers stores up to 500 orders per month with review-request emails and reminders, discounts for photo reviews, 17+ widget types, Google rich snippets, social post generation and Shop App syndication. The paid <b>Convert plan at $49.99 per month</b> adds the AI suite — Smart Sorting, Review Highlights, AI Summaries, Review Stories, AI Translations and automatic AI Replies — plus video reviews, reviews on bundles, referrals, syndication to Google, Meta and TikTok Shop, and API access. Base price includes 300 orders per month, each additional 300 adding $50. <b>Unlimited at $299.99</b> removes caps and adds priority support.</p>
 <div class="images-block">
@@ -334,7 +376,7 @@ class ShopifyReviewsSeeder extends Seeder
 
 <hr>
 <h2 id="yotpo">🏢 Yotpo — the enterprise retention suite</h2>
-<div class="ex-card ex-card-orange"><b>🏢 The heaviest-hitting suite — at enterprise prices.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">Reviews, loyalty, SMS and email in one platform. Rating: 4.8★ from 4,635 reviews (92% five-star — and the loudest critics: ~3% one-star). No Built for Shopify badge.</div></div>
+<div class="ex-card ex-card-orange"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #fed7aa;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.8 · 4,635 App Store reviews</div><b>🏢 The heaviest-hitting suite — at enterprise prices.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">Reviews, loyalty, SMS and email in one platform. Rating: 4.8★ from 4,635 reviews (92% five-star — and the loudest critics: ~3% one-star). No Built for Shopify badge.</div></div>
 <p>The <b>free plan caps you at 50 orders per month</b> but includes automated review requests, email templates, sentiment and profanity filters, and on-site display. The <b>Starter plan at $15 per month</b> unlocks photo and video reviews, Google rich snippets, Google Shopping Ads integration and the carousel widget — with a price that scales with order volume. The <b>Pro plan at $119 per month</b> adds Google Seller Ratings, custom review questions, AI summaries and smart sorting. Yotpo handles billing outside Shopify.</p>
 <div class="images-block">
 <figure><img src="/storage/uploads/article/apps/yotpo/hero-mockup.png" alt="Yotpo review widgets and analytics mockup" loading="lazy"><figcaption>Yotpo pairs review displays with performance analytics. Screenshot: Yotpo.</figcaption></figure>
@@ -353,7 +395,7 @@ class ShopifyReviewsSeeder extends Seeder
 
 <hr>
 <h2 id="junip">✨ Junip — the minimalist built for Shopify</h2>
-<div class="ex-card ex-card-violet"><b>✨ Standout: unlimited everything, on every tier.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">No order-based pricing anxiety anywhere in the lineup. Rating: 4.8★ from 1,149 reviews, Built for Shopify badge.</div></div>
+<div class="ex-card ex-card-violet"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #ddd6fe;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.8 · 1,149 App Store reviews</div><b>✨ Standout: unlimited everything, on every tier.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">No order-based pricing anxiety anywhere in the lineup. Rating: 4.8★ from 1,149 reviews, Built for Shopify badge.</div></div>
 <p><b>Junip</b> is the youngest serious player here, and its philosophy is captured perfectly by a merchant review: "a lightweight review platform with all of the essential features and no bloat that drives up costs." When that merchant requested a missing feature, Junip built and shipped it within a week.</p>
 <p>The <b>free plan is genuinely unlimited</b>: every plan covers unlimited orders and unlimited review-request emails, plus mobile-first submission forms, standard widgets and Google rich snippets. The <b>Core plan at $29</b> adds photo and video reviews, incentives, owner replies and product grouping. The <b>Growth plan at $79</b> unlocks official syndication to Google Shopping, TikTok Shop, Shop App and Meta Shops, plus Klaviyo and Postscript integrations and search with filters. The <b>Premium plan at $299</b> brings Junip AI — an AI sales agent answering shopper questions from review data, AI summaries, multi-store support and API access.</p>
 <div class="images-block">
@@ -373,7 +415,7 @@ class ShopifyReviewsSeeder extends Seeder
 
 <hr>
 <h2 id="okendo">📊 Okendo — enterprise analytics without Yotpo money</h2>
-<div class="ex-card ex-card-cyan"><b>📊 Standout: attribute-level analytics.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">A full retention suite — reviews, loyalty, referrals, quizzes, surveys — at mid-market prices. Rating: 4.8★ from 1,423 reviews, the highest five-star ratio (96%) after Judge.me. No Built for Shopify badge.</div></div>
+<div class="ex-card ex-card-cyan"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #ddd6fe;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.8 · 1,423 App Store reviews</div><b>📊 Standout: attribute-level analytics.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">A full retention suite — reviews, loyalty, referrals, quizzes, surveys — at mid-market prices. Rating: 4.8★ from 1,423 reviews, the highest five-star ratio (96%) after Judge.me. No Built for Shopify badge.</div></div>
 <p>The <b>free plan covers 50 orders per month</b> with automated request emails, a smart review form, review rewards and Google SEO snippets. The <b>Essential plan at $19</b> covers up to 200 orders. The <b>Growth plan at $119</b> raises the ceiling to 1,500 orders and adds AI summaries and keywords, TikTok Shop syndication and a Q&amp;A widget. The <b>Power plan at $299</b> goes to 3,500 orders and includes review campaigns, advanced CSS, email and SMS integrations, and managed onboarding.</p>
 <div class="images-block">
 <figure><img src="/storage/uploads/article/apps/okendo/ai-displays.png" alt="Okendo AI-powered review display with summary, gallery and keywords" loading="lazy"><figcaption>AI summary, UGC gallery and keywords in one block. Screenshot: Okendo.</figcaption></figure>
@@ -392,7 +434,7 @@ class ShopifyReviewsSeeder extends Seeder
 
 <hr>
 <h2 id="stamped">🎁 Stamped — the veteran with a loyalty twist</h2>
-<div class="ex-card ex-card-orange-strong"><b>⚠️ Consider carefully.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">A veteran app (formerly Stamped.io), now rebranded as <b>Stamped Reviews &amp; Loyalty</b> — the only app here with no free plan: pricing starts at $23/month for 200 orders. Rating: 4.7★ from 3,755 reviews (~3% one-star — the noisiest distribution on this list).</div></div>
+<div class="ex-card ex-card-orange-strong"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #fed7aa;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.7 · 3,755 App Store reviews</div><b>⚠️ Consider carefully.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">A veteran app (formerly Stamped.io), now rebranded as <b>Stamped Reviews &amp; Loyalty</b> — the only app here with no free plan: pricing starts at $23/month for 200 orders. Rating: 4.7★ from 3,755 reviews (~3% one-star — the noisiest distribution on this list).</div></div>
 <p>The reviews product scales through volume tiers — $99 for 1,000 orders, $199 for 5,000, $399 for 20,000, $599 for 50,000 and $799 for unlimited — and includes photo and video reviews, Q&amp;A, Google Shopping syndication with rich snippets, automated email and SMS request campaigns, and analytics on conversions and repeat purchases. A separate loyalty product starts at $299 per month with points, discounts, referrals and VIP tiers.</p>
 <div class="images-block">
 <figure><img src="/storage/uploads/article/apps/stamped/dashboard.png" alt="Stamped admin overview dashboard with NPS and review-request analytics" loading="lazy"><figcaption>Overview dashboard: NPS, revenue attribution, request analytics. Screenshot: Stamped.</figcaption></figure>
@@ -410,7 +452,7 @@ class ShopifyReviewsSeeder extends Seeder
 
 <hr>
 <h2 id="ali-reviews">🛒 Ali Reviews — the dropshipping workhorse</h2>
-<div class="ex-card ex-card-green"><b>🚀 Fastest start for dropshippers.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">AI import of reviews from AliExpress (plus Amazon, eBay, Temu and Etsy on paid tiers), Gemini AI translation, dynamic discounts for photo reviews. Rating: 4.8★ from 1,447 reviews, Built for Shopify badge.</div></div>
+<div class="ex-card ex-card-green"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #bbf7d0;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.8 · 1,447 App Store reviews</div><b>🚀 Fastest start for dropshippers.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">AI import of reviews from AliExpress (plus Amazon, eBay, Temu and Etsy on paid tiers), Gemini AI translation, dynamic discounts for photo reviews. Rating: 4.8★ from 1,447 reviews, Built for Shopify badge.</div></div>
 <p><b>Ali Reviews</b> (formerly Kudosi) is built for one job: making a new dropshipping store look trustworthy fast. The <b>free plan</b> allows 10 published reviews per product, unlimited AliExpress imports, unlimited email requests and basic widgets with translation. The <b>Basic plan at $14.95</b> raises the limit to 150 reviews per product and adds Amazon/eBay/Temu/Etsy sources, rich snippets, media galleries, popups and carousels, review replies, Q&amp;A and dynamic discounts. The <b>Growth plan at $24.95</b> jumps to 1,500 reviews per product with AI summary highlights and advanced translation; <b>Advanced at $49.95</b> removes all limits.</p>
 <div class="images-block">
 <figure><img src="/storage/uploads/article/apps/ali-reviews/banner.png" alt="Ali Reviews marketing banner with review widgets for Shopify" loading="lazy"><figcaption>Reviews aimed at dropshipping stores. Screenshot: Ali Reviews.</figcaption></figure>
