@@ -48,7 +48,7 @@ Note: the Laravel skeleton ships its own `AGENTS.md` / `CLAUDE.md` boilerplate â
 | Node v24 / npm 11 | OK |
 | PostgreSQL 17.11 (Homebrew) | running on port 5432; DB `claz` created |
 | Redis | not needed locally |
-| Local admin login | admin@claz.site / claz-admin-2026 (local only, regenerate for prod) |
+| Local admin login | admin@claz.site (password set at provisioning; reset via `php artisan tinker --execute="App\Models\User::where('email','admin@claz.site')->first()->update(['password'=>'NEW_PASSWORD']);"`) |
 | Test DB | `claz_testing` (phpunit.xml points tests at Postgres; sqlite is not used because of PG-specific indexes) |
 
 ## Progress
