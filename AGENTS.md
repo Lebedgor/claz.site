@@ -61,7 +61,7 @@ Note: the Laravel skeleton ships its own `AGENTS.md` / `CLAUDE.md` boilerplate �
 - [x] Milestone 6 — Public site: home / category / article / tool pages (Blade + Tailwind v4), Livewire tools catalog with type filter and search, comparison table rendered from snapshots via `App\Services\ArticleRenderer` (`[[comparison:id]]` placeholders, unreferenced blocks appended), SEO: canonical/OG/Twitter/hreflang (per `config/app.php` `locales`), JSON-LD (WebSite, Article, ItemList, Product), route-model binding by per-locale slug
 - [x] Milestone 7 — VS pages + `/go/{code}` tracking (public comparison-table links already point to `/go/{code}`)
 - [x] Milestone 8 — Comments with pre-moderation (guest form on Livewire + honeypot + rate limit + HTMLPurifier, `CommentsResource` with approve/reject bulk actions, `SiteStats` dashboard widget) + banners (`Banner` model with placement/date/active scoping, `<x-banner>` component wired into layout header / article sidebar / article body via `ArticleRenderer`, `BannerResource`)
-- [ ] Milestone 9 — Polish: sitemap/RSS, tests, CI, move to VPS (Docker Compose)
+- [x] Milestone 9 — Polish: sitemap.xml + rss.xml (cached 1h, VS pairs for all published tools), robots.txt, Horizon (dashboard gated via `viewHorizon`), GitHub Actions CI (Pint + PHPStan + Pest on Postgres 17 service), Docker Compose stack (Caddy + php-fpm + Postgres + Redis + Horizon + scheduler), deployment runbook below
 
 ## Architecture
 
@@ -130,4 +130,16 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 6. [x] Public site: home / category / article / tool pages + SEO markup
 7. [x] VS pages + `/go/{code}` tracking
 8. [x] Comments with pre-moderation + banners
-9. [ ] Polish: sitemap/RSS, tests, CI, move to VPS (Docker Compose)
+9. [x] Polish: sitemap/RSS, tests, CI, move to VPS (Docker Compose)
+
+## Deployment runbook (VPS, Docker Compose)
+
+1. Provision a VPS with Docker + Compose plugin; point DNS A/AAAA records at it
+2. `git clone git@github.com:Lebedgor/claz.site.git && cd claz.site`
+3. `cp .env.example .env`; set: `APP_KEY` (`openssl rand -base64 32`), `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://<domain>`, `SITE_ADDRESS=<domain>`, `DB_HOST=postgres`, `DB_USERNAME`/`DB_PASSWORD`, `REDIS_HOST=redis`, `CACHE_STORE=redis`, `QUEUE_CONNECTION=redis`, `SESSION_DRIVER=redis` (add to `.env`; compose passes env), regenerate admin password
+4. Update `public/robots.txt` sitemap domain placeholder
+5. `docker compose up -d --build` — entrypoint runs migrations + caches config/views and syncs build assets to the shared volume
+6. Create the admin user: `docker compose exec app php artisan tinker --execute="App\Models\User::create(['name' => 'Admin', 'email' => '...', 'password' => '...']);"`
+7. Updates: `git pull && docker compose up -d --build` (migrations run on app start); `docker compose logs -f app caddy horizon` to watch
+
+CI (GitHub Actions) runs Pint, PHPStan level 6 and Pest on PHP 8.4 against a Postgres 17 service on every push/PR.

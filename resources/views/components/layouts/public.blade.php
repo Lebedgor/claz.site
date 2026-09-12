@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="alternate" type="application/rss+xml" title="{{ config('app.name') }}" href="{{ url('/rss.xml') }}">
     @stack('head')
 </head>
 <body class="min-h-screen bg-white font-sans text-zinc-900 antialiased">

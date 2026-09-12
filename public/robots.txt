@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin
+Disallow: /go/
+Disallow: /horizon
+
+Sitemap: https://claz.site/sitemap.xml

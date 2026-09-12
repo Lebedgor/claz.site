@@ -1,0 +1,15 @@
+{$SITE_ADDRESS:localhost} {
+    root * /srv/public
+    encode gzip zstd
+
+    handle_path /storage/* {
+        root * /srv/storage
+        file_server
+    }
+
+    php_fastcgi app:9000 {
+        root /var/www/html/public
+    }
+
+    file_server
+}

@@ -1,0 +1,76 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - uploads:/var/www/html/storage/app/public
+      - public-files:/srv/public
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-localhost}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+      - public-files:/srv/public:ro
+      - uploads:/srv/storage:ro
+    depends_on:
+      - app
+
+  horizon:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    command: ["php", "artisan", "horizon"]
+    depends_on:
+      - app
+      - redis
+      - postgres
+
+  scheduler:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    command: ["php", "artisan", "schedule:work"]
+    depends_on:
+      - app
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-claz}
+      POSTGRES_USER: ${DB_USERNAME:-claz}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-claz}"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+
+volumes:
+  uploads:
+  public-files:
+  caddy-data:
+  caddy-config:
+  pgdata:
+  redisdata:
