@@ -143,3 +143,33 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 7. Updates: `git pull && docker compose up -d --build` (migrations run on app start); `docker compose logs -f app caddy horizon` to watch
 
 CI (GitHub Actions) runs Pint, PHPStan level 6 and Pest on PHP 8.4 against a Postgres 17 service on every push/PR.
+
+## Article formatting standard (long-form reviews)
+
+All long-form articles (comparisons, deep reviews) follow the design system introduced in the Shopify review apps article (seeded by `ShopifyReviewsSeeder`). The look is scoped CSS inside `body_html` (`.ex-article` classes, modeled after extended-reviews.com) — independent from Tailwind compilation. Checklist:
+
+**Structure (in order):**
+1. Lead paragraph (17px, bold key terms)
+2. Colored nav pills row (`.ex-nav-row` / `.ex-nav-btn` with emoji + title + gray sub-label) — anchors to section `id`s; `scroll-smooth` on `<html>`, `scroll-margin-top: 110px` on headings (sticky header offset)
+3. Sections with emoji-prefixed `h2 id="anchor"` + `hr` divider between sections
+4. Colored accent card with the verdict right under each reviewed entity's heading (cyan/green/orange/violet/rose, semantic: green = pick, orange/rose = warning)
+5. Image grids (`.images-block`: 1 col mobile / 2 tablet / 3 desktop, hover lift) + standalone `figure.ex-fig`
+6. "Pricing in practice" blocks — `.ex-card-bordered` (2px cyan) with `.ex-inner` panels and `.ex-dashed` key points
+7. Card grids for scenario/multi-point content (`.ex-grid` with tinted bold titles)
+8. Summary panel before the final verdict (`.ex-summary-bg` + white cards with 4px colored left bar + tinted chip)
+9. Gradient ROI-style banner with glassmorphism tiles (135° indigo→violet, `rgba(255,255,255,0.15)` tiles)
+10. Green strong-border verdict card + dark final CTA block (`#0f172a`)
+
+**Editorial rules:**
+- Emoji in every section heading and card title; thematic (📸 for visual tools, 📊 for analytics, ⚠️ for warnings)
+- App Store / vendor ratings shown as chips (`★ 4.9 · 9,596 App Store reviews`) in verdict cards
+- Real UI screenshots from official sources (vendor sites, Shopify App Store CDN `cdn.shopify.com/app-store/listing_images/...`) — downloaded to `storage/app/public/uploads/article/` (never hotlinked); source credited in each figcaption ("Screenshot: <vendor>")
+- Cost/scale data visualized as inline SVG bar charts (with "custom — talk to sales" bars where pricing is negotiated); label estimates with the data date
+- Target volume: 25–30k characters without spaces of body text
+- JSON-LD (Article + ItemList + Review/AggregateRating) is generated automatically by the controllers — no manual markup
+
+**Technical pitfalls (check before saving):**
+- Balanced inline tags in `body_html`: every `<b>` needs `</b>` (not `</strong>` — mismatched pairs make all following text bold)
+- No stray `HTML;`-like lines inside nowdoc blocks in seeders (terminates the heredoc early → ParseError)
+- Image paths: `storage/app/public/uploads/article/**` → URL `/storage/uploads/article/...`; uploads are git-tracked (skeleton `.gitignore` files inside `storage/app` were removed deliberately)
+- Comparison values are snapshots: after editing tools, use the article's "Sync scores" action in the admin panel
