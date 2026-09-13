@@ -9,7 +9,8 @@ if [ "$1" = "php-fpm" ] && [ "${MIGRATE_ON_START:-1}" = "1" ]; then
 fi
 
 mkdir -p /srv/public
-rm -rf /srv/public/build
-cp -r public/build /srv/public/build
+find /srv/public -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+cp -a public/. /srv/public/
+rm -f /srv/public/storage
 
 exec "$@"
