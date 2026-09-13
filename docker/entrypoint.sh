@@ -13,4 +13,9 @@ find /srv/public -mindepth 1 -maxdepth 1 -exec rm -rf {} +
 cp -a public/. /srv/public/
 rm -f /srv/public/storage
 
+if [ -d /opt/uploads-seed ]; then
+    mkdir -p /var/www/html/storage/app/public
+    cp -a -n /opt/uploads-seed/. /var/www/html/storage/app/public/ || true
+fi
+
 exec "$@"

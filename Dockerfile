@@ -18,6 +18,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
 COPY . .
 COPY --from=assets /app/public/build ./public/build
+COPY --chown=www-data:www-data storage/app/public /opt/uploads-seed
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && php artisan event:cache || true
 COPY docker/entrypoint.sh /entrypoint.sh
