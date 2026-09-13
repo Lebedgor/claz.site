@@ -1,4 +1,4 @@
-{$SITE_ADDRESS:localhost} {
+:80 {
     root * /srv/public
     encode gzip zstd
 

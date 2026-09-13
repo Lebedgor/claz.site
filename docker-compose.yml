@@ -17,8 +17,6 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:8080:80"
-    environment:
-      SITE_ADDRESS: ${SITE_ADDRESS:-localhost}
     volumes:
       - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
