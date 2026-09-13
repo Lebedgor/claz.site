@@ -15,7 +15,7 @@ rm -f /srv/public/storage
 
 if [ -d /opt/uploads-seed ]; then
     mkdir -p /var/www/html/storage/app/public
-    cp -a -n /opt/uploads-seed/. /var/www/html/storage/app/public/ || true
+    rsync -a --ignore-existing /opt/uploads-seed/ /var/www/html/storage/app/public/ || true
 fi
 
 exec "$@"
