@@ -8,6 +8,7 @@
 /storage/framework/views/**
 /storage/framework/sessions/**
 /storage/app/public/**
+!/storage/app/public/uploads/**
 .env
 .env.*
 !.env.example
