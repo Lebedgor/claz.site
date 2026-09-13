@@ -158,15 +158,18 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 8. [x] Comments with pre-moderation + banners
 9. [x] Polish: sitemap/RSS, tests, CI, move to VPS (Docker Compose)
 
-## Deployment runbook (VPS, Docker Compose)
+## Deployment runbook (VPS, Docker Compose) — DEPLOYED 2026-09-13 at pv-vps (217.177.72.205)
+
+The server already runs nginx on 80/443 for other sites (pv-reviews.site, aquascape.club), so **nginx terminates TLS for claz.site and reverse-proxies to Caddy**:
 
 1. Provision a VPS with Docker + Compose plugin; point DNS A/AAAA records at it
-2. `git clone git@github.com:Lebedgor/claz.site.git && cd claz.site`
-3. `cp .env.example .env`; set: `APP_KEY` (`openssl rand -base64 32`), `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://<domain>`, `SITE_ADDRESS=<domain>`, `DB_HOST=postgres`, `DB_USERNAME`/`DB_PASSWORD`, `REDIS_HOST=redis`, `CACHE_STORE=redis`, `QUEUE_CONNECTION=redis`, `SESSION_DRIVER=redis` (add to `.env`; compose passes env), regenerate admin password
-4. Update `public/robots.txt` sitemap domain placeholder
-5. `docker compose up -d --build` — entrypoint runs migrations + caches config/views and syncs build assets to the shared volume
-6. Create the admin user: `docker compose exec app php artisan tinker --execute="App\Models\User::create(['name' => 'Admin', 'email' => '...', 'password' => '...']);"`
-7. Updates: `git pull && docker compose up -d --build` (migrations run on app start); `docker compose logs -f app caddy horizon` to watch
+2. `git clone https://github.com/Lebedgor/claz.site.git && cd claz.site`
+3. `cp .env.example .env`; set: `APP_KEY` (`openssl rand -base64 32`), `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://claz.site`, `DB_HOST=postgres`, `DB_USERNAME`/`DB_PASSWORD`, `REDIS_HOST=redis`, `CACHE_STORE=redis`, `QUEUE_CONNECTION=redis`, `SESSION_DRIVER=redis`
+4. `docker compose up -d --build` — Caddy listens on `127.0.0.1:8080` (plain HTTP, no host 80/443), entrypoint runs migrations + caches config/views and copies **all of `public/`** (index.php, build/, robots.txt, css/) to the shared `/srv/public` volume — required so `php_fastcgi` resolves `index.php`
+5. nginx vhost `/etc/nginx/sites-available/claz.site` (symlinked into `sites-enabled`): proxy_pass `http://127.0.0.1:8080` with `Host`, `X-Forwarded-For/Proto`, `client_max_body_size 300M`, `proxy_read_timeout 300s`; TLS via certbot (`certbot --nginx -d claz.site -d www.claz.site --redirect`), auto-renewal already scheduled
+6. Create/reset the admin user: `docker compose exec app php artisan tinker --execute="App\Models\User::where('email','admin@claz.site')->first()->update(['password' => '...']);"` — on import the local admin record comes along, so reset the password instead of creating a duplicate
+7. Content import: `pg_dump -Fc` locally → `docker compose cp dump postgres:/tmp/` → `pg_restore` (drop schema public first) — DB data + `rsync storage/app/public/` → `docker compose cp storage/app/public/. app:/var/www/html/storage/app/public/` (uploads volume shadows the image copy)
+8. Updates: `git pull && docker compose up -d --build` (migrations run on app start); `docker compose logs -f app caddy horizon` to watch; `docker compose ps caddy` shows `127.0.0.1:8080->80`
 
 CI (GitHub Actions) is provided but **disabled**: the workflow lives at `.github/workflows/ci.yml.disabled` (Pint + PHPStan level 6 + Pest on PHP 8.4 against a Postgres 17 service). Quality gates run locally before commits (Pint + PHPStan + Pest). To re-enable CI, rename the file back to `ci.yml`.
 
