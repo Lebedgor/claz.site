@@ -27,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        if (! request()->is('admin*')) {
+            config(['livewire.inject_assets' => false]);
+        }
+
         View::composer('components.layouts.public', function ($view): void {
             $view->with('navCategories', Category::query()->orderBy('sort_order')->limit(6)->get());
         });
