@@ -15,7 +15,7 @@ RUN apk add --no-cache autoconf g++ make icu-dev libpq-dev libpng-dev libjpeg-tu
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
 COPY . .
 COPY --from=assets /app/public/build ./public/build
 RUN chown -R www-data:www-data storage bootstrap/cache \
