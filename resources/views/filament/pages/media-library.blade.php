@@ -189,8 +189,27 @@
 
                 initDir() {
                     const fromUrl = new URLSearchParams(window.location.search).get('dir');
-                    this.dir = fromUrl !== null && fromUrl.startsWith('uploads') && !fromUrl.includes('..') ? fromUrl : 'uploads';
+                    if (fromUrl !== null && fromUrl.startsWith('uploads') && !fromUrl.includes('..')) {
+                        this.dir = fromUrl;
+                    } else {
+                        this.dir = this.storedDir() || 'uploads';
+                    }
                     this.loadDir();
+                },
+
+                storedDir() {
+                    try {
+                        const dir = window.localStorage.getItem('claz.media.dir');
+                        return dir !== null && dir.startsWith('uploads') && !dir.includes('..') ? dir : '';
+                    } catch (e) {
+                        return '';
+                    }
+                },
+
+                rememberDir(dir) {
+                    try {
+                        window.localStorage.setItem('claz.media.dir', dir);
+                    } catch (e) {}
                 },
 
                 async loadDir() {
@@ -220,6 +239,7 @@
                 navigate(dir) {
                     this.dir = dir;
                     this.viewIndex = null;
+                    this.rememberDir(dir);
                     const url = new URL(window.location.href);
                     if (dir === 'uploads') {
                         url.searchParams.delete('dir');

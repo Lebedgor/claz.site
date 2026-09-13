@@ -154,7 +154,23 @@
 
             async openPicker() {
                 this.open = true;
+                this.dir = this.storedDir() || this.dir;
                 await this.loadDir();
+            },
+
+            storedDir() {
+                try {
+                    const dir = window.localStorage.getItem('claz.media.dir');
+                    return dir !== null && dir.startsWith('uploads') && !dir.includes('..') ? dir : '';
+                } catch (e) {
+                    return '';
+                }
+            },
+
+            rememberDir(dir) {
+                try {
+                    window.localStorage.setItem('claz.media.dir', dir);
+                } catch (e) {}
             },
 
             async loadDir() {
@@ -172,6 +188,7 @@
 
             navigate(dir) {
                 this.dir = dir;
+                this.rememberDir(dir);
                 this.loadDir();
             },
 
