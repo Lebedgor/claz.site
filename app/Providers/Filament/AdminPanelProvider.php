@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('CLAZ')
+            ->favicon('/storage/uploads/favicons/favicon-32.png')
             ->colors([
                 'primary' => Color::Amber,
             ])

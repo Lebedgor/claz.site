@@ -10,6 +10,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="/css/ex-article.css">
     <link rel="alternate" type="application/rss+xml" title="{{ config('app.name') }}" href="/rss.xml">
+    <link rel="icon" href="/storage/uploads/favicons/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="16x16" href="/storage/uploads/favicons/favicon-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/storage/uploads/favicons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/storage/uploads/favicons/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/storage/uploads/favicons/favicon-64.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/storage/uploads/favicons/favicon-192.png">
+    <link rel="apple-touch-icon" href="/storage/uploads/favicons/favicon-192.png">
+    <link rel="manifest" href="/site.webmanifest">
     @stack('head')
 </head>
 @php
@@ -22,9 +30,8 @@
     <div aria-hidden="true" class="h-0.5 bg-linear-to-r from-indigo-600 via-violet-600 to-fuchsia-500"></div>
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
         <a href="{{ route('home', [], false) }}" class="flex items-center gap-2.5">
-            <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-500 text-base font-extrabold text-white shadow-lg shadow-indigo-500/30">
-                {{ mb_strtoupper(mb_substr(config('app.name'), 0, 1)) }}
-            </span>
+            <img src="/storage/uploads/logo-brainkey-badge-transparent.png" alt=""
+                 aria-hidden="true" class="h-9 w-9 shrink-0 object-contain">
             <span class="text-lg font-bold tracking-tight text-zinc-900">
                 {{ config('app.name') }}<span class="text-gradient">.</span>
             </span>
@@ -126,9 +133,8 @@
         <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
             <div>
                 <a href="{{ route('home', [], false) }}" class="flex items-center gap-2.5">
-                    <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-500 text-base font-extrabold text-white">
-                        {{ mb_strtoupper(mb_substr(config('app.name'), 0, 1)) }}
-                    </span>
+                    <img src="/storage/uploads/logo-brainkey-badge-transparent.png" alt=""
+                         aria-hidden="true" class="h-9 w-9 shrink-0 object-contain">
                     <span class="text-lg font-bold tracking-tight text-white">
                         {{ config('app.name') }}<span class="text-gradient">.</span>
                     </span>
