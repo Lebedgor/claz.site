@@ -35,13 +35,13 @@
         <table class="w-full min-w-[640px] text-left text-sm">
             <thead>
                 <tr class="border-b border-zinc-200 text-xs uppercase tracking-wide text-zinc-500">
-                    <th class="py-2 pr-4 font-semibold">{{ __('site.comparison.tool') }}</th>
-                    <th class="py-2 pr-4 font-semibold">{{ __('site.comparison.score') }}</th>
+                    <th class="min-w-[150px] py-2 pr-4 font-semibold">{{ __('site.comparison.tool') }}</th>
+                    <th class="w-16 py-2 pr-4 font-semibold">{{ __('site.comparison.score') }}</th>
                     @foreach ($criteria as $criterion)
-                        <th class="py-2 pr-4 font-semibold">{{ $criterion->getTranslation('name', $locale) }}</th>
+                        <th class="w-10 whitespace-nowrap py-2 pr-3 text-center font-semibold">{{ $criterion->getTranslation('name', $locale) }}</th>
                     @endforeach
-                    <th class="py-2 pr-4 font-semibold">{{ __('site.comparison.verdict') }}</th>
-                    <th class="py-2"></th>
+                    <th class="w-[38%] py-2 pr-4 font-semibold">{{ __('site.comparison.verdict') }}</th>
+                    <th class="w-12 py-2"><span class="sr-only">{{ __('site.tool.visit') }}</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +53,7 @@
                                 {{ $item->tool?->getTranslation('name', $locale) ?? '—' }}
                             </a>
                         </td>
-                        <td class="py-3 pr-4">
+                        <td class="whitespace-nowrap py-3 pr-4">
                             @if ($item->score !== null)
                                 <span class="rounded-lg bg-indigo-50 px-2 py-1 font-semibold text-indigo-700">
                                     {{ number_format((float) $item->score, 1) }}
@@ -64,17 +64,19 @@
                         </td>
                         @foreach ($criteria as $criterion)
                             @php $scoreRow = $item->scores->firstWhere('criteria_id', $criterion->getKey()); @endphp
-                            <td class="py-3 pr-4 text-zinc-700">{{ $formatValue($scoreRow?->value, $criterion->kind->value) }}</td>
+                            <td class="whitespace-nowrap py-3 pr-3 text-center text-zinc-700">{{ $formatValue($scoreRow?->value, $criterion->kind->value) }}</td>
                         @endforeach
-                        <td class="py-3 pr-4 text-zinc-600">{{ $item->getTranslation('verdict', $locale) }}</td>
+                        <td class="py-3 pr-4 leading-relaxed text-zinc-600">{{ $item->getTranslation('verdict', $locale) }}</td>
                         <td class="py-3">
                             @php $link = $item->tool?->links->sortBy('sort_order')->first(); @endphp
                             @if ($link !== null)
                                 <a href="/go/{{ $link->code }}"
                                    target="_blank"
                                    rel="sponsored nofollow noopener"
-                                   class="inline-block whitespace-nowrap rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500">
-                                    {{ $link->getTranslation('anchor', $locale) ?: __('site.tool.visit') }}
+                                   title="{{ $link->getTranslation('anchor', $locale) ?: __('site.tool.visit') }}"
+                                   aria-label="{{ $link->getTranslation('anchor', $locale) ?: __('site.tool.visit') }}"
+                                   class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-400 transition hover:border-indigo-300 hover:text-indigo-600">
+                                    <x-heroicon-o-arrow-top-right-on-square class="h-4 w-4" />
                                 </a>
                             @endif
                         </td>
