@@ -441,7 +441,7 @@
         }
     </script>
 
-    <div wire:ignore x-data="fileManager()" x-init="loadDir()" x-on:keydown.window="onKey($event)" x-effect="document.body.classList.toggle('fm-noscroll', viewFile !== null)">
+    <div wire:ignore x-data="fileManager()" x-init="initDir()" x-on:keydown.window="onKey($event)" x-effect="document.body.classList.toggle('fm-noscroll', viewFile !== null)">
         <div class="fm-top">
             <div class="fm-top" style="margin:0; flex:1; min-width:0;">
                 <template x-for="(crumb, i) in crumbs" :key="crumb.dir">
