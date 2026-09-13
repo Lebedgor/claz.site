@@ -9,7 +9,7 @@
 @endphp
 
 <article class="group relative overflow-hidden rounded-2xl bg-white ring-1 ring-zinc-200/80 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 hover:ring-indigo-200">
-    <a href="{{ route('articles.show', $article) }}" class="block">
+    <a href="{{ route('articles.show', $article, false) }}" class="block">
         <div class="relative overflow-hidden">
             @if ($article->cover_url !== null)
                 <img src="{{ $article->cover_url }}" alt="{{ $article->getTranslation('title', $locale) }}"

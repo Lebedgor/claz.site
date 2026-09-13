@@ -21,7 +21,7 @@
                 {{ __('site.home.hero_subtitle') }}
             </p>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-                <a href="{{ route('tools.index') }}"
+                <a href="{{ route('tools.index', [], false) }}"
                    class="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-indigo-700 shadow-lg shadow-indigo-950/20 transition hover:bg-indigo-50">
                     {{ __('site.home.browse_all_tools') }}
                 </a>
@@ -46,7 +46,7 @@
 
     @if ($tools->isNotEmpty())
         <section class="mt-14">
-            <x-section-heading :title="__('site.home.top_tools')" :link-href="route('tools.index')" :link-text="__('site.home.view_all')" />
+            <x-section-heading :title="__('site.home.top_tools')" :link-href="route('tools.index', [], false)" :link-text="__('site.home.view_all')" />
             <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 @foreach ($tools as $tool)
                     <x-tool-card :tool="$tool" />

@@ -15,7 +15,7 @@
     ];
 @endphp
 
-<a href="{{ route('tools.show', $tool) }}"
+<a href="{{ route('tools.show', $tool, false) }}"
    class="group flex flex-col gap-3 rounded-2xl bg-white p-5 ring-1 ring-zinc-200/80 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 hover:ring-indigo-200">
     <div class="flex items-center gap-3">
         @if ($tool->logo_url !== null)

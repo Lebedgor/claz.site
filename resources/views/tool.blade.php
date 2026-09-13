@@ -35,8 +35,8 @@
     @endpush
 
     <x-breadcrumbs :items="[
-        ['label' => __('site.nav.home'), 'url' => route('home')],
-        ['label' => __('site.nav.tools'), 'url' => route('tools.index')],
+        ['label' => __('site.nav.home'), 'url' => route('home', [], false)],
+        ['label' => __('site.nav.tools'), 'url' => route('tools.index', [], false)],
         ['label' => $toolName],
     ]"/>
 

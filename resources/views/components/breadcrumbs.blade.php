@@ -2,6 +2,15 @@
 
 @php
     $crumbs = collect($items)->values()->all();
+    $relativeOf = function (string $link): string {
+        $base = rtrim(url('/'), '/');
+
+        if (! str_starts_with($link, $base)) {
+            return $link;
+        }
+
+        return mb_strlen($link) === mb_strlen($base) ? '/' : mb_substr($link, mb_strlen($base));
+    };
     $breadcrumbLd = [
         '@context' => 'https://schema.org',
         '@type' => 'BreadcrumbList',
@@ -9,7 +18,7 @@
             '@type' => 'ListItem',
             'position' => $i + 1,
             'name' => strval($crumb['label']),
-            'item' => filled($crumb['url'] ?? null) ? $crumb['url'] : url()->current(),
+            'item' => filled($crumb['url'] ?? null) ? url($crumb['url']) : url()->current(),
         ])->all(),
     ];
 @endphp
@@ -19,7 +28,7 @@
         @foreach ($crumbs as $i => $crumb)
             <li class="flex items-center">
                 @if ($i < count($crumbs) - 1 && filled($crumb['url'] ?? null))
-                    <a href="{{ $crumb['url'] }}" class="hover:text-indigo-600">{{ $crumb['label'] }}</a>
+                    <a href="{{ $relativeOf(strval($crumb['url'])) }}" class="hover:text-indigo-600">{{ $crumb['label'] }}</a>
                     <span class="mx-1" aria-hidden="true">/</span>
                 @else
                     <span class="text-zinc-900" aria-current="page">{{ $crumb['label'] }}</span>

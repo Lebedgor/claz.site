@@ -20,7 +20,7 @@
 <header class="sticky top-0 z-30 border-b border-zinc-200/70 bg-white/80 backdrop-blur-xl">
     <div aria-hidden="true" class="h-0.5 bg-linear-to-r from-indigo-600 via-violet-600 to-fuchsia-500"></div>
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <a href="{{ route('home') }}" class="flex items-center gap-2.5">
+        <a href="{{ route('home', [], false) }}" class="flex items-center gap-2.5">
             <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-500 text-base font-extrabold text-white shadow-lg shadow-indigo-500/30">
                 {{ mb_strtoupper(mb_substr(config('app.name'), 0, 1)) }}
             </span>
@@ -30,18 +30,18 @@
         </a>
 
         <nav aria-label="Main" class="hidden items-center gap-1 text-sm md:flex">
-            <a href="{{ route('home') }}"
+            <a href="{{ route('home', [], false) }}"
                class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveHome ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
                 {{ __('site.nav.home') }}
             </a>
-            <a href="{{ route('tools.index') }}"
+            <a href="{{ route('tools.index', [], false) }}"
                class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveTools ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
                 {{ __('site.nav.tools') }}
             </a>
         </nav>
 
         <div class="flex items-center gap-2">
-            <a href="{{ route('tools.index') }}"
+            <a href="{{ route('tools.index', [], false) }}"
                class="hidden items-center gap-1.5 rounded-xl bg-linear-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition hover:shadow-indigo-500/40 hover:brightness-110 sm:inline-flex">
                 <x-heroicon-o-squares-2x2 class="h-4 w-4" />
                 {{ __('site.nav.browse') }}
@@ -62,7 +62,7 @@
         <div class="mx-auto hidden max-w-6xl overflow-x-auto scrollbar-none px-4 py-2.5 md:block">
             <div class="flex gap-2">
                 @foreach ($navCategories as $navCategory)
-                    <a href="{{ route('category.show', $navCategory) }}"
+                    <a href="{{ route('category.show', $navCategory, false) }}"
                        class="whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 ring-1 ring-zinc-200 transition hover:bg-indigo-50 hover:text-indigo-700 hover:ring-indigo-300">
                         {{ $navCategory->getTranslation('name', app()->getLocale()) }}
                     </a>
@@ -74,15 +74,15 @@
     <div id="mobile-menu" x-show="menuOpen" x-cloak x-transition.opacity.duration.150ms
          class="border-t border-zinc-200/70 bg-white/95 px-4 py-4 backdrop-blur md:hidden">
         <nav aria-label="Mobile" class="flex flex-col gap-1 text-sm">
-            <a href="{{ route('home') }}" @click="menuOpen = false"
+            <a href="{{ route('home', [], false) }}" @click="menuOpen = false"
                class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveHome ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
                 {{ __('site.nav.home') }}
             </a>
-            <a href="{{ route('tools.index') }}" @click="menuOpen = false"
+            <a href="{{ route('tools.index', [], false) }}" @click="menuOpen = false"
                class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveTools ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
                 {{ __('site.nav.tools') }}
             </a>
-            <a href="{{ route('tools.index') }}" @click="menuOpen = false"
+            <a href="{{ route('tools.index', [], false) }}" @click="menuOpen = false"
                class="mt-2 inline-flex items-center justify-center gap-1.5 rounded-xl bg-linear-to-r from-indigo-600 to-violet-600 px-4 py-2.5 font-semibold text-white shadow-lg shadow-indigo-500/25">
                 <x-heroicon-o-squares-2x2 class="h-4 w-4" />
                 {{ __('site.nav.browse') }}
@@ -92,7 +92,7 @@
             <div class="mt-3 border-t border-zinc-100 pt-3">
                 <div class="flex flex-wrap gap-2">
                     @foreach ($navCategories as $navCategory)
-                        <a href="{{ route('category.show', $navCategory) }}" @click="menuOpen = false"
+                        <a href="{{ route('category.show', $navCategory, false) }}" @click="menuOpen = false"
                            class="rounded-full bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-indigo-50 hover:text-indigo-700">
                             {{ $navCategory->getTranslation('name', app()->getLocale()) }}
                         </a>
@@ -116,7 +116,7 @@
     <div class="mx-auto max-w-6xl px-4 py-12">
         <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
             <div>
-                <a href="{{ route('home') }}" class="flex items-center gap-2.5">
+                <a href="{{ route('home', [], false) }}" class="flex items-center gap-2.5">
                     <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-500 text-base font-extrabold text-white">
                         {{ mb_strtoupper(mb_substr(config('app.name'), 0, 1)) }}
                     </span>
@@ -129,8 +129,8 @@
             <div>
                 <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-500">{{ __('site.footer.explore') }}</h3>
                 <ul class="mt-4 space-y-2.5 text-sm">
-                    <li><a href="{{ route('home') }}" class="transition hover:text-white">{{ __('site.nav.home') }}</a></li>
-                    <li><a href="{{ route('tools.index') }}" class="transition hover:text-white">{{ __('site.nav.tools') }}</a></li>
+                    <li><a href="{{ route('home', [], false) }}" class="transition hover:text-white">{{ __('site.nav.home') }}</a></li>
+                    <li><a href="{{ route('tools.index', [], false) }}" class="transition hover:text-white">{{ __('site.nav.tools') }}</a></li>
                     <li><a href="/sitemap.xml" class="transition hover:text-white">{{ __('site.footer.sitemap') }}</a></li>
                     <li><a href="/rss.xml" class="transition hover:text-white">{{ __('site.footer.rss') }}</a></li>
                 </ul>
@@ -141,7 +141,7 @@
                     <ul class="mt-4 space-y-2.5 text-sm">
                         @foreach ($navCategories->take(6) as $navCategory)
                             <li>
-                                <a href="{{ route('category.show', $navCategory) }}" class="transition hover:text-white">
+                                <a href="{{ route('category.show', $navCategory, false) }}" class="transition hover:text-white">
                                     {{ $navCategory->getTranslation('name', app()->getLocale()) }}
                                 </a>
                             </li>

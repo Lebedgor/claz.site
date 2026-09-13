@@ -48,7 +48,7 @@
                 @foreach ($comparison->items as $item)
                     <tr class="border-b border-zinc-100 align-top">
                         <td class="py-3 pr-4 font-medium text-zinc-900">
-                            <a href="{{ $item->tool !== null ? route('tools.show', $item->tool) : '#' }}"
+                            <a href="{{ $item->tool !== null ? route('tools.show', $item->tool, false) : '#' }}"
                                class="hover:text-indigo-700">
                                 {{ $item->tool?->getTranslation('name', $locale) ?? '—' }}
                             </a>

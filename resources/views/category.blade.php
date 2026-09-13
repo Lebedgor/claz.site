@@ -9,7 +9,7 @@
     @endpush
 
     <x-breadcrumbs :items="[
-        ['label' => __('site.nav.home'), 'url' => route('home')],
+        ['label' => __('site.nav.home'), 'url' => route('home', [], false)],
         ['label' => $name],
     ]"/>
 

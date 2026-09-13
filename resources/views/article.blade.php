@@ -20,7 +20,7 @@
     @endpush
 
     <x-breadcrumbs :items="array_filter([
-        ['label' => __('site.nav.home'), 'url' => route('home')],
+        ['label' => __('site.nav.home'), 'url' => route('home', [], false)],
         $article->category !== null ? ['label' => $article->category->getTranslation('name', $locale), 'url' => route('category.show', $article->category)] : null,
         ['label' => \Illuminate\Support\Str::limit($article->getTranslation('title', $locale), 60)],
     ])"/>
@@ -32,7 +32,7 @@
 
         <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-zinc-500">
             @if ($article->category !== null)
-                <a href="{{ route('category.show', $article->category) }}"
+                <a href="{{ route('category.show', $article->category, false) }}"
                    class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-100 transition hover:bg-indigo-100">
                     {{ $article->category->getTranslation('name', $locale) }}
                 </a>
