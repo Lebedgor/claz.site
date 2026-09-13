@@ -17,7 +17,7 @@
 .phpunit.result.cache
 Tests
 tests
-docker
+docker/Caddyfile
 docker-compose.yml
 AGENTS.md
 CLAUDE.md
