@@ -174,29 +174,761 @@ The server already runs nginx on 80/443 for other sites (pv-reviews.site, aquasc
 
 CI (GitHub Actions) is provided but **disabled**: the workflow lives at `.github/workflows/ci.yml.disabled` (Pint + PHPStan level 6 + Pest on PHP 8.4 against a Postgres 17 service). Quality gates run locally before commits (Pint + PHPStan + Pest). To re-enable CI, rename the file back to `ci.yml`.
 
-## Article formatting standard (long-form reviews)
+# Long-form Article Design System
 
-All long-form articles (comparisons, deep reviews) follow the design system introduced in the Shopify review apps article (seeded by `ShopifyReviewsSeeder`). The look is scoped CSS inside `body_html` (`.ex-article` classes, modeled after extended-reviews.com) — independent from Tailwind compilation. Checklist:
+All long-form articles, comparisons, reviews, and deep reviews must use the shared `.ex-article` design system.
 
-**Structure (in order):**
-1. Lead paragraph (17px, bold key terms)
-2. Colored nav pills row (`.ex-nav-row` / `.ex-nav-btn` with emoji + title + gray sub-label) — anchors to section `id`s; `scroll-smooth` on `<html>`, `scroll-margin-top: 110px` on headings (sticky header offset)
-3. Sections with emoji-prefixed `h2 id="anchor"` + `hr` divider between sections
-4. Colored accent card with the verdict right under each reviewed entity's heading (cyan/green/orange/violet/rose, semantic: green = pick, orange/rose = warning)
-5. Image grids (`.images-block`: 1 col mobile / 2 tablet / 3 desktop, hover lift) + standalone `figure.ex-fig`
-6. "Pricing in practice" blocks — `.ex-card-bordered` (2px cyan) with `.ex-inner` panels and `.ex-dashed` key points
-7. Card grids for scenario/multi-point content (`.ex-grid` with tinted bold titles)
-8. Summary panel before the final verdict (`.ex-summary-bg` + white cards with 4px colored left bar + tinted chip)
-9. Gradient ROI-style banner with glassmorphism tiles (135° indigo→violet, `rgba(255,255,255,0.15)` tiles)
-10. Green strong-border verdict card + dark final CTA block (`#0f172a`)
+The design system defines the **visual language and reusable components**, but it does NOT define a fixed page layout.
 
-**Editorial rules:**
-- Emoji in every section heading and card title; thematic (📸 for visual tools, 📊 for analytics, ⚠️ for warnings)
-- App Store / vendor ratings shown as chips (`★ 4.9 · 9,596 App Store reviews`) in verdict cards
-- Real UI screenshots from official sources (vendor sites, Shopify App Store CDN `cdn.shopify.com/app-store/listing_images/...`) — downloaded to `storage/app/public/uploads/article/` (never hotlinked); source credited in each figcaption ("Screenshot: <vendor>")
-- Cost/scale data visualized as inline SVG bar charts (with "custom — talk to sales" bars where pricing is negotiated); label estimates with the data date
-- Target volume: 25–30k characters without spaces of body text
-- JSON-LD (Article + ItemList + Review/AggregateRating) is generated automatically by the controllers — no manual markup
+The goal is:
+
+> **Consistent brand identity + significant visual variety between articles.**
+
+Every article should feel like it belongs to the same website while having its own visual composition.
+
+---
+
+## 1. Core Principle: Design System, Not Template
+
+Do NOT reproduce the exact structure or visual composition of previous articles.
+
+The following must NOT become a fixed pattern:
+
+- identical section order
+- identical card sequence
+- identical color sequence
+- identical number of columns
+- identical image arrangement
+- identical pricing block placement
+- identical summary layout
+- identical CTA layout
+- identical spacing rhythm
+- identical verdict card design
+
+Reusable components are encouraged.
+
+Reusable **page compositions** are not.
+
+Before writing the HTML, determine which visual structure best fits the article's subject and content.
+
+---
+
+# 2. Visual Archetypes
+
+Choose one primary visual archetype for each article.
+
+The choice should depend on the subject rather than being selected randomly.
+
+### 🏆 Winner-first
+
+Best for buyer-intent comparisons.
+
+Typical flow:
+
+Lead → key winner → reasons → competitors → pricing → comparison → use cases → verdict
+
+### ⚖️ Head-to-head
+
+Best for A vs B comparisons.
+
+Typical flow:
+
+Lead → quick comparison → Product A → Product B → direct comparison → pricing → who should choose each → verdict
+
+### 🔬 Deep Review
+
+Best for detailed reviews.
+
+Typical flow:
+
+Lead → methodology → UX → features → performance → pricing → screenshots → limitations → verdict
+
+### 📊 Data-first
+
+Best for AI models, SaaS, pricing, benchmarks, analytics, and quantitative comparisons.
+
+Typical flow:
+
+Lead → key numbers → charts → benchmark/data analysis → qualitative analysis → pricing → verdict
+
+### 🎯 Use-case-first
+
+Best when different products are better for different users.
+
+Typical flow:
+
+Lead → best for X → best for Y → best for Z → comparison → pricing → overall conclusion
+
+### 🧩 Feature-first
+
+Best for plugin/app comparisons.
+
+Typical flow:
+
+Lead → major feature → second feature → third feature → pricing → UX → comparison → verdict
+
+### 📰 Editorial
+
+Best for magazine-style or visually rich content.
+
+Use larger images, pull quotes, asymmetric layouts, fewer but larger content blocks, and more whitespace.
+
+### 📑 Research
+
+Best for analytical articles.
+
+Use methodology, structured data, charts, tables, scoring, evidence, limitations, and conclusions.
+
+---
+
+# 3. Do Not Use a Fixed Section Order
+
+There is no mandatory sequence such as:
+
+Lead → nav → verdict → images → pricing → grids → summary → ROI → CTA.
+
+Instead, select the components that genuinely support the article.
+
+A long-form article should normally contain approximately 5–9 major visual component types, depending on its length.
+
+Do NOT force unused components into the article merely because they exist in the design system.
+
+---
+
+# 4. Shared Brand Language
+
+The following should remain consistent across the website:
+
+- `.ex-article` scoped styling
+- typography
+- overall content width
+- spacing scale
+- border-radius language
+- shadow language
+- button styling
+- general visual hierarchy
+- accent color family
+- navigation styling
+- image treatment
+- overall editorial quality
+
+Consistency should come from these shared rules, not from repeating the same page structure.
+
+---
+
+# 5. Controlled Visual Variation
+
+Each new article must intentionally vary several of the following:
+
+- section order
+- dominant component type
+- card layout
+- image layout
+- number of columns
+- content density
+- chart placement
+- comparison format
+- accent color usage
+- heading scale
+- amount of whitespace
+- CTA presentation
+- verdict presentation
+- pricing presentation
+
+At least 4–6 of these dimensions should differ from the dominant layout used in recent articles.
+
+Do not make every article visually experimental. Variation should remain professional and coherent.
+
+---
+
+# 6. Component Library
+
+The following components are available but OPTIONAL.
+
+Use only components that improve the article.
+
+### Lead
+
+A strong opening paragraph, normally 17px, with important terms emphasized.
+
+### Navigation
+
+`.ex-nav-row` / `.ex-nav-btn`
+
+Navigation may be used when the article is long enough to benefit from section navigation.
+
+It does not have to be visually identical in every article.
+
+### Section
+
+Emoji-prefixed `h2` headings with meaningful `id` anchors.
+
+Use `scroll-margin-top: 110px` for anchored headings.
+
+Use horizontal dividers selectively rather than mechanically between every section.
+
+### Verdict / Recommendation
+
+Verdict cards can use:
+
+- compact card
+- large winner card
+- horizontal recommendation
+- scorecard
+- bordered callout
+- dark card
+- gradient card
+- editorial callout
+
+Do not always use the same verdict design.
+
+### Image Presentation
+
+Images may be displayed as:
+
+- single hero screenshot
+- 2-column comparison
+- 3-column gallery
+- image + explanation
+- image + metrics
+- before/after comparison
+- featured image with supporting thumbnails
+- screenshot gallery
+- large screenshot followed by compact observations
+
+Choose the presentation according to the content.
+
+### Pricing
+
+Pricing can be represented as:
+
+- `.ex-card-bordered`
+- pricing comparison table
+- compact pricing cards
+- horizontal price tiers
+- cost-per-scale analysis
+- pricing + recommendation
+- SVG cost chart
+
+Do not place a pricing card in the same location in every article.
+
+### Comparison
+
+Possible formats:
+
+- standard table
+- feature matrix
+- scorecard
+- ranking
+- horizontal comparison cards
+- category-by-category comparison
+- visual bar chart
+- pros/cons comparison
+
+Choose the format that communicates the information most efficiently.
+
+### Scenario Cards
+
+Use `.ex-grid` when multiple scenarios, user types, or use cases need separate treatment.
+
+Do not automatically use a 3-column grid.
+
+Possible layouts:
+
+- 2 columns
+- 3 columns
+- 4 compact cards
+- horizontal cards
+- featured scenario + smaller alternatives
+
+### Data Visualization
+
+Use inline SVG charts when quantitative information benefits from visualization.
+
+Possible chart types:
+
+- horizontal bars
+- stacked bars
+- ranking bars
+- price/scale comparison
+- score comparison
+- feature availability
+- timeline
+- cost progression
+
+Use `"custom — talk to sales"` where pricing is negotiated.
+
+Clearly label estimates and include the relevant data date.
+
+### Summary
+
+`.ex-summary-bg` may be used before the final verdict.
+
+However, summaries can also use:
+
+- compact checklist
+- scorecard
+- winner matrix
+- comparison table
+- editorial conclusion
+
+Do not always use the same summary component.
+
+### ROI / Value Banner
+
+The gradient ROI-style banner is optional.
+
+Use it when the article has a meaningful cost/value story.
+
+Do not include it simply because it exists in the component library.
+
+### Final CTA
+
+The final CTA may use:
+
+- dark CTA block
+- strong-border verdict
+- compact action panel
+- winner + CTA combination
+- editorial conclusion
+
+Do not use the same CTA composition in every article.
+
+---
+
+# 7. Color System
+
+Use the established accent palette, but do NOT assign colors mechanically.
+
+Existing semantic colors may include:
+
+- cyan
+- green
+- orange
+- violet
+- rose
+
+Green can communicate a positive recommendation.
+
+Orange/rose can communicate caution or limitations.
+
+However, the same semantic meaning may be expressed through different visual treatments.
+
+Do not use all accent colors in every article.
+
+A professional article may intentionally use:
+
+- one dominant accent
+- two accents
+- mostly neutral colors + one accent
+- several accents when comparison categories genuinely require them
+
+Avoid predictable sequences such as:
+
+cyan → green → orange → violet → rose.
+
+---
+
+# 8. Emoji Rules
+
+Use thematic emoji in section headings and major card titles where appropriate.
+
+Examples:
+
+- 📸 visual/media features
+- 📊 analytics/data
+- 💰 pricing
+- ⚡ performance
+- 🔍 SEO
+- 🎯 use cases
+- ⚠️ warnings
+- 🏆 winners
+- ⭐ ratings
+- 🔬 methodology
+- 🧩 features
+
+Do not use emoji merely for decoration.
+
+The emoji should help communicate the topic of the section.
+
+---
+
+# 9. Ratings
+
+When reliable vendor/App Store ratings are available, they may be displayed as compact chips.
+
+Example:
+
+`★ 4.9 · 9,596 App Store reviews`
+
+Ratings should appear naturally where they support the evaluation.
+
+Do not mechanically repeat rating chips throughout the article.
+
+---
+
+# 10. Screenshots and Images
+
+Use real UI screenshots from official sources whenever possible.
+
+Preferred sources include:
+
+- vendor websites
+- official documentation
+- official product pages
+- Shopify App Store CDN
+
+Shopify App Store screenshots may use URLs from:
+
+`cdn.shopify.com/app-store/listing_images/...`
+
+Screenshots must be downloaded locally to:
+
+`storage/app/public/uploads/article/`
+
+Do not hotlink external screenshots.
+
+Every screenshot must have a useful figure caption.
+
+Example:
+
+`Screenshot: Judge.me`
+
+Use `figure.ex-fig` for standalone figures where appropriate.
+
+Images should support the argument rather than merely fill empty space.
+
+---
+
+# 11. Content Density and Visual Rhythm
+
+Avoid long sequences of visually identical cards.
+
+Bad pattern:
+
+Card → Card → Card → Card → Card
+
+Prefer varied visual rhythm:
+
+Large visual → short explanation → metrics → comparison → quote → chart → compact cards
+
+or:
+
+Winner → screenshot → feature analysis → table → pricing → scenario cards
+
+Mix:
+
+- large and small components
+- dense and spacious sections
+- images and text
+- tables and cards
+- charts and prose
+
+The reader should feel a change of visual rhythm as they move through the article.
+
+---
+
+# 12. Avoid Component Overuse
+
+Do not:
+
+- create a card for every paragraph
+- put every statistic inside a card
+- use grids when normal prose is clearer
+- use a chart when a sentence is sufficient
+- use decorative gradients without informational purpose
+- repeat the same callout several times
+- turn the entire article into a collection of boxes
+
+Cards should communicate hierarchy, comparison, or important information.
+
+---
+
+# 13. Article-Specific Visual Identity
+
+Each article should have a visual "center of gravity".
+
+Examples:
+
+### Product comparison
+
+Product screenshots + comparison matrix
+
+### Pricing comparison
+
+Charts + pricing blocks + cost analysis
+
+### AI comparison
+
+Benchmarks + scores + model cards
+
+### SEO comparison
+
+Search/SEO diagrams + feature matrix + scenario cards
+
+### Plugin review
+
+UI screenshots + feature analysis + UX observations
+
+### Best-of list
+
+Ranking + winner cards + use-case cards
+
+The dominant visual component should reflect the article's subject.
+
+---
+
+# 14. Responsive Layout
+
+All layouts must remain responsive.
+
+Use:
+
+- 1 column on mobile
+- 2 columns where appropriate on tablet
+- 2–4 columns on desktop depending on content
+
+Do not force desktop grids when the content becomes difficult to read.
+
+Large screenshots, tables, and charts must remain usable on narrow screens.
+
+---
+
+# 15. Accessibility and Usability
+
+Maintain:
+
+- sufficient text contrast
+- readable font sizes
+- clear heading hierarchy
+- descriptive image captions
+- meaningful link text
+- visible interactive states
+- mobile-friendly spacing
+
+Visual variety must never reduce usability.
+
+---
+
+# 16. SEO and Semantic Structure
+
+Use semantic HTML.
+
+Every major section should have a meaningful heading and anchor when appropriate.
+
+Do not manually add JSON-LD.
+
+JSON-LD for:
+
+- Article
+- ItemList
+- Review
+- AggregateRating
+
+is generated automatically by the controllers.
+
+The article HTML should therefore focus on content, structure, and presentation.
+
+---
+
+# 17. Article Length
+
+Target:
+
+**25,000–30,000 characters without spaces**
+
+The target applies to the body text and should not be reached by adding meaningless filler.
+
+Long-form content should prioritize:
+
+- useful comparisons
+- concrete evidence
+- screenshots
+- pricing
+- limitations
+- practical scenarios
+- clear recommendations
+
+---
+
+# 18. Final Quality Rule
+
+Before finalizing an article, mentally compare its composition with the previous long-form articles.
+
+If the page follows the same pattern:
+
+`Lead → pills → identical cards → screenshots → pricing card → grid → summary → gradient → dark CTA`
+
+then redesign the composition.
+
+The article should still clearly belong to the same design system, but a reader should not be able to predict the next visual block simply because they have read another article on the site.
+
+**Shared design language. Different editorial composition.**
+
+# 19. Article Discussion Comments
+
+Long-form comparison and review articles should include **2–5 useful discussion comments** after the main article content.
+
+The purpose of comments is to extend the article with additional questions, edge cases, practical scenarios, and perspectives that are relevant to the topic.
+
+Comments must NOT exist merely to increase page text or create artificial SEO content.
+
+## Comment Quality
+
+Each generated comment should add information that is:
+
+- relevant to the article
+- specific to the product/topic
+- useful to another reader
+- naturally phrased
+- different from the main article
+- capable of representing a realistic reader question or observation
+
+Avoid generic comments such as:
+
+- "Great article!"
+- "Very useful comparison."
+- "Thanks for sharing."
+- "This helped me a lot."
+- "I agree with this."
+
+These provide no meaningful value.
+
+## Comment Types
+
+Generate a varied combination of comment types.
+
+Possible types include:
+
+### ❓ Practical Question
+
+A realistic question about implementation, pricing, compatibility, migration, limits, or setup.
+
+### 🔍 Edge Case
+
+A less obvious situation that may affect the recommendation.
+
+### ⚖️ Alternative Comparison
+
+A question comparing two products in a specific use case not fully covered in the article.
+
+### 💰 Cost Question
+
+A question about pricing at a particular store size, traffic level, order volume, or review volume.
+
+### 🧑‍💻 Technical Question
+
+A question about integrations, performance, customization, API, SEO, themes, compatibility, or technical limitations.
+
+### 🎯 Use-case Question
+
+A question from a specific type of business or user.
+
+### 💡 Additional Insight
+
+A short observation that adds useful context rather than simply praising the article.
+
+## Comment Distribution
+
+Normally generate **2–5 comments** depending on article complexity.
+
+Suggested distribution:
+
+- short article: 2–3 comments
+- standard long-form article: 3–4 comments
+- highly detailed comparison: 4–5 comments
+
+Do not force 5 comments when only 2–3 genuinely useful discussion points exist.
+
+## Comment Independence
+
+Comments should introduce information or questions that are not simply repetitions of existing paragraphs.
+
+Avoid copying sentences, statistics, conclusions, or wording from the article.
+
+Comments can reference the article naturally, but should extend the discussion.
+
+## Natural Reader Profiles
+
+Where appropriate, vary the implied reader perspective:
+
+- small store owner
+- growing store owner
+- developer
+- agency
+- SEO-focused user
+- budget-conscious user
+- high-volume store
+- technical user
+
+Do not label comments with artificial personas unless the existing comment UI requires it.
+
+## SEO Rule
+
+Comments should naturally contain relevant terminology and long-tail concepts when appropriate.
+
+Do NOT keyword-stuff comments.
+
+Do NOT deliberately repeat the primary keyword.
+
+The comment should read naturally even if search engines did not exist.
+
+The SEO value comes from useful additional topical information, not from artificially increasing keyword frequency.
+
+## Replies
+
+A comment may optionally receive a short editorial/site reply when the answer adds meaningful information.
+
+Do not automatically create replies for every comment.
+
+A typical article should contain:
+
+- 2–5 reader comments
+- 0–3 editorial replies
+
+Replies should be concise and should not simply repeat the article.
+
+## Factual Accuracy
+
+Do not invent user experiences, purchases, test results, or claims presented as real customer experiences.
+
+Comments represent realistic hypothetical discussion unless the comment system explicitly marks them as editorial/generated content.
+
+Never fabricate statements such as:
+
+> "I have been using this app for three years and..."
+
+unless such a real user statement exists in the source material.
+
+## Placement
+
+Comments should appear after the main article content and before the final site-level navigation/footer area, using the existing article/comment UI.
+
+They should feel like a natural continuation of the article rather than another SEO block.
+
+## Diversity
+
+Comments should vary in:
+
+- length
+- question structure
+- vocabulary
+- perspective
+- subject
+- level of technical detail
+
+Do not generate five comments that all ask essentially the same question.
+
+## Final Check
+
+Before publishing, verify:
+
+1. Every comment adds useful information or raises a meaningful question.
+2. No comment exists solely for SEO.
+3. No fake personal experience is presented as fact.
+4. No comment repeats the article verbatim.
+5. Comments contain natural topic terminology.
+6. The discussion feels plausible rather than artificially manufactured.
 
 **Editor decision (updated 2026-09-12):** article `body_html` is edited via a per-article `editor_mode` toggle (column + `EditorMode` enum) with **two editors on SEPARATE state paths**:
 - `tiptap` (default for new articles) — Filament `RichEditor::make('body_tiptap')` with a curated toolbar (tables, code blocks, links, images). Round-trip **normalizes markup** — good for simple visual writing.
