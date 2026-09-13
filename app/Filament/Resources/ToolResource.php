@@ -63,6 +63,13 @@ class ToolResource extends Resource
             Select::make('type')->options(ToolType::class)->default(ToolType::Plugin->value)->required(),
             Select::make('status')->options(ToolStatus::class)->default(ToolStatus::Draft->value)->required(),
             TextInput::make('vendor')->maxLength(255),
+            TextInput::make('rating_avg')
+                ->label('Overall rating')
+                ->numeric()
+                ->minValue(0)
+                ->maxValue(10)
+                ->step(0.1)
+                ->helperText('Editorial rating 0–10. Used for catalog sorting and the tool page badge. Not linked to comparison table scores.'),
             MediaPickerField::make('logo')
                 ->label('Logo')
                 ->disk('public'),

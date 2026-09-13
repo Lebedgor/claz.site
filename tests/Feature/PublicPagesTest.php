@@ -5,12 +5,15 @@ use App\Enums\ArticleStatus;
 use App\Enums\CriterionKind;
 use App\Enums\ToolStatus;
 use App\Enums\ToolType;
+use App\Livewire\ArticlesIndex;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Criterion;
 use App\Models\Tool;
 use App\Models\ToolLink;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Pest\Livewire\livewire;
 
 uses(RefreshDatabase::class);
 
@@ -186,4 +189,63 @@ it('renders tool page with criteria and review structured data', function () {
         ->assertSee('"@type":"Review"', false);
 
     $this->get('/tools/unknown')->assertNotFound();
+});
+
+function seedArticleIndexFixture(): Category
+{
+    seedPublicFixture();
+
+    $category = Category::query()->firstOrFail();
+
+    for ($i = 1; $i <= 11; $i++) {
+        Article::create([
+            'category_id' => $category->getKey(),
+            'title' => ['en' => 'Filler article '.$i],
+            'slug' => ['en' => 'filler-article-'.$i],
+            'body_html' => ['en' => '<p>Filler body.</p>'],
+            'status' => ArticleStatus::Published,
+            'published_at' => now()->subDays($i),
+        ]);
+    }
+
+    return $category;
+}
+
+it('renders articles index with show more and pagination', function () {
+    seedArticleIndexFixture();
+
+    Article::create([
+        'title' => ['en' => 'Hidden draft teaser'],
+        'slug' => ['en' => 'hidden-draft-teaser'],
+        'body_html' => ['en' => '<p>Draft.</p>'],
+        'status' => ArticleStatus::Draft,
+    ]);
+
+    $this->get('/articles')->assertOk()
+        ->assertSee('All articles')
+        ->assertSee('Best AI helpers compared')
+        ->assertSee('Filler article 1')
+        ->assertDontSee('Filler article 9')
+        ->assertDontSee('Hidden draft teaser')
+        ->assertSee('Show more')
+        ->assertSee('/articles?page=2', false)
+        ->assertSee('"@type":"CollectionPage"', false)
+        ->assertSee('hreflang="en"', false);
+
+    $this->get('/articles?page=2')->assertOk()
+        ->assertSee('noindex,follow', false);
+
+    $this->get('/articles?page=abc')->assertOk()
+        ->assertDontSee('noindex,follow', false);
+});
+
+it('appends more articles via the show more button', function () {
+    seedArticleIndexFixture();
+
+    livewire(ArticlesIndex::class)
+        ->assertViewHas('articles', fn ($articles) => $articles->count() === 9)
+        ->call('loadMore')
+        ->assertViewHas('articles', fn ($articles) => $articles->count() === 12)
+        ->call('loadMore')
+        ->assertViewHas('articles', fn ($articles) => $articles->count() === 12);
 });

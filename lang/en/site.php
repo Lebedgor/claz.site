@@ -5,6 +5,7 @@ return [
     'meta_description' => 'CLAZ compares plugins, web services and AI tools: hands-on tables, criteria scores and honest verdicts.',
     'nav' => [
         'home' => 'Home',
+        'articles' => 'Articles',
         'tools' => 'Tools',
         'categories' => 'Categories',
         'menu' => 'Menu',
@@ -46,6 +47,13 @@ return [
             'service' => 'Service',
             'ai' => 'AI',
         ],
+    ],
+    'articles_index' => [
+        'title' => 'All articles',
+        'meta_description' => 'Browse every in-depth comparison, review and guide we published about plugins, web services and AI tools.',
+        'empty' => 'No articles yet.',
+        'show_more' => 'Show more',
+        'loading' => 'Loading…',
     ],
     'comparison' => [
         'tool' => 'Tool',

@@ -30,6 +30,7 @@ class SitemapController extends Controller
 
         $entries = [
             ['loc' => url('/'), 'lastmod' => $latestUpdate],
+            ['loc' => route('articles.index'), 'lastmod' => $latestUpdate],
             ['loc' => route('tools.index'), 'lastmod' => $latestUpdate],
         ];
 

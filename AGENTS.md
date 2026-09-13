@@ -139,6 +139,7 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 - DB enum values are PHP enum classes + casts; no magic strings
 - Validation lives in FormRequests; logic lives in Actions/Services — no fat models
 - Migrations are atomic with meaningful names; `migrate:fresh --seed` is local-only
+- Article seeders are **create-only**: if the article slug already exists (even soft-deleted), the seeder prints a skip message and returns — it must never update or force-delete an existing article. Admin-panel edits are the live truth; re-running a seeder used to silently wipe them ("old version restored"). To ship a content change: apply it to the live DB (admin editor or tinker) and mirror the same text into the seeder for fresh installs. Rebuilding an article from a seeder requires deleting the article first (a deliberate act)
 - Slugs use a custom slug helper that handles non-Latin scripts when locales are added (Str::slug is not enough for non-English locales)
 - When overriding `Filament\Resources\Resource` properties, repeat the parent's type with fully-qualified names (`\UnitEnum|string|null`, `\BackedEnum|string|null`) — unqualified names in the child namespace fail class compilation on PHP 8.5
 - **Tailwind in Filament custom views**: Filament 5 bundles its own Tailwind CSS (purged from its own templates). Custom Blade views under `resources/views/filament/` do NOT get Tailwind utility classes compiled. Use raw CSS in `<style>` tags or inline styles for custom layouts in admin panel views.

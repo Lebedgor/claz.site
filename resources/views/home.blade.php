@@ -4,6 +4,9 @@
     @endpush
 
     <section class="relative overflow-hidden rounded-3xl bg-linear-to-br from-indigo-600 via-violet-600 to-fuchsia-600 px-6 py-16 text-center text-white sm:px-12 sm:py-24">
+        <img src="/storage/uploads/home/hero-compare.png" alt="" aria-hidden="true"
+             class="pointer-events-none absolute inset-0 h-full w-full object-cover">
+        <div aria-hidden="true" class="absolute inset-0 bg-indigo-950/60"></div>
         <div aria-hidden="true" class="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-fuchsia-400/40 blur-3xl"></div>
         <div aria-hidden="true" class="pointer-events-none absolute -bottom-32 -right-16 h-80 w-80 rounded-full bg-indigo-400/40 blur-3xl"></div>
         <div aria-hidden="true" class="pointer-events-none absolute -top-72 left-1/2 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full border border-white/10"></div>
@@ -34,7 +37,9 @@
     </section>
 
     <section id="latest" class="mt-14 scroll-mt-28">
-        <x-section-heading :title="__('site.home.latest_articles')" />
+        <x-section-heading :title="__('site.home.latest_articles')"
+            :link-href="route('articles.index', [], false)"
+            :link-text="__('site.home.view_all')" />
         <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             @forelse ($articles as $article)
                 <x-article-card :article="$article" />

@@ -14,6 +14,7 @@
 </head>
 @php
     $isActiveHome = request()->routeIs('home');
+    $isActiveArticles = request()->routeIs('articles.index');
     $isActiveTools = request()->routeIs('tools.index');
 @endphp
 <body class="min-h-screen bg-cream font-sans text-zinc-900 antialiased" x-data="{ menuOpen: false }">
@@ -33,6 +34,10 @@
             <a href="{{ route('home', [], false) }}"
                class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveHome ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
                 {{ __('site.nav.home') }}
+            </a>
+            <a href="{{ route('articles.index', [], false) }}"
+               class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveArticles ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
+                {{ __('site.nav.articles') }}
             </a>
             <a href="{{ route('tools.index', [], false) }}"
                class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveTools ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
@@ -77,6 +82,10 @@
             <a href="{{ route('home', [], false) }}" @click="menuOpen = false"
                class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveHome ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
                 {{ __('site.nav.home') }}
+            </a>
+            <a href="{{ route('articles.index', [], false) }}" @click="menuOpen = false"
+               class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveArticles ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
+                {{ __('site.nav.articles') }}
             </a>
             <a href="{{ route('tools.index', [], false) }}" @click="menuOpen = false"
                class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveTools ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
@@ -130,6 +139,7 @@
                 <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-500">{{ __('site.footer.explore') }}</h3>
                 <ul class="mt-4 space-y-2.5 text-sm">
                     <li><a href="{{ route('home', [], false) }}" class="transition hover:text-white">{{ __('site.nav.home') }}</a></li>
+                    <li><a href="{{ route('articles.index', [], false) }}" class="transition hover:text-white">{{ __('site.nav.articles') }}</a></li>
                     <li><a href="{{ route('tools.index', [], false) }}" class="transition hover:text-white">{{ __('site.nav.tools') }}</a></li>
                     <li><a href="/sitemap.xml" class="transition hover:text-white">{{ __('site.footer.sitemap') }}</a></li>
                     <li><a href="/rss.xml" class="transition hover:text-white">{{ __('site.footer.rss') }}</a></li>

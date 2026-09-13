@@ -11,11 +11,13 @@ use App\Http\Controllers\RssController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\VsPageController;
+use App\Livewire\ArticlesIndex;
 use App\Livewire\ToolsIndex;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/category/{category}', CategoryController::class)->name('category.show');
+Route::get('/articles', ArticlesIndex::class)->name('articles.index');
 Route::get('/articles/{article}', ArticleController::class)->name('articles.show');
 Route::get('/tools', ToolsIndex::class)->name('tools.index');
 Route::get('/tools/{tool}', ToolController::class)->name('tools.show');

@@ -21,6 +21,12 @@ class WordPressPageBuildersSeeder extends Seeder
 {
     public function run(): void
     {
+        if (Article::withTrashed()->where('slug->en', 'best-wordpress-page-builders')->exists()) {
+            $this->command->info('Article already exists — skipped to preserve admin edits. Delete the article to rebuild it from the seeder.');
+
+            return;
+        }
+
         $category = Category::query()->where('slug->en', 'wordpress-plugins')->first()
             ?? Category::create([
                 'name' => ['en' => 'WordPress plugins'],
@@ -113,13 +119,6 @@ class WordPressPageBuildersSeeder extends Seeder
             }
 
             $tools[$name] = $tool;
-        }
-
-        $article = Article::withTrashed()->where('slug->en', 'best-wordpress-page-builders')->first();
-
-        if ($article !== null) {
-            $article->comparisons()->delete();
-            $article->forceDelete();
         }
 
         $article = Article::create([
@@ -289,7 +288,7 @@ class WordPressPageBuildersSeeder extends Seeder
 <hr>
 
 <h2 id="elementor">🔵 Elementor — the ecosystem king</h2>
-<div class="ex-card ex-card-cyan"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #a5f3fc;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.6 · 6,500+ WordPress.org reviews</div><b>🔵 The default choice for beginners and agencies that value ecosystem over performance.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">32.67% of all WordPress sites. 10M+ active installs. 1,000+ third-party addons. The largest community and tutorial library of any builder.</div></div>
+<div class="ex-card ex-card-cyan"><div class="ex-card-head"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #a5f3fc;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309;"><span style="color:#f59e0b;">★</span>★ 4.6 · 6,500+ WordPress.org reviews</div><b>🔵 The default choice for beginners and agencies that value ecosystem over performance.</b></div><div style="margin-top:8px; font-size:14px; line-height:1.6;">32.67% of all WordPress sites. 10M+ active installs. 1,000+ third-party addons. The largest community and tutorial library of any builder.</div></div>
 <p><b>Elementor</b> has been the dominant WordPress page builder since 2016, and its market share reflects a simple truth: it is the easiest builder for beginners to pick up. The drag-and-drop interface is intuitive, the widget library is extensive (85+ in Pro), and the addon ecosystem means you can find an extension for virtually any use case.</p>
 <p>The big news in 2025–2026 is <b>Editor V4 (Atomic)</b> — a ground-up rebuild of the rendering engine that moves from multiple nested DIV wrappers to single-DIV output with utility classes. V4 reduces DOM depth by ~22% and CSS output by 60–70% versus V3. It is still in alpha as of September 2026, opt-in, and not all widgets are migrated yet — but it signals that Elementor is aware of its performance gap.</p>
 <div class="images-block">
@@ -310,7 +309,7 @@ class WordPressPageBuildersSeeder extends Seeder
 <hr>
 
 <h2 id="divi">🟣 Divi — the lifetime value play</h2>
-<div class="ex-card ex-card-violet"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #ddd6fe;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.9 · 974K+ customers</div><b>🟣 The best long-term value for agencies — unlimited sites, lifetime license, all-in-one bundle.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">$249 one-time for unlimited sites. Includes Divi Theme, Builder, Extra Magazine, Bloom (email opt-ins) and Monarch (social sharing). Divi 5 removed legacy shortcodes and improved backend speed by 50–80%.</div></div>
+<div class="ex-card ex-card-violet"><div class="ex-card-head"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #ddd6fe;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309;"><span style="color:#f59e0b;">★</span>★ 4.9 · 974K+ customers</div><b>🟣 The best long-term value for agencies — unlimited sites, lifetime license, all-in-one bundle.</b></div><div style="margin-top:8px; font-size:14px; line-height:1.6;">$249 one-time for unlimited sites. Includes Divi Theme, Builder, Extra Magazine, Bloom (email opt-ins) and Monarch (social sharing). Divi 5 removed legacy shortcodes and improved backend speed by 50–80%.</div></div>
 <p><b>Divi</b> has always been the value proposition builder. Elegant Themes offers unlimited sites on every plan — a rarity in the WordPress ecosystem — and the $249 lifetime license means you never pay again. For agencies building 20+ client sites per year, the math is compelling: Elementor Pro at $199/year for 25 sites costs more than Divi's lifetime deal within 15 months.</p>
 <p><b>Divi 5.0</b>, rolling out through 2025–2026, is a complete ground-up rebuild that removes the legacy shortcode architecture (which left pages as unreadable bracketed text when Divi was deactivated). The new version delivers 50–80% faster backend loading, a modernized editing environment, and a preset system for global styling. However, performance improvements on the frontend are incremental rather than transformative.</p>
 <div class="images-block">
@@ -332,7 +331,7 @@ class WordPressPageBuildersSeeder extends Seeder
 <hr>
 
 <h2 id="bricks">🟢 Bricks — the performance purist's builder</h2>
-<div class="ex-card ex-card-green"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #bbf7d0;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 24.4% of WordPress professionals (2025 survey)</div><b>🟢 The cleanest code and best Core Web Vitals of any WordPress page builder.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">+71.2% YoY growth. Vue.js reactive framework, no jQuery, CSS-first class-based styling, 110+ elements, unlimited custom breakpoints. Replaces your WordPress theme entirely.</div></div>
+<div class="ex-card ex-card-green"><div class="ex-card-head"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #bbf7d0;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309;"><span style="color:#f59e0b;">★</span>★ 24.4% of WordPress professionals (2025 survey)</div><b>🟢 The cleanest code and best Core Web Vitals of any WordPress page builder.</b></div><div style="margin-top:8px; font-size:14px; line-height:1.6;">+71.2% YoY growth. Vue.js reactive framework, no jQuery, CSS-first class-based styling, 110+ elements, unlimited custom breakpoints. Replaces your WordPress theme entirely.</div></div>
 <p><b>Bricks</b> is the builder that performance-obsessed developers recommend. It replaces your WordPress theme entirely (rather than running as a plugin on top of one), which eliminates the double-loading of styles that plagues Elementor and Divi. The result: a blank Bricks page weighs <b>42 KB</b> versus 570 KB for Elementor and Divi, and produces <b>75–100 DOM elements</b> versus 300–400.</p>
 <p>The class-based styling system works like CSS utility classes (similar to Tailwind): you define global classes, variables and color palettes, then apply them across elements. This encourages consistent design systems and dramatically reduces CSS output. The Query Loop Builder lets you visually create custom WordPress queries — a feature that typically requires PHP knowledge.</p>
 <div class="images-block">
@@ -355,7 +354,7 @@ class WordPressPageBuildersSeeder extends Seeder
 <hr>
 
 <h2 id="breakdance">🟠 Breakdance — performance meets simplicity</h2>
-<div class="ex-card ex-card-orange"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #fed7aa;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309; margin-bottom:10px;"><span style="color:#f59e0b;">★</span>★ 4.4 · 22,000+ creators</div><b>🟠 The lightest all-in-one builder — no addons needed, performance-first architecture.</b><div style="margin-top:8px; font-size:14px; line-height:1.6;">145+ built-in elements, header and mega menu builders, WooCommerce integration, PHP code blocks, and the cleanest output in the ease-of-use category. From the team behind Oxygen Builder.</div></div>
+<div class="ex-card ex-card-orange"><div class="ex-card-head"><div style="display:inline-flex; align-items:center; gap:6px; background:#fff; border:1px solid #fed7aa;border-radius:999px; padding:4px 10px; font-size:13px; font-weight:700; color:#b45309;"><span style="color:#f59e0b;">★</span>★ 4.4 · 22,000+ creators</div><b>🟠 The lightest all-in-one builder — no addons needed, performance-first architecture.</b></div><div style="margin-top:8px; font-size:14px; line-height:1.6;">145+ built-in elements, header and mega menu builders, WooCommerce integration, PHP code blocks, and the cleanest output in the ease-of-use category. From the team behind Oxygen Builder.</div></div>
 <p><b>Breakdance</b> occupies a unique position: it delivers Bricks-level performance with Elementor-level ease of use. The interface is visually intuitive (clearly inspired by Elementor, but refined), yet the output is dramatically cleaner — a blank page weighs just <b>42 KB</b> and produces ~150 DOM elements.</p>
 <p>The builder ships with <b>145+ elements</b> in Pro (80 in Free), including header, mega menu, form, popup and WooCommerce builders — features that typically require paid addons in Elementor or Divi. The Element Studio lets you visually build custom elements with PHP, HTML, CSS and JS — a developer tool wrapped in a visual interface.</p>
 <div class="images-block">

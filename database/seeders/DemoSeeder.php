@@ -19,6 +19,12 @@ class DemoSeeder extends Seeder
 {
     public function run(): void
     {
+        if (Article::query()->where('slug->en', 'chatgpt-vs-claude')->exists()) {
+            $this->command->info('Demo articles already exist — skipped to preserve admin edits.');
+
+            return;
+        }
+
         $aiCategory = Category::query()->where('slug->en', 'ai-tools')->first()
             ?? Category::create([
                 'name' => ['en' => 'AI tools'],
