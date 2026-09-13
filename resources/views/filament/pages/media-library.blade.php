@@ -430,9 +430,10 @@
                 },
 
                 async copy(text, event) {
-                    try { await navigator.clipboard.writeText(text); } catch (e) {}
                     const btn = event.currentTarget;
-                    const label = btn.textContent;
+                    const label = btn ? btn.textContent : null;
+                    try { await navigator.clipboard.writeText(text); } catch (e) {}
+                    if (!btn) return;
                     btn.textContent = 'Copied!';
                     setTimeout(() => { btn.textContent = label; }, 1200);
                 },
