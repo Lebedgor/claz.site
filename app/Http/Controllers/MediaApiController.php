@@ -166,8 +166,8 @@ class MediaApiController extends Controller
 
         return [
             'path' => $path,
-            'rel' => $disk->url($path),
-            'url' => $disk->url($path),
+            'rel' => '/storage/'.ltrim($path, '/'),
+            'url' => '/storage/'.ltrim($path, '/'),
             'name' => basename($path),
             'dir' => dirname($path),
             'bytes' => (int) $disk->size($path),

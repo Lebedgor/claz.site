@@ -67,7 +67,7 @@
 
             @if ($primaryLink !== null)
                 <div class="mt-6">
-                    <a href="{{ url("/go/{$primaryLink->code}") }}"
+                    <a href="/go/{{ $primaryLink->code }}"
                        target="_blank"
                        rel="sponsored nofollow noopener"
                        class="inline-block rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500">

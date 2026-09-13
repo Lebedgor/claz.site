@@ -43,7 +43,7 @@ class Tool extends Model implements HasMedia
             return null;
         }
 
-        return str_starts_with($logo, 'http') || str_starts_with($logo, '/storage') ? $logo : asset('storage/'.$logo);
+        return str_starts_with($logo, 'http') || str_starts_with($logo, '/storage') ? $logo : '/storage/'.ltrim($logo, '/');
     }
 
     /** @return BelongsToMany<Criterion, $this, ToolCriterion, 'pivot'> */

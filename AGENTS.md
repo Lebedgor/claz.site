@@ -124,12 +124,13 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 3. Guest comments: HTMLPurifier, honeypot, rate limit, pre-moderation
 4. SEO-first: canonical, OpenGraph (incl. `article:*` tags, og:locale), JSON-LD (WebSite+SearchAction, Organization, Article with wordCount/section/keywords, ItemList for comparison tables, FAQPage auto-extracted from the `#faq` ex-card section, BreadcrumbList via `<x-breadcrumbs>`, CollectionPage+ItemList on /tools and categories), hreflang (per-locale URLs, not per-page bug), sitemap, RSS with full `content:encoded` bodies; `/llms.txt` + `/llms-full.txt` for AI/LLM crawlers (dynamic routes, cached); robots.txt explicitly allows AI crawlers; canonical strips `?search`/`?type` noise but keeps `?page`; category pages 2+ are `noindex,follow`; Tool logos feed Product.image + og:image (`logo_url` accessor, MediaPickerField in ToolResource). Full-page cache on prod (Spatie responsecache) invalidated from Filament
 5. Images: local disk `storage/app/public/uploads`, webp resize (Intervention) via queue; S3-compatible storage later via the Storage API
-6. Roles: single admin-owner; the `role` column on users reserves room for future authors/editors
-7. i18n as described in "Languages & i18n": English default, JSONB translatable columns, locale-prefixed URLs for non-default locales
-8. Per-locale slug uniqueness is enforced with expression unique indexes `((slug->>'en'))` + GIN (jsonb_path_ops) on `slug` columns; add one expression index per new locale when it ships
-9. Laravel pluralizes `criteria` as `criterias` — always pass the table name explicitly: `constrained('criteria')`; the same for relations: `belongsTo(Criterion::class, 'criteria_id')` (Laravel would derive `criterion_id`)
-10. Tools and articles use RESTRICT foreign keys from `comparison_items` / `vs_pages` so referenced tools cannot be deleted accidentally
-11. Never pass pre-encoded JSON strings to translatable attributes — always pass arrays (spatie double-encodes strings, which breaks per-locale slug lookups); seeder lookups use `where('slug->en', ...)` instead of raw JSON matches
+6. **URLs are root-relative everywhere** (site must survive host moves local↔prod): media paths stored in DB as storage-relative (`uploads/...`) or root-relative (`/storage/...`); the file manager's "Copy URL" copies `/storage/...`; `MediaPickerController` returns `/storage/...` in `url`/`rel`; accessors `cover_url`/`logo_url`/`image_url` emit `/storage/...`; Vite build assets are made root-relative via `Vite::createAssetPathsUsing()` in `AppServiceProvider::register()`. Absolute `url()` is allowed **only** for SEO artifacts that must be host-qualified (canonical, hreflang, OG/Twitter tags, JSON-LD, sitemap.xml, rss.xml). Never paste `http://127.0.0.1:8000/...` into article content — if imported content contains it, strip to root-relative before publishing
+7. Roles: single admin-owner; the `role` column on users reserves room for future authors/editors
+8. i18n as described in "Languages & i18n": English default, JSONB translatable columns, locale-prefixed URLs for non-default locales
+9. Per-locale slug uniqueness is enforced with expression unique indexes `((slug->>'en'))` + GIN (jsonb_path_ops) on `slug` columns; add one expression index per new locale when it ships
+10. Laravel pluralizes `criteria` as `criterias` — always pass the table name explicitly: `constrained('criteria')`; the same for relations: `belongsTo(Criterion::class, 'criteria_id')` (Laravel would derive `criterion_id`)
+11. Tools and articles use RESTRICT foreign keys from `comparison_items` / `vs_pages` so referenced tools cannot be deleted accidentally
+12. Never pass pre-encoded JSON strings to translatable attributes — always pass arrays (spatie double-encodes strings, which breaks per-locale slug lookups); seeder lookups use `where('slug->en', ...)` instead of raw JSON matches
 
 ## Code rules
 

@@ -33,7 +33,7 @@ class Banner extends Model implements HasMedia
             return null;
         }
 
-        return str_starts_with($image, 'http') || str_starts_with($image, '/storage') ? $image : asset('storage/'.$image);
+        return str_starts_with($image, 'http') || str_starts_with($image, '/storage') ? $image : '/storage/'.ltrim($image, '/');
     }
 
     /** @param Builder<Banner> $query */

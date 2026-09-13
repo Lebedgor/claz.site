@@ -70,7 +70,7 @@
                         <td class="py-3">
                             @php $link = $item->tool?->links->sortBy('sort_order')->first(); @endphp
                             @if ($link !== null)
-                                <a href="{{ url("/go/{$link->code}") }}"
+                                <a href="/go/{{ $link->code }}"
                                    target="_blank"
                                    rel="sponsored nofollow noopener"
                                    class="inline-block whitespace-nowrap rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-500">

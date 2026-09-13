@@ -333,7 +333,7 @@
         @if ($state)
             <div class="mp-thumb">
                 @if (in_array(strtolower(pathinfo($state, PATHINFO_EXTENSION)), ['png', 'jpg', 'jpeg', 'gif', 'webp', 'avif', 'svg']))
-                    <img src="{{ str_starts_with($state, '/storage') || str_starts_with($state, 'http') ? $state : asset('storage/'.$state) }}" alt="">
+                    <img src="{{ str_starts_with($state, '/storage') || str_starts_with($state, 'http') ? $state : '/storage/'.ltrim($state, '/') }}" alt="">
                 @elseif (in_array(strtolower(pathinfo($state, PATHINFO_EXTENSION)), ['mp4', 'm4v', 'mov', 'webm', 'ogv', 'ogg', 'avi', 'mkv']))
                     <x-heroicon-o-film style="width:1rem; height:1rem; color:#9ca3af;" />
                 @else

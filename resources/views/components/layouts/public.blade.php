@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link rel="stylesheet" href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/ex-article.css') }}">
-    <link rel="alternate" type="application/rss+xml" title="{{ config('app.name') }}" href="{{ url('/rss.xml') }}">
+    <link rel="stylesheet" href="/css/ex-article.css">
+    <link rel="alternate" type="application/rss+xml" title="{{ config('app.name') }}" href="/rss.xml">
     @stack('head')
 </head>
 @php
@@ -131,8 +131,8 @@
                 <ul class="mt-4 space-y-2.5 text-sm">
                     <li><a href="{{ route('home') }}" class="transition hover:text-white">{{ __('site.nav.home') }}</a></li>
                     <li><a href="{{ route('tools.index') }}" class="transition hover:text-white">{{ __('site.nav.tools') }}</a></li>
-                    <li><a href="{{ url('/sitemap.xml') }}" class="transition hover:text-white">{{ __('site.footer.sitemap') }}</a></li>
-                    <li><a href="{{ url('/rss.xml') }}" class="transition hover:text-white">{{ __('site.footer.rss') }}</a></li>
+                    <li><a href="/sitemap.xml" class="transition hover:text-white">{{ __('site.footer.sitemap') }}</a></li>
+                    <li><a href="/rss.xml" class="transition hover:text-white">{{ __('site.footer.rss') }}</a></li>
                 </ul>
             </div>
             @if ($navCategories->isNotEmpty())

@@ -57,7 +57,7 @@ class Article extends Model implements HasMedia
             return null;
         }
 
-        return str_starts_with($cover, 'http') || str_starts_with($cover, '/storage') ? $cover : asset('storage/'.$cover);
+        return str_starts_with($cover, 'http') || str_starts_with($cover, '/storage') ? $cover : '/storage/'.ltrim($cover, '/');
     }
 
     /** @return BelongsTo<Category, $this> */

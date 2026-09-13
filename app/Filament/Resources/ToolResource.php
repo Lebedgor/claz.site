@@ -32,7 +32,7 @@ class ToolResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
 
-    public static function resolveRecordRouteBinding(int | string $key, ?\Closure $modifyQuery = null): ?Model
+    public static function resolveRecordRouteBinding(int|string $key, ?\Closure $modifyQuery = null): ?Model
     {
         $query = static::getRecordRouteBindingEloquentQuery();
 
@@ -40,7 +40,7 @@ class ToolResource extends Resource
             $query = $modifyQuery($query) ?? $query;
         }
 
-        $field = is_numeric($key) ? null : 'slug->' . app()->getLocale();
+        $field = is_numeric($key) ? null : 'slug->'.app()->getLocale();
 
         return app(static::getModel())
             ->resolveRouteBindingQuery($query, $key, $field)
