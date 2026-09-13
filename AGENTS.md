@@ -39,6 +39,31 @@ Note: the Laravel skeleton ships its own `AGENTS.md` / `CLAUDE.md` boilerplate �
 - Page checks: browser + agent (Kilo Code)
 - Migration to hosting happens near the end of the project, via Docker Compose
 
+### Upload limits (videos up to 300MB)
+
+`php artisan serve` spawns a child PHP process that **drops `-d` ini flags**, so video uploads (>2M PHP default) fail. For local media uploads run the built-in server directly so the limits apply to the serving process:
+
+```bash
+cd public
+~/.kettle/bin/php -d upload_max_filesize=300M -d post_max_size=305M -d max_execution_time=300 \
+  -S 127.0.0.1:8000 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
+```
+
+- Livewire temp upload limit is in `config/livewire.php` → `temporary_file_upload.rules` (`max:307200` = 300MB); raise together with the PHP flags.
+- Filament `FileUpload::maxSize()` in `app/Filament/Pages/MediaLibrary.php` is 307200 KB (300MB).
+
+### Media manager (filesystem-based file manager)
+
+The admin media manager (`/admin/media-library`, nav label "File manager") works directly on the `uploads/` directory of the public disk — no spatie/media DB records involved for new uploads (legacy spatie `MediaItem` records and `/storage/<id>/...` URLs from the first iteration remain valid in articles):
+
+- Folder navigation: breadcrumbs + folder cards, "New folder" button, uploads go into the **current folder** (`dir` param), file/folder delete (folders only when empty).
+- `MediaApiController` — `GET /admin/media/api?dir=uploads/x` (folder listing: `{dir, folders[], files[]}`; `?all=1` returns a flat recursive list for the picker), `POST /admin/media/api/upload` (multipart `file` + `dir`, 300MB, uniquifies names `name-1.ext`), `POST /admin/media/api/folder` (create), `POST /admin/media/api/delete` (file, or folder only when empty). Auth-protected, `..` rejected, paths clamped under `uploads/`.
+- The page is fully Alpine-driven (`fileManager()` in a script block, `wire:ignore` container): breadcrumb navigation, compact upload tray (84px chips with inline progress bars — not full-width), type filter tabs, search within folder, lightbox with ←/→/Esc, copy URL/path.
+- `App\Filament\Forms\Components\MediaPickerField` fetches `?all=1` (flat list) and stores the **relative** storage path (`/storage/uploads/...`); its own upload zone posts to the same upload endpoint.
+- Video thumbnails are browser first-frames (`<video preload="metadata" src="…#t=0.1">`); images render as-is with lazy loading.
+- **Do not use Filament `FileUpload` on this page** — on a custom page its state cast runs before the submit action and drops `TemporaryUploadedFile` instances (the cause of the "says uploaded but nothing appears" bug). Uploads go through XHR to the API.
+- **`addMedia($path)` DELETES the source file by default** (spatie FileAdder unlinks it unless `->preservingOriginal()` is chained). Always chain `preservingOriginal()` when the source lives on the public disk (imports, anything referenced by `body_html`); temp uploads from livewire-tmp may omit it. This deletion is what once wiped the whole `uploads/` tree — restored via git (uploads are git-tracked).
+
 ### Environment status (macOS, checked 2026-09-11)
 
 | Tool | Status |
@@ -97,7 +122,7 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 1. Published comparison tables use the snapshot (`comparison_scores`) and do not change when a tool card is edited; the admin panel has a "sync with live data" action
 2. All affiliate transitions go through `/go/{code}` (302) + clicks recorded via the queue
 3. Guest comments: HTMLPurifier, honeypot, rate limit, pre-moderation
-4. SEO-first: canonical, OpenGraph, JSON-LD (Article, ItemList for comparison tables), hreflang, sitemap, RSS; full-page cache on prod (Spatie responsecache) invalidated from Filament
+4. SEO-first: canonical, OpenGraph (incl. `article:*` tags, og:locale), JSON-LD (WebSite+SearchAction, Organization, Article with wordCount/section/keywords, ItemList for comparison tables, FAQPage auto-extracted from the `#faq` ex-card section, BreadcrumbList via `<x-breadcrumbs>`, CollectionPage+ItemList on /tools and categories), hreflang (per-locale URLs, not per-page bug), sitemap, RSS with full `content:encoded` bodies; `/llms.txt` + `/llms-full.txt` for AI/LLM crawlers (dynamic routes, cached); robots.txt explicitly allows AI crawlers; canonical strips `?search`/`?type` noise but keeps `?page`; category pages 2+ are `noindex,follow`; Tool logos feed Product.image + og:image (`logo_url` accessor, MediaPickerField in ToolResource). Full-page cache on prod (Spatie responsecache) invalidated from Filament
 5. Images: local disk `storage/app/public/uploads`, webp resize (Intervention) via queue; S3-compatible storage later via the Storage API
 6. Roles: single admin-owner; the `role` column on users reserves room for future authors/editors
 7. i18n as described in "Languages & i18n": English default, JSONB translatable columns, locale-prefixed URLs for non-default locales
@@ -115,6 +140,7 @@ Columns marked `*` are translatable JSONB columns (spatie/laravel-translatable).
 - Migrations are atomic with meaningful names; `migrate:fresh --seed` is local-only
 - Slugs use a custom slug helper that handles non-Latin scripts when locales are added (Str::slug is not enough for non-English locales)
 - When overriding `Filament\Resources\Resource` properties, repeat the parent's type with fully-qualified names (`\UnitEnum|string|null`, `\BackedEnum|string|null`) — unqualified names in the child namespace fail class compilation on PHP 8.5
+- **Tailwind in Filament custom views**: Filament 5 bundles its own Tailwind CSS (purged from its own templates). Custom Blade views under `resources/views/filament/` do NOT get Tailwind utility classes compiled. Use raw CSS in `<style>` tags or inline styles for custom layouts in admin panel views.
 - Secrets only in `.env` (never committed); keep `.env.example` up to date
 - Git: `main` + feature branches, Conventional Commits (feat/fix/chore/docs)
 - Pest tests for key flows: article publishing, VS page, `/go` redirect, comment pre-moderation
@@ -168,7 +194,13 @@ All long-form articles (comparisons, deep reviews) follow the design system intr
 - Target volume: 25–30k characters without spaces of body text
 - JSON-LD (Article + ItemList + Review/AggregateRating) is generated automatically by the controllers — no manual markup
 
-**Editor decision (fixed):** article `body_html` is edited as **HTML source** in a Filament `CodeEditor` field (language: html) — a WYSIWYG round-trip (TipTap RichEditor) flattens the custom `ex-article` markup (classes, grid wrappers, cards, SVG) on save, which happened in practice. Media workflow: upload via the "Media library" admin page, insert with Copy URL; app screenshots come from official vendor/App Store sources. Third-party WYSIWYG replacements (awcodes/filament-tiptap-editor, CKEditor, TinyMCE) are incompatible with Filament 5 or would flatten the custom markup — do not swap the CodeEditor back to RichEditor for design-heavy articles.
+**Editor decision (updated 2026-09-12):** article `body_html` is edited via a per-article `editor_mode` toggle (column + `EditorMode` enum) with **two editors on SEPARATE state paths**:
+- `tiptap` (default for new articles) — Filament `RichEditor::make('body_tiptap')` with a curated toolbar (tables, code blocks, links, images). Round-trip **normalizes markup** — good for simple visual writing.
+- `html` — Filament `CodeEditor::make('body_html_src')` (HTML source) for design-heavy `ex-article` markup.
+- Both are hydrated from the record via `afterStateHydrated` (`$component->state($record->getTranslation('body_html', 'en'))`); the Radio `afterStateUpdated` hook transfers content between the paths on mode switches (TipTap JSON → HTML through the RichEditor's own `getTipTapEditor()`); `mutateFormDataBeforeSave` on both pages picks the body by mode, writes `body_html.en`, computes `reading_time`, and unsets the temp paths.
+- **Never bind two editors to the same state path**: the hidden RichEditor's StateCast converts the shared state to TipTap JSON (`{type, content}`) on hydration — the CodeEditor then shows nothing and `ReadingTime::estimate()` dies with "array given".
+- **Warning:** opening a design-heavy article in TipTap mode normalizes the custom `ex-article` markup on save — legacy `ex-*` articles are backfilled to `html` mode; keep them there. Third-party WYSIWYGs are still incompatible with Filament 5 — do not add them.
+- Regression tests: `tests/Feature/ArticleEditorModesTest.php` (hydration, mode-switch transfer, TipTap save).
 
 **Technical pitfalls (check before saving):**
 - Balanced inline tags in `body_html`: every `<b>` needs `</b>` (not `</strong>` — mismatched pairs make all following text bold)

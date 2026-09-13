@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ArticleResource\Pages;
 
 use App\Actions\SyncComparisonScores;
+use App\Enums\EditorMode;
 use App\Filament\Resources\ArticleResource;
 use App\Models\Article;
 use App\Support\ReadingTime;
@@ -21,6 +22,11 @@ class EditArticle extends EditRecord
         $article = Article::query()->findOrFail((int) $this->record->getKey());
 
         return [
+            Action::make('preview')
+                ->label('Preview')
+                ->icon('heroicon-o-eye')
+                ->url(route('admin.articles.preview', ['article' => $article->getKey()]))
+                ->openUrlInNewTab(),
             ArticleResource::publishAction()->record($article),
             ArticleResource::unpublishAction()->record($article),
             Action::make('syncScores')
@@ -48,7 +54,17 @@ class EditArticle extends EditRecord
             $data['slug']['en'] = Slugger::unique(Article::class, 'en', $title, (int) $article->getKey());
         }
 
-        $data['reading_time'] = ReadingTime::estimate($data['body_html']['en'] ?? null);
+        $body = ($data['editor_mode'] ?? EditorMode::Tiptap->value) === EditorMode::Html->value
+            ? ($data['body_html_src'] ?? null)
+            : ($data['body_tiptap'] ?? null);
+
+        if (is_array($body)) {
+            $body = null;
+        }
+
+        $data['body_html'] = ['en' => $body];
+        $data['reading_time'] = ReadingTime::estimate($body);
+        unset($data['body_tiptap'], $data['body_html_src']);
 
         return $data;
     }

@@ -8,13 +8,13 @@
     <aside class="my-6 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
         @if (filled($banner->html))
             {!! $banner->html !!}
-        @elseif ($banner->image !== null)
+        @elseif ($banner->image_url !== null)
             @if (filled($banner->url))
                 <a href="{{ $banner->url }}" target="_blank" rel="sponsored nofollow noopener">
-                    <img src="{{ asset('storage/'.$banner->image) }}" alt="{{ $banner->title }}" class="w-full object-cover">
+                    <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}" class="w-full object-cover">
                 </a>
             @else
-                <img src="{{ asset('storage/'.$banner->image) }}" alt="{{ $banner->title }}" class="w-full object-cover">
+                <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}" class="w-full object-cover">
             @endif
         @endif
     </aside>

@@ -1,20 +1,26 @@
 <x-layouts.public>
     @push('head')
         <x-seo
-            :title="$category->getTranslation('name', app()->getLocale())"
-            :description="$category->getTranslation('description', app()->getLocale()) ?: null"
+            :title="$name"
+            :description="__('site.category.meta_description', ['name' => $name])"
+            :json-ld="$jsonLd"
+            :robots="$articles->currentPage() > 1 ? 'noindex,follow' : null"
         />
     @endpush
 
-    <nav class="text-sm text-zinc-500">
-        <a href="{{ route('home') }}" class="hover:text-indigo-600">{{ __('site.nav.home') }}</a>
-        <span class="mx-1">/</span>
-        <span class="text-zinc-900">{{ $category->getTranslation('name', app()->getLocale()) }}</span>
-    </nav>
+    <x-breadcrumbs :items="[
+        ['label' => __('site.nav.home'), 'url' => route('home')],
+        ['label' => $name],
+    ]"/>
 
-    <h1 class="mt-3 text-3xl font-bold tracking-tight text-zinc-900">
-        {{ __('site.category.articles_in', ['name' => $category->getTranslation('name', app()->getLocale())]) }}
+    <h1 class="mt-3 text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+        {{ __('site.category.articles_in', ['name' => $name]) }}
     </h1>
+    <div aria-hidden="true" class="mt-3 h-1 w-20 rounded-full bg-linear-to-r from-indigo-500 to-fuchsia-500"></div>
+
+    <p class="mt-4 max-w-2xl text-zinc-600">
+        {{ __('site.category.meta_description', ['name' => $name]) }}
+    </p>
 
     <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         @forelse ($articles as $article)

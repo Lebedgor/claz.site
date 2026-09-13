@@ -1,0 +1,37 @@
+.ex-article h2 { margin: 0 0 10px; font-size: 22px; font-weight: 700; scroll-margin-top: 110px; }
+.ex-article p { margin: 0 0 12px; }
+.ex-article ul { margin: 0 0 12px; padding-left: 18px; }
+.ex-article li { margin-top: 4px; }
+.ex-article hr { border: none; border-top: 1px solid #e5e7eb; margin: 18px 0; }
+.ex-article .images-block { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 0 0 14px; }
+.ex-article .images-block figure { margin: 0; overflow: hidden; border-radius: 12px; border: 1px solid #e5e7eb; background: #f8fafc; transition: all 0.3s ease; }
+.ex-article .images-block figure:hover { border-color: #94a3b8; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.ex-article .images-block img { width: 100%; height: auto; display: block; }
+.ex-article .images-block figcaption { padding: 8px 12px; font-size: 12px; color: #64748b; border-top: 1px solid #e5e7eb; background: #fff; }
+.ex-article .ex-card { padding: 14px; border-radius: 14px; margin: 0 0 14px; }
+.ex-article .ex-card b { font-weight: 700; }
+.ex-card-neutral { background: #f8fafc; border: 1px solid #e5e7eb; }
+.ex-card-cyan { background: #ecfeff; border: 1px solid #a5f3fc; }
+.ex-card-green { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.ex-card-green-strong { background: #f0fdf4; border: 2px solid #10b981; }
+.ex-card-orange { background: #fff7ed; border: 1px solid #fed7aa; }
+.ex-card-orange-strong { background: #fff7ed; border: 2px solid #fb923c; }
+.ex-card-violet { background: #f5f3ff; border: 1px solid #ddd6fe; }
+.ex-card-bordered { background: #fff; border: 2px solid #06b6d4; padding: 16px; }
+.ex-article .ex-inner { background: #f8fafc; padding: 12px; border-radius: 8px; margin-top: 8px; }
+.ex-article .ex-inner-cyan { background: #ecfeff; padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 14px; }
+.ex-article .ex-inner-green { background: #f0fdf4; padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 14px; }
+.ex-article .ex-inner-violet { background: #f5f3ff; padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 14px; }
+.ex-article .ex-inner-orange { background: #fff7ed; padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 14px; }
+.ex-article .ex-dashed { background: #fff; border: 1px dashed #cbd5e1; padding: 10px 12px; border-radius: 12px; margin: 0 0 12px; }
+.ex-article .ex-nav-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 0 0 18px; }
+.ex-article .ex-nav-btn { padding: 10px 12px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-size: 14px; }
+.ex-article .ex-nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.ex-article .ex-nav-sub { font-size: 13px; color: #475569; margin-top: 2px; }
+.ex-article .ex-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 0 0 14px; }
+.ex-article .ex-summary-bg { background: #f8fafc; border: 1px solid #e5e7eb; padding: 18px; border-radius: 14px; margin: 0 0 14px; }
+.ex-article .ex-summary-card { background: #fff; padding: 16px; border-radius: 12px; margin: 0 0 14px; }
+.ex-article figure.ex-fig { margin: 0 0 14px; overflow: hidden; border-radius: 12px; border: 1px solid #e5e7eb; background: #f8fafc; }
+.ex-article figure.ex-fig img { width: 100%; height: auto; display: block; }
+.ex-article figure.ex-fig figcaption { padding: 8px 12px; font-size: 12px; color: #64748b; border-top: 1px solid #e5e7eb; background: #fff; }
+.ex-article h2 { scroll-margin-top: 110px; }

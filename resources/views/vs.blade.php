@@ -12,13 +12,11 @@
         />
     @endpush
 
-    <nav class="text-sm text-zinc-500">
-        <a href="{{ route('home') }}" class="hover:text-indigo-600">{{ __('site.nav.home') }}</a>
-        <span class="mx-1">/</span>
-        <a href="{{ route('tools.index') }}" class="hover:text-indigo-600">{{ __('site.nav.tools') }}</a>
-        <span class="mx-1">/</span>
-        <span class="text-zinc-900">{{ $title }}</span>
-    </nav>
+    <x-breadcrumbs :items="[
+        ['label' => __('site.nav.home'), 'url' => route('home')],
+        ['label' => __('site.nav.tools'), 'url' => route('tools.index')],
+        ['label' => $title],
+    ]"/>
 
     <h1 class="mt-3 text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">{{ $title }}</h1>
 

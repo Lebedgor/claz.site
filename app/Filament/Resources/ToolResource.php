@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\ToolStatus;
 use App\Enums\ToolType;
+use App\Filament\Forms\Components\MediaPickerField;
 use App\Filament\Resources\ToolResource\Pages;
 use App\Filament\Resources\ToolResource\RelationManagers\CriteriaRelationManager;
 use App\Models\Tool;
@@ -21,6 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ToolResource extends Resource
 {
@@ -29,6 +31,21 @@ class ToolResource extends Resource
     protected static \UnitEnum|string|null $navigationGroup = 'Catalog';
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
+
+    public static function resolveRecordRouteBinding(int | string $key, ?\Closure $modifyQuery = null): ?Model
+    {
+        $query = static::getRecordRouteBindingEloquentQuery();
+
+        if ($modifyQuery) {
+            $query = $modifyQuery($query) ?? $query;
+        }
+
+        $field = is_numeric($key) ? null : 'slug->' . app()->getLocale();
+
+        return app(static::getModel())
+            ->resolveRouteBindingQuery($query, $key, $field)
+            ->first();
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -46,6 +63,9 @@ class ToolResource extends Resource
             Select::make('type')->options(ToolType::class)->default(ToolType::Plugin->value)->required(),
             Select::make('status')->options(ToolStatus::class)->default(ToolStatus::Draft->value)->required(),
             TextInput::make('vendor')->maxLength(255),
+            MediaPickerField::make('logo')
+                ->label('Logo')
+                ->disk('public'),
         ]);
     }
 

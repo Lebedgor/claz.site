@@ -1,5 +1,5 @@
 {!! '<'.'?xml version="1.0" encoding="UTF-8"?>' !!}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
     <title>{{ config('app.name') }} — {{ __('site.tagline') }}</title>
     <link>{{ url('/') }}</link>
@@ -16,6 +16,10 @@
 @if ($article['category'] !== null)
         <category>{{ $article['category'] }}</category>
 @endif
+@if ($article['cover'] !== null)
+        <enclosure url="{{ url($article['cover']) }}" type="image/{{ pathinfo($article['cover'], PATHINFO_EXTENSION) === 'png' ? 'png' : 'jpeg' }}" length="0"/>
+@endif
+        <content:encoded><![CDATA[{{ str_replace(']]>', ']]&gt;', $article['content']) }}]]></content:encoded>
     </item>
 @endforeach
 </channel>

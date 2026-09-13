@@ -1,0 +1,31 @@
+@props(['items'])
+
+@php
+    $crumbs = collect($items)->values()->all();
+    $breadcrumbLd = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => collect($crumbs)->map(fn (array $crumb, int $i): array => [
+            '@type' => 'ListItem',
+            'position' => $i + 1,
+            'name' => strval($crumb['label']),
+            'item' => filled($crumb['url'] ?? null) ? $crumb['url'] : url()->current(),
+        ])->all(),
+    ];
+@endphp
+
+<nav aria-label="Breadcrumb" class="text-sm text-zinc-500">
+    <ol class="flex flex-wrap items-center gap-y-1">
+        @foreach ($crumbs as $i => $crumb)
+            <li class="flex items-center">
+                @if ($i < count($crumbs) - 1 && filled($crumb['url'] ?? null))
+                    <a href="{{ $crumb['url'] }}" class="hover:text-indigo-600">{{ $crumb['label'] }}</a>
+                    <span class="mx-1" aria-hidden="true">/</span>
+                @else
+                    <span class="text-zinc-900" aria-current="page">{{ $crumb['label'] }}</span>
+                @endif
+            </li>
+        @endforeach
+    </ol>
+</nav>
+<script type="application/ld+json">@json($breadcrumbLd)</script>

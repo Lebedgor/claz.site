@@ -10,13 +10,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable(['type', 'status', 'name', 'slug', 'vendor', 'description', 'logo', 'rating_avg', 'published_at'])]
-class Tool extends Model
+class Tool extends Model implements HasMedia
 {
     use HasPublicSlugRouting;
     use HasTranslations;
+    use InteractsWithMedia;
     use SoftDeletes;
 
     /** @var list<string> */
@@ -30,6 +33,17 @@ class Tool extends Model
             'rating_avg' => 'decimal:2',
             'published_at' => 'datetime',
         ];
+    }
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        $logo = trim((string) $this->getRawOriginal('logo'));
+
+        if ($logo === '') {
+            return null;
+        }
+
+        return str_starts_with($logo, 'http') || str_starts_with($logo, '/storage') ? $logo : asset('storage/'.$logo);
     }
 
     /** @return BelongsToMany<Criterion, $this, ToolCriterion, 'pivot'> */

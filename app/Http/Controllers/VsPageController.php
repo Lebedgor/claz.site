@@ -49,15 +49,30 @@ class VsPageController extends Controller
             '@type' => 'ItemList',
             'name' => $comparison->getTranslation('title', $locale),
             'url' => url("/vs/{$slugs}"),
-            'itemListElement' => $comparison->items->map(fn (ComparisonItem $item, int $index): array => [
-                '@type' => 'ListItem',
-                'position' => $index + 1,
-                'item' => [
-                    '@type' => 'Product',
-                    'name' => $item->tool?->getTranslation('name', $locale),
-                    'url' => $item->tool !== null ? route('tools.show', $item->tool) : null,
-                ],
-            ])->all(),
+            'itemListElement' => $comparison->items->map(function (ComparisonItem $item, int $index) use ($locale): array {
+                $review = $item->score !== null ? [
+                    '@type' => 'Review',
+                    'author' => ['@type' => 'Organization', 'name' => config('app.name')],
+                    'reviewRating' => [
+                        '@type' => 'Rating',
+                        'ratingValue' => (float) $item->score,
+                        'bestRating' => 10,
+                        'worstRating' => 0,
+                    ],
+                    'reviewBody' => strval($item->getTranslation('verdict', $locale)) ?: null,
+                ] : null;
+
+                return [
+                    '@type' => 'ListItem',
+                    'position' => $index + 1,
+                    'item' => [
+                        '@type' => 'Product',
+                        'name' => $item->tool?->getTranslation('name', $locale),
+                        'url' => $item->tool !== null ? route('tools.show', $item->tool) : null,
+                        'review' => $review,
+                    ],
+                ];
+            })->all(),
         ]];
 
         return view('vs', [

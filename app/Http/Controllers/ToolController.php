@@ -27,6 +27,7 @@ class ToolController extends Controller
             ->get();
 
         $reviews = $this->editorialReviews($tool);
+        $logoUrl = $tool->logo_url;
 
         $jsonLd = [[
             '@context' => 'https://schema.org',
@@ -34,6 +35,8 @@ class ToolController extends Controller
             'name' => $tool->getTranslation('name', app()->getLocale()),
             'description' => strval($tool->getTranslation('description', app()->getLocale())),
             'url' => route('tools.show', $tool),
+            'image' => $logoUrl,
+            'brand' => filled($tool->vendor) ? ['@type' => 'Brand', 'name' => $tool->vendor] : null,
             'aggregateRating' => $tool->rating_avg !== null && $reviews !== []
                 ? [
                     '@type' => 'AggregateRating',

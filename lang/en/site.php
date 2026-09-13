@@ -7,16 +7,21 @@ return [
         'home' => 'Home',
         'tools' => 'Tools',
         'categories' => 'Categories',
+        'menu' => 'Menu',
+        'browse' => 'Browse tools',
     ],
     'home' => [
         'hero_title' => 'Compare before you choose',
         'hero_subtitle' => 'Side-by-side tables of plugins, web services and AI tools — with criteria, scores and honest verdicts.',
+        'hero_badge' => 'Independent, hands-on reviews',
         'latest_articles' => 'Latest comparisons',
         'top_tools' => 'Top rated tools',
         'browse_all_tools' => 'Browse all tools',
+        'view_all' => 'View all',
     ],
     'category' => [
         'articles_in' => 'Articles in :name',
+        'meta_description' => 'In-depth, honest comparisons of the best :name — hands-on tables, criteria scores and clear verdicts for every use case.',
         'empty' => 'No articles in this category yet.',
     ],
     'article' => [
@@ -32,6 +37,7 @@ return [
     ],
     'tools_index' => [
         'title' => 'Tools catalog',
+        'meta_description' => 'Browse our independently rated plugins, web services and AI tools — filter by type and compare scores before you choose.',
         'all' => 'All',
         'search_placeholder' => 'Search tools…',
         'empty' => 'No tools found.',
@@ -63,5 +69,15 @@ return [
     ],
     'footer' => [
         'rights' => 'All rights reserved.',
+        'explore' => 'Explore',
+        'categories' => 'Categories',
+        'sitemap' => 'Sitemap',
+        'rss' => 'RSS feed',
+    ],
+    'llms' => [
+        'about' => 'Every article is a hands-on comparison: we evaluate tools against a fixed set of criteria, publish score tables and give a verdict for each tool. This file lists all content for quick reference.',
+        'published' => 'Published',
+        'updated' => 'Updated',
+        'url' => 'URL',
     ],
 ];

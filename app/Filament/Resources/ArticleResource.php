@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ArticleStatus;
+use App\Enums\EditorMode;
+use App\Filament\Forms\Components\MediaPickerField;
 use App\Filament\Resources\ArticleResource\Pages;
 use App\Models\Article;
 use App\Models\Category;
@@ -16,15 +18,19 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -49,7 +55,78 @@ class ArticleResource extends Resource
                         TextInput::make('slug.en')->label('Slug')->maxLength(255)
                             ->helperText('Leave empty to generate from the title'),
                         Textarea::make('excerpt.en')->label('Excerpt')->rows(3),
-                        CodeEditor::make('body_html.en')->label('Body (HTML)')->columnSpanFull()->language(Language::Html),
+                        Radio::make('editor_mode')
+                            ->label('Body editor')
+                            ->options([
+                                EditorMode::Tiptap->value => 'TipTap (visual)',
+                                EditorMode::Html->value => 'Custom HTML (source)',
+                            ])
+                            ->default(EditorMode::Tiptap->value)
+                            ->live()
+                            ->afterStateUpdated(function ($state, $old, Set $set, Get $get, Component $component): void {
+                                if ($old === EditorMode::Html->value) {
+                                    if (filled($get('body_html_src'))) {
+                                        $set('body_tiptap', strval($get('body_html_src')));
+                                    }
+
+                                    return;
+                                }
+
+                                $richEditor = $component->getContainer()->getComponentByStatePath('body_tiptap', true);
+
+                                if ($richEditor instanceof RichEditor && is_array($body = $get('body_tiptap'))) {
+                                    $editor = $richEditor->getTipTapEditor();
+                                    $editor->setContent($body);
+                                    $set('body_html_src', (string) $editor->getHtml());
+
+                                    return;
+                                }
+
+                                if (filled($body = $get('body_tiptap'))) {
+                                    $set('body_html_src', strval($body));
+                                }
+                            })
+                            ->columnSpanFull(),
+                        RichEditor::make('body_tiptap')
+                            ->label('Body')
+                            ->columnSpanFull()
+                            ->visible(fn (Get $get): bool => ($get('editor_mode') ?? EditorMode::Tiptap->value) === EditorMode::Tiptap->value)
+                            ->afterStateHydrated(function (RichEditor $component, ?Article $record): void {
+                                if ($record === null) {
+                                    return;
+                                }
+
+                                $component->state($record->getTranslation('body_html', app()->getLocale()));
+                            })
+                            ->toolbarButtons([
+                                'attachFiles',
+                                'blockquote',
+                                'bold',
+                                'bulletList',
+                                'codeBlock',
+                                'h2',
+                                'h3',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'table',
+                                'undo',
+                                'underline',
+                            ]),
+                        CodeEditor::make('body_html_src')
+                            ->label('Body (HTML)')
+                            ->columnSpanFull()
+                            ->language(Language::Html)
+                            ->visible(fn (Get $get): bool => ($get('editor_mode') ?? EditorMode::Tiptap->value) === EditorMode::Html->value)
+                            ->afterStateHydrated(function (CodeEditor $component, ?Article $record): void {
+                                if ($record === null) {
+                                    return;
+                                }
+
+                                $component->state($record->getTranslation('body_html', app()->getLocale()));
+                            }),
                     ]),
                     Tab::make('SEO')->schema([
                         TextInput::make('meta_title.en')->label('Meta title')->maxLength(255),
@@ -70,11 +147,9 @@ class ArticleResource extends Resource
                 ->preload()
                 ->relationship('tags', 'name')
                 ->getOptionLabelFromRecordUsing(fn (Tag $record): string => $record->getTranslation('name', 'en')),
-            FileUpload::make('cover')
-                ->image()
-                ->disk('public')
-                ->directory('covers')
-                ->maxSize(4096),
+            MediaPickerField::make('cover')
+                ->label('Cover image')
+                ->disk('public'),
             Select::make('status')->options(ArticleStatus::class)->default(ArticleStatus::Draft->value)->required(),
             DateTimePicker::make('published_at'),
             Section::make('Comparison blocks')

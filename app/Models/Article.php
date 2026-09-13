@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ArticleStatus;
+use App\Enums\EditorMode;
 use App\Models\Concerns\HasPublicSlugRouting;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,16 +12,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
 #[Fillable([
     'category_id', 'title', 'slug', 'excerpt', 'body_html', 'cover', 'status',
     'published_at', 'reading_time', 'meta_title', 'meta_description',
 ])]
-class Article extends Model
+class Article extends Model implements HasMedia
 {
     use HasPublicSlugRouting;
     use HasTranslations;
+    use InteractsWithMedia;
     use SoftDeletes;
 
     /** @var list<string> */
@@ -39,9 +43,21 @@ class Article extends Model
     {
         return [
             'status' => ArticleStatus::class,
+            'editor_mode' => EditorMode::class,
             'published_at' => 'datetime',
             'reading_time' => 'int',
         ];
+    }
+
+    public function getCoverUrlAttribute(): ?string
+    {
+        $cover = trim((string) $this->getRawOriginal('cover'));
+
+        if ($cover === '') {
+            return null;
+        }
+
+        return str_starts_with($cover, 'http') || str_starts_with($cover, '/storage') ? $cover : asset('storage/'.$cover);
     }
 
     /** @return BelongsTo<Category, $this> */

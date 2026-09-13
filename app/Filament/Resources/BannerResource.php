@@ -3,13 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Enums\BannerPlacement;
+use App\Filament\Forms\Components\MediaPickerField;
 use App\Filament\Resources\BannerResource\Pages;
 use App\Models\Banner;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -33,7 +33,9 @@ class BannerResource extends Resource
         return $schema->components([
             Select::make('placement')->options(BannerPlacement::class)->default(BannerPlacement::Header->value)->required(),
             TextInput::make('title')->maxLength(255),
-            FileUpload::make('image')->image()->disk('public')->directory('banners')->maxSize(4096),
+            MediaPickerField::make('image')
+                ->label('Banner image')
+                ->disk('public'),
             Textarea::make('html')->rows(4)->helperText('Custom HTML instead of an image'),
             TextInput::make('url')->maxLength(2048),
             DateTimePicker::make('starts_at'),

@@ -1,6 +1,6 @@
 @php
     $locale = app()->getLocale();
-    $coverUrl = $article->cover !== null ? asset('storage/'.$article->cover) : null;
+    $coverUrl = $article->cover_url;
 @endphp
 
 <x-layouts.public>
@@ -11,20 +11,19 @@
             type="article"
             :image="$coverUrl"
             :json-ld="$jsonLd"
+            :published-time="$article->published_at?->toIso8601String()"
+            :modified-time="$article->updated_at?->toIso8601String()"
+            :section="$article->category?->getTranslation('name', $locale)"
+            :tags="$article->tags->map(fn ($tag) => $tag->getTranslation('name', $locale))->all()"
+            :robots="$robots ?? null"
         />
     @endpush
 
-    <nav class="text-sm text-zinc-500">
-        <a href="{{ route('home') }}" class="hover:text-indigo-600">{{ __('site.nav.home') }}</a>
-        @if ($article->category !== null)
-            <span class="mx-1">/</span>
-            <a href="{{ route('category.show', $article->category) }}" class="hover:text-indigo-600">
-                {{ $article->category->getTranslation('name', $locale) }}
-            </a>
-        @endif
-        <span class="mx-1">/</span>
-        <span class="text-zinc-900">{{ \Illuminate\Support\Str::limit($article->getTranslation('title', $locale), 60) }}</span>
-    </nav>
+    <x-breadcrumbs :items="array_filter([
+        ['label' => __('site.nav.home'), 'url' => route('home')],
+        $article->category !== null ? ['label' => $article->category->getTranslation('name', $locale), 'url' => route('category.show', $article->category)] : null,
+        ['label' => \Illuminate\Support\Str::limit($article->getTranslation('title', $locale), 60)],
+    ])"/>
 
     <article class="mt-4">
         <h1 class="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
@@ -34,18 +33,20 @@
         <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-zinc-500">
             @if ($article->category !== null)
                 <a href="{{ route('category.show', $article->category) }}"
-                   class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-100">
+                   class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-100 transition hover:bg-indigo-100">
                     {{ $article->category->getTranslation('name', $locale) }}
                 </a>
             @endif
-            <span>{{ $article->published_at?->format('M j, Y') }}</span>
+            <time datetime="{{ $article->published_at?->toIso8601String() }}">{{ $article->published_at?->format('M j, Y') }}</time>
             @if ($article->reading_time !== null)
                 <span>&middot; {{ __('site.article.min_read', ['min' => $article->reading_time]) }}</span>
             @endif
         </div>
 
         @if ($coverUrl !== null)
-            <img src="{{ $coverUrl }}" alt="" class="mt-6 aspect-[16/9] w-full rounded-2xl object-cover">
+            <img src="{{ $coverUrl }}" alt="{{ $article->getTranslation('title', $locale) }}"
+                 fetchpriority="high" decoding="async"
+                 class="mt-6 aspect-[16/9] w-full rounded-2xl object-cover">
         @endif
 
         @if (filled($article->getTranslation('excerpt', $locale)))

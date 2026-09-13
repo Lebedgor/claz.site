@@ -9,9 +9,11 @@
         "php": "^8.3",
         "ezyang/htmlpurifier": "^4.19",
         "filament/filament": "^5.8",
+        "filament/spatie-laravel-media-library-plugin": "^5.0",
         "laravel/framework": "^13.17",
         "laravel/horizon": "^5.49",
         "laravel/tinker": "^3.0",
+        "php-ffmpeg/php-ffmpeg": "^1.4",
         "spatie/laravel-translatable": "^6.14"
     },
     "require-dev": {

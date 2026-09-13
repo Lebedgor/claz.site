@@ -26,10 +26,11 @@ class SitemapController extends Controller
         $articles = Article::query()->published()->orderByDesc('published_at')->get();
         $tools = Tool::query()->where('status', ToolStatus::Published->value)->orderBy('id')->get();
         $categories = Category::query()->orderBy('id')->get();
+        $latestUpdate = $articles->first()?->updated_at?->toIso8601String();
 
         $entries = [
-            ['loc' => url('/'), 'lastmod' => null],
-            ['loc' => route('tools.index'), 'lastmod' => null],
+            ['loc' => url('/'), 'lastmod' => $latestUpdate],
+            ['loc' => route('tools.index'), 'lastmod' => $latestUpdate],
         ];
 
         foreach ($articles as $article) {

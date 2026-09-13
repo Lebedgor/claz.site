@@ -27,12 +27,31 @@ class HomeController extends Controller
         return view('home', [
             'articles' => $articles,
             'tools' => $tools,
-            'jsonLd' => [[
-                '@context' => 'https://schema.org',
-                '@type' => 'WebSite',
-                'name' => config('app.name'),
-                'url' => url('/'),
-            ]],
+            'jsonLd' => [
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'WebSite',
+                    'name' => config('app.name'),
+                    'url' => url('/'),
+                    'description' => __('site.meta_description'),
+                    'inLanguage' => app()->getLocale(),
+                    'potentialAction' => [
+                        '@type' => 'SearchAction',
+                        'target' => [
+                            '@type' => 'EntryPoint',
+                            'urlTemplate' => url('/tools').'?search={search_term_string}',
+                        ],
+                        'query-input' => 'required name=search_term_string',
+                    ],
+                ],
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Organization',
+                    'name' => config('app.name'),
+                    'url' => url('/'),
+                    'description' => __('site.tagline'),
+                ],
+            ],
         ]);
     }
 }

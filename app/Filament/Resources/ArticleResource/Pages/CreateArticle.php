@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ArticleResource\Pages;
 
+use App\Enums\EditorMode;
 use App\Filament\Resources\ArticleResource;
 use App\Models\Article;
 use App\Support\ReadingTime;
@@ -18,7 +19,17 @@ class CreateArticle extends CreateRecord
             $data['slug']['en'] = Slugger::unique(Article::class, 'en', strval($data['title']['en'] ?? ''));
         }
 
-        $data['reading_time'] = ReadingTime::estimate($data['body_html']['en'] ?? null);
+        $body = ($data['editor_mode'] ?? EditorMode::Tiptap->value) === EditorMode::Html->value
+            ? ($data['body_html_src'] ?? null)
+            : ($data['body_tiptap'] ?? null);
+
+        if (is_array($body)) {
+            $body = null;
+        }
+
+        $data['body_html'] = ['en' => $body];
+        $data['reading_time'] = ReadingTime::estimate($body);
+        unset($data['body_tiptap'], $data['body_html_src']);
 
         return $data;
     }
