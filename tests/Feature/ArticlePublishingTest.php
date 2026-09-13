@@ -4,6 +4,7 @@ use App\Enums\ArticleStatus;
 use App\Filament\Resources\ArticleResource\Pages\EditArticle;
 use App\Models\Article;
 use App\Models\User;
+use App\Services\ArticleRenderer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 
@@ -43,4 +44,20 @@ it('unpublishes an article back to draft', function () {
         ->callAction('unpublish');
 
     expect($article->refresh()->status)->toBe(ArticleStatus::Draft);
+});
+
+it('forces muted on every video rendered from body_html', function () {
+    $article = Article::create([
+        'title' => ['en' => 'Video article'],
+        'slug' => ['en' => 'video-article'],
+        'body_html' => ['en' => '<video controls preload="metadata" src="/storage/uploads/a.mov"></video><video muted controls src="/storage/uploads/b.mov"></video><video src="/storage/uploads/c.mov" playsinline></video>'],
+        'status' => ArticleStatus::Published,
+        'published_at' => now(),
+    ]);
+
+    $html = app(ArticleRenderer::class)->render($article);
+
+    expect(substr_count($html, '<video'))->toBe(3)
+        ->and($html)->toContain('src="/storage/uploads/a.mov"')
+        ->and(substr_count($html, 'muted'))->toBe(3);
 });

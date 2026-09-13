@@ -38,6 +38,8 @@ class ArticleRenderer
 
         $banner = view('components.banner', ['placement' => BannerPlacement::InArticle->value])->render();
 
-        return $html.$extra.$banner;
+        $html = (string) preg_replace('/<video\b(?![^>]*\bmuted\b)/i', '<video muted', $html.$extra.$banner);
+
+        return $html;
     }
 }
