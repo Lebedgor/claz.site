@@ -25,11 +25,11 @@
             </p>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <a href="{{ route('tools.index', [], false) }}"
-                   class="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-indigo-700 shadow-lg shadow-indigo-950/20 transition hover:bg-indigo-50">
+                   class="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-indigo-700 shadow-lg shadow-indigo-950/20 transition hover:bg-indigo-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
                     {{ __('site.home.browse_all_tools') }}
                 </a>
                 <a href="#latest"
-                   class="rounded-xl px-6 py-3 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur transition hover:bg-white/10">
+                   class="rounded-xl px-6 py-3 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
                     {{ __('site.home.latest_articles') }}
                 </a>
             </div>
@@ -44,7 +44,7 @@
             @forelse ($articles as $article)
                 <x-article-card :article="$article" />
             @empty
-                <p class="text-sm text-zinc-500">{{ __('site.category.empty') }}</p>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('site.category.empty') }}</p>
             @endforelse
         </div>
     </section>

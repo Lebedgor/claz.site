@@ -26,14 +26,14 @@
     ])"/>
 
     <article class="mt-4">
-        <h1 class="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+        <h1 class="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
             {{ $article->getTranslation('title', $locale) }}
         </h1>
 
-        <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-zinc-500">
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
             @if ($article->category !== null)
                 <a href="{{ route('category.show', $article->category, false) }}"
-                   class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-100 transition hover:bg-indigo-100">
+                   class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-100 transition hover:bg-indigo-100 dark:bg-indigo-950 dark:text-indigo-400 dark:ring-indigo-800 dark:hover:bg-indigo-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                     {{ $article->category->getTranslation('name', $locale) }}
                 </a>
             @endif
@@ -50,7 +50,7 @@
         @endif
 
         @if (filled($article->getTranslation('excerpt', $locale)))
-            <p class="mt-6 border-l-4 border-indigo-200 pl-4 text-lg text-zinc-600">
+            <p class="mt-6 border-l-4 border-indigo-200 pl-4 text-lg text-zinc-600 dark:border-indigo-800 dark:text-zinc-400">
                 {{ $article->getTranslation('excerpt', $locale) }}
             </p>
         @endif
@@ -62,7 +62,7 @@
         @if ($article->tags->isNotEmpty())
             <div class="mt-8 flex flex-wrap gap-2">
                 @foreach ($article->tags as $tag)
-                    <span class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600">
+                    <span class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
                         #{{ $tag->getTranslation('name', $locale) }}
                     </span>
                 @endforeach
@@ -78,19 +78,19 @@
          class="fixed inset-0 z-50 hidden items-center justify-center bg-zinc-950/95 p-4 backdrop-blur-sm opacity-0 transition-opacity duration-200"
          role="dialog" aria-modal="true" aria-label="Media viewer">
         <button id="lightbox-close" type="button" aria-label="Close"
-                class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white">
+                class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
             </svg>
         </button>
         <button id="lightbox-prev" type="button" aria-label="Previous"
-                class="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white">
+                class="absolute left-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
             </svg>
         </button>
         <button id="lightbox-next" type="button" aria-label="Next"
-                class="absolute right-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white">
+                class="absolute right-4 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-zinc-300 ring-1 ring-white/15 backdrop-blur transition hover:bg-white/20 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
             </svg>

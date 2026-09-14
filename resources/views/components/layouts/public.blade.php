@@ -17,20 +17,26 @@
     <link rel="apple-touch-icon" href="/storage/uploads/favicons/favicon-192.png">
     <link rel="manifest" href="/site.webmanifest">
     @stack('head')
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </head>
 @php
     $isActiveHome = request()->routeIs('home');
     $isActiveArticles = request()->routeIs('articles.index');
     $isActiveTools = request()->routeIs('tools.index');
 @endphp
-<body class="min-h-screen bg-cream font-sans text-zinc-900 antialiased" x-data="{ menuOpen: false }">
-<header class="sticky top-0 z-30 border-b border-zinc-200/70 bg-white/80 backdrop-blur-xl">
+<body class="min-h-screen bg-cream font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100" x-data="{ menuOpen: false }">
+<header class="sticky top-0 z-30 border-b border-zinc-200/70 bg-white/80 backdrop-blur-xl dark:border-zinc-800/70 dark:bg-zinc-950/80">
     <div aria-hidden="true" class="h-0.5 bg-linear-to-r from-indigo-600 via-violet-600 to-fuchsia-500"></div>
     <div class="mx-auto flex max-w-6xl items-stretch justify-between gap-4 px-4 py-1.5">
-        <a href="{{ route('home', [], false) }}" class="flex items-center gap-1 self-center">
+        <a href="{{ route('home', [], false) }}" class="flex items-center gap-1 self-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-indigo-500">
             <img src="/storage/uploads/logo-light-transparent.png" alt=""
-                 aria-hidden="true" class="h-[70px] w-auto shrink-0"
-                 style="filter: drop-shadow(0px 0px 7px black)">
+                 aria-hidden="true" class="logo-glow-pulse-dark h-[70px] w-auto shrink-0 dark:hidden">
+            <img src="/storage/uploads/logo-dark-transparent.png" alt=""
+                 aria-hidden="true" class="logo-glow-pulse hidden h-[70px] w-auto shrink-0 dark:block">
             <span class="text-[28px] leading-none font-medium tracking-tight text-[#ff9100]"
                   style="text-shadow: 0 0 11px #00000059">
                 {{ config('app.name') }}.
@@ -40,18 +46,25 @@
         <div class="flex items-center gap-1 sm:gap-2">
             <nav aria-label="Main" class="hidden items-center gap-1 text-sm md:flex">
                 <a href="{{ route('home', [], false) }}"
-                   class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveHome ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
+                   class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 {{ $isActiveHome ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500 dark:text-zinc-100' : '' }}">
                     {{ __('site.nav.home') }}
                 </a>
                 <a href="{{ route('articles.index', [], false) }}"
-                   class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveArticles ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
+                   class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 {{ $isActiveArticles ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500 dark:text-zinc-100' : '' }}">
                     {{ __('site.nav.articles') }}
                 </a>
                 <a href="{{ route('tools.index', [], false) }}"
-                   class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 {{ $isActiveTools ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500' : '' }}">
+                   class="relative rounded-lg px-3 py-2 font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 {{ $isActiveTools ? 'font-semibold text-zinc-900 after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-indigo-500 after:to-fuchsia-500 dark:text-zinc-100' : '' }}">
                     {{ __('site.nav.tools') }}
                 </a>
             </nav>
+
+            <button type="button" x-data @click="$store.theme.toggle()"
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                    aria-label="Toggle dark mode">
+                <svg x-show="!$store.theme.dark" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>
+                <svg x-show="$store.theme.dark" x-cloak class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>
+            </button>
 
             <div x-data="{ catOpen: false }" class="relative hidden sm:block" @click.outside="catOpen = false">
                 <button type="button"
@@ -64,17 +77,17 @@
                 </button>
                 @if ($navCategories->isNotEmpty())
                     <div id="header-categories" x-show="catOpen" x-cloak x-transition.opacity.duration.150ms
-                         class="absolute top-full right-0 z-50 mt-2 min-w-full w-max max-w-[300px] max-h-[50vh] overflow-y-auto rounded-2xl bg-white p-2 shadow-xl ring-1 ring-zinc-200">
+                         class="absolute top-full right-0 z-50 mt-2 min-w-full w-max max-w-[300px] max-h-[50vh] overflow-y-auto rounded-2xl bg-white p-2 shadow-xl ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-700">
                         @foreach ($navCategories as $navCategory)
                             <a href="{{ route('category.show', $navCategory, false) }}"
-                               class="block rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-zinc-700 transition hover:bg-indigo-50 hover:text-indigo-700">
+                               class="block rounded-lg px-3 py-2 text-sm font-medium whitespace-nowrap text-zinc-700 transition hover:bg-indigo-50 hover:text-indigo-700 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-indigo-400">
                                 {{ $navCategory->getTranslation('name', app()->getLocale()) }}
                             </a>
                         @endforeach
                     </div>
                 @endif
             </div>
-            <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 md:hidden"
+            <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 md:hidden"
                     @click="menuOpen = !menuOpen" :aria-expanded="menuOpen" aria-label="{{ __('site.nav.menu') }}" aria-controls="mobile-menu">
                 <span x-show="!menuOpen" x-cloak>
                     <x-heroicon-o-bars-3 class="h-6 w-6" />
@@ -87,18 +100,18 @@
     </div>
 
     <div id="mobile-menu" x-show="menuOpen" x-cloak x-transition.opacity.duration.150ms
-         class="border-t border-zinc-200/70 bg-white/95 px-4 py-4 backdrop-blur md:hidden">
+         class="border-t border-zinc-200/70 bg-white/95 px-4 py-4 backdrop-blur dark:border-zinc-800/70 dark:bg-zinc-950/95 md:hidden">
         <nav aria-label="Mobile" class="flex flex-col gap-1 text-sm">
             <a href="{{ route('home', [], false) }}" @click="menuOpen = false"
-               class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveHome ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
+               class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 {{ $isActiveHome ? 'bg-indigo-50 font-semibold text-indigo-700 dark:bg-zinc-800 dark:text-indigo-400' : '' }}">
                 {{ __('site.nav.home') }}
             </a>
             <a href="{{ route('articles.index', [], false) }}" @click="menuOpen = false"
-               class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveArticles ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
+               class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 {{ $isActiveArticles ? 'bg-indigo-50 font-semibold text-indigo-700 dark:bg-zinc-800 dark:text-indigo-400' : '' }}">
                 {{ __('site.nav.articles') }}
             </a>
             <a href="{{ route('tools.index', [], false) }}" @click="menuOpen = false"
-               class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 {{ $isActiveTools ? 'bg-indigo-50 font-semibold text-indigo-700' : '' }}">
+               class="rounded-xl px-3 py-2.5 font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 {{ $isActiveTools ? 'bg-indigo-50 font-semibold text-indigo-700 dark:bg-zinc-800 dark:text-indigo-400' : '' }}">
                 {{ __('site.nav.tools') }}
             </a>
             <a href="{{ route('tools.index', [], false) }}" @click="menuOpen = false"
@@ -108,11 +121,11 @@
             </a>
         </nav>
         @if ($navCategories->isNotEmpty())
-            <div class="mt-3 border-t border-zinc-100 pt-3">
+            <div class="mt-3 border-t border-zinc-100 pt-3 dark:border-zinc-800">
                 <div class="flex flex-wrap gap-2">
                     @foreach ($navCategories as $navCategory)
                         <a href="{{ route('category.show', $navCategory, false) }}" @click="menuOpen = false"
-                           class="rounded-full bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-indigo-50 hover:text-indigo-700">
+                           class="rounded-full bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:bg-indigo-50 hover:text-indigo-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-indigo-400">
                             {{ $navCategory->getTranslation('name', app()->getLocale()) }}
                         </a>
                     @endforeach
@@ -130,14 +143,14 @@
     {{ $slot }}
 </main>
 
-<footer class="mt-16 bg-zinc-950 text-zinc-400">
+<footer class="mt-16 bg-zinc-950 text-zinc-400 dark:bg-zinc-900">
     <div aria-hidden="true" class="h-px bg-linear-to-r from-indigo-500 via-fuchsia-500 to-transparent"></div>
     <div class="mx-auto max-w-6xl px-4 py-12">
         <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
             <div>
                 <a href="{{ route('home', [], false) }}" class="flex items-center gap-3">
                     <img src="/storage/uploads/logo-dark-transparent.png" alt=""
-                         aria-hidden="true" class="h-20 w-auto shrink-0">
+                         aria-hidden="true" class="logo-glow-pulse h-20 w-auto shrink-0">
                     <span class="text-xl font-bold tracking-tight text-white">
                         {{ config('app.name') }}<span class="text-gradient">.</span>
                     </span>
@@ -175,5 +188,18 @@
         </div>
     </div>
 </footer>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('theme', {
+            dark: document.documentElement.classList.contains('dark'),
+            toggle() {
+                this.dark = !this.dark;
+                document.documentElement.classList.toggle('dark', this.dark);
+                localStorage.setItem('theme', this.dark ? 'dark' : 'light');
+            }
+        });
+    });
+</script>
 </body>
 </html>

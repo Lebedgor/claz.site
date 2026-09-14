@@ -3,6 +3,8 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
@@ -31,5 +33,64 @@
     ::selection {
         background-color: var(--color-indigo-600);
         color: white;
+    }
+
+    *:focus-visible {
+        outline: 2px solid var(--color-indigo-500);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    button:not(:disabled),
+    [role='button']:not(:disabled) {
+        cursor: pointer;
+    }
+}
+
+@keyframes logo-glow-pulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, .35)) drop-shadow(0 0 14px rgba(255, 255, 255, .15));
+    }
+    50% {
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, .6)) drop-shadow(0 0 22px rgba(255, 255, 255, .35));
+    }
+}
+
+.logo-glow-pulse {
+    animation: logo-glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes logo-glow-pulse-ambient {
+    0%, 100% {
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, .8)) drop-shadow(0 0 12px rgba(255, 255, 255, .5)) drop-shadow(0 0 28px rgba(255, 255, 255, .55)) drop-shadow(0 0 60px rgba(255, 255, 255, .4));
+    }
+    50% {
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, .9)) drop-shadow(0 0 16px rgba(255, 255, 255, .7)) drop-shadow(0 0 40px rgba(255, 255, 255, .8)) drop-shadow(0 0 90px rgba(255, 255, 255, .55));
+    }
+}
+
+.logo-glow-pulse-ambient {
+    animation: logo-glow-pulse-ambient 3s ease-in-out infinite;
+}
+
+@keyframes logo-glow-pulse-dark {
+    0%, 100% {
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, .35)) drop-shadow(0 0 14px rgba(0, 0, 0, .15));
+    }
+    50% {
+        filter: drop-shadow(0 0 6px rgba(0, 0, 0, .6)) drop-shadow(0 0 22px rgba(0, 0, 0, .35));
+    }
+}
+
+.logo-glow-pulse-dark {
+    animation: logo-glow-pulse-dark 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logo-glow-pulse,
+    .logo-glow-pulse-ambient,
+    .logo-glow-pulse-dark {
+        animation: none;
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, .5));
     }
 }

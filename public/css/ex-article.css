@@ -36,3 +36,30 @@
 .ex-article figure.ex-fig img { width: 100%; height: auto; display: block; }
 .ex-article figure.ex-fig figcaption { padding: 8px 12px; font-size: 12px; color: #64748b; border-top: 1px solid #e5e7eb; background: #fff; }
 .ex-article h2 { scroll-margin-top: 110px; }
+
+.dark .ex-article h2 { color: #e4e4e7; }
+.dark .ex-article p { color: #d4d4d8; }
+.dark .ex-article li { color: #d4d4d8; }
+.dark .ex-article hr { border-top-color: #3f3f46; }
+.dark .ex-article .images-block figure { border-color: #3f3f46; background: #18181b; }
+.dark .ex-article .images-block figure:hover { border-color: #52525b; }
+.dark .ex-article .images-block figcaption { border-top-color: #3f3f46; background: #27272a; color: #a1a1aa; }
+.dark .ex-card-neutral { background: #18181b; border-color: #3f3f46; }
+.dark .ex-card-cyan { background: #164e63; border-color: #155e75; }
+.dark .ex-card-green { background: #14532d; border-color: #166534; }
+.dark .ex-card-green-strong { background: #14532d; border-color: #10b981; }
+.dark .ex-card-orange { background: #7c2d12; border-color: #9a3412; }
+.dark .ex-card-orange-strong { background: #7c2d12; border-color: #fb923c; }
+.dark .ex-card-violet { background: #3b0764; border-color: #4c1d95; }
+.dark .ex-card-bordered { background: #18181b; border-color: #06b6d4; }
+.dark .ex-article .ex-inner { background: #27272a; }
+.dark .ex-article .ex-inner-cyan { background: #164e63; }
+.dark .ex-article .ex-inner-green { background: #14532d; }
+.dark .ex-article .ex-inner-violet { background: #3b0764; }
+.dark .ex-article .ex-inner-orange { background: #7c2d12; }
+.dark .ex-article .ex-dashed { background: #18181b; border-color: #3f3f46; }
+.dark .ex-article .ex-nav-sub { color: #a1a1aa; }
+.dark .ex-article .ex-summary-bg { background: #18181b; border-color: #3f3f46; }
+.dark .ex-article .ex-summary-card { background: #27272a; }
+.dark .ex-article figure.ex-fig { border-color: #3f3f46; background: #18181b; }
+.dark .ex-article figure.ex-fig figcaption { border-top-color: #3f3f46; background: #27272a; color: #a1a1aa; }

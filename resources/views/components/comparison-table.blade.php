@@ -24,17 +24,17 @@
     };
 @endphp
 
-<section class="my-10 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-    <div class="border-b border-zinc-100 p-5">
-        <h2 class="text-xl font-semibold text-zinc-900">{{ $comparison->getTranslation('title', $locale) }}</h2>
+<section class="my-10 overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div class="border-b border-zinc-100 p-5 dark:border-zinc-800">
+        <h2 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">{{ $comparison->getTranslation('title', $locale) }}</h2>
         @if (filled($comparison->getTranslation('intro', $locale)))
-            <p class="mt-2 text-sm text-zinc-600">{{ $comparison->getTranslation('intro', $locale) }}</p>
+            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $comparison->getTranslation('intro', $locale) }}</p>
         @endif
     </div>
     <div class="overflow-x-auto p-5">
         <table class="w-full min-w-[640px] text-left text-sm">
             <thead>
-                <tr class="border-b border-zinc-200 text-xs uppercase tracking-wide text-zinc-500">
+                <tr class="border-b border-zinc-200 text-xs uppercase tracking-wide text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
                     <th class="min-w-[150px] py-2 pr-4 font-semibold">{{ __('site.comparison.tool') }}</th>
                     <th class="w-16 py-2 pr-4 font-semibold">{{ __('site.comparison.score') }}</th>
                     @foreach ($criteria as $criterion)
@@ -46,16 +46,16 @@
             </thead>
             <tbody>
                 @foreach ($comparison->items as $item)
-                    <tr class="border-b border-zinc-100 align-top">
-                        <td class="py-3 pr-4 font-medium text-zinc-900">
+                    <tr class="border-b border-zinc-100 align-top dark:border-zinc-800">
+                        <td class="py-3 pr-4 font-medium text-zinc-900 dark:text-zinc-100">
                             <a href="{{ $item->tool !== null ? route('tools.show', $item->tool, false) : '#' }}"
-                               class="hover:text-indigo-700">
+                               class="hover:text-indigo-700 dark:hover:text-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                                 {{ $item->tool?->getTranslation('name', $locale) ?? '—' }}
                             </a>
                         </td>
                         <td class="whitespace-nowrap py-3 pr-4">
                             @if ($item->score !== null)
-                                <span class="rounded-lg bg-indigo-50 px-2 py-1 font-semibold text-indigo-700">
+                                <span class="rounded-lg bg-indigo-50 px-2 py-1 font-semibold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-400">
                                     {{ number_format((float) $item->score, 1) }}
                                 </span>
                             @else
@@ -64,9 +64,9 @@
                         </td>
                         @foreach ($criteria as $criterion)
                             @php $scoreRow = $item->scores->firstWhere('criteria_id', $criterion->getKey()); @endphp
-                            <td class="whitespace-nowrap py-3 pr-3 text-center text-zinc-700">{{ $formatValue($scoreRow?->value, $criterion->kind->value) }}</td>
+                            <td class="whitespace-nowrap py-3 pr-3 text-center text-zinc-700 dark:text-zinc-300">{{ $formatValue($scoreRow?->value, $criterion->kind->value) }}</td>
                         @endforeach
-                        <td class="py-3 pr-4 leading-relaxed text-zinc-600">{{ $item->getTranslation('verdict', $locale) }}</td>
+                        <td class="py-3 pr-4 leading-relaxed text-zinc-600 dark:text-zinc-400">{{ $item->getTranslation('verdict', $locale) }}</td>
                         <td class="py-3">
                             @php $link = $item->tool?->links->sortBy('sort_order')->first(); @endphp
                             @if ($link !== null)
@@ -75,7 +75,7 @@
                                    rel="sponsored nofollow noopener"
                                    title="{{ $link->getTranslation('anchor', $locale) ?: __('site.tool.visit') }}"
                                    aria-label="{{ $link->getTranslation('anchor', $locale) ?: __('site.tool.visit') }}"
-                                   class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-400 transition hover:border-indigo-300 hover:text-indigo-600">
+                                   class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-200 text-zinc-400 transition hover:border-indigo-300 hover:text-indigo-600 dark:border-zinc-700 dark:hover:border-indigo-600 dark:hover:text-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                                     <x-heroicon-o-arrow-top-right-on-square class="h-4 w-4" />
                                 </a>
                             @endif
@@ -86,8 +86,8 @@
         </table>
     </div>
     @if (filled($comparison->getTranslation('verdict', $locale)))
-        <div class="border-t border-zinc-100 bg-zinc-50/60 p-5 text-sm text-zinc-700">
-            <strong class="text-zinc-900">{{ __('site.comparison.verdict') }}:</strong>
+        <div class="border-t border-zinc-100 bg-zinc-50/60 p-5 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300">
+            <strong class="text-zinc-900 dark:text-zinc-100">{{ __('site.comparison.verdict') }}:</strong>
             {{ $comparison->getTranslation('verdict', $locale) }}
         </div>
     @endif
