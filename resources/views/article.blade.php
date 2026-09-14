@@ -55,7 +55,7 @@
             </p>
         @endif
 
-        <div class="ex-article" style="line-height:1.55; color:#1f2937; font-size:15px;">
+        <div class="ex-article" style="line-height:1.55; font-size:15px;">
             {!! $body !!}
         </div>
 

@@ -1,8 +1,18 @@
-.ex-article h2 { margin: 0 0 10px; font-size: 22px; font-weight: 700; scroll-margin-top: 110px; }
+.ex-article h2 { color: #1f2937; margin: 0 0 10px; font-size: 22px; font-weight: 700; scroll-margin-top: 110px; }
 .ex-article p { margin: 0 0 12px; }
 .ex-article ul { margin: 0 0 12px; padding-left: 18px; }
 .ex-article li { margin-top: 4px; }
 .ex-article hr { border: none; border-top: 1px solid #e5e7eb; margin: 18px 0; }
+.ex-article strong { font-weight: 700; }
+.ex-article a { color: #4f46e5; text-decoration: underline; text-underline-offset: 2px; }
+.ex-article a:hover { color: #4338ca; }
+.ex-article code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+.ex-article pre { background: #1e293b; color: #e2e8f0; padding: 14px; border-radius: 8px; overflow-x: auto; margin: 0 0 12px; }
+.ex-article pre code { background: transparent; padding: 0; color: inherit; }
+.ex-article blockquote { border-left: 3px solid #e5e7eb; padding-left: 14px; margin: 0 0 12px; color: #475569; }
+.ex-article table { width: 100%; border-collapse: collapse; margin: 0 0 14px; font-size: 14px; }
+.ex-article th { text-align: left; padding: 8px 10px; border-bottom: 2px solid #e5e7eb; font-weight: 600; color: #1f2937; }
+.ex-article td { padding: 8px 10px; border-bottom: 1px solid #e5e7eb; color: #334155; }
 .ex-article .images-block { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 0 0 14px; }
 .ex-article .images-block figure { margin: 0; overflow: hidden; border-radius: 12px; border: 1px solid #e5e7eb; background: #f8fafc; transition: all 0.3s ease; }
 .ex-article .images-block figure:hover { border-color: #94a3b8; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-2px); }
@@ -37,10 +47,21 @@
 .ex-article figure.ex-fig figcaption { padding: 8px 12px; font-size: 12px; color: #64748b; border-top: 1px solid #e5e7eb; background: #fff; }
 .ex-article h2 { scroll-margin-top: 110px; }
 
+.dark .ex-article { color: #d4d4d8; }
 .dark .ex-article h2 { color: #e4e4e7; }
 .dark .ex-article p { color: #d4d4d8; }
 .dark .ex-article li { color: #d4d4d8; }
 .dark .ex-article hr { border-top-color: #3f3f46; }
+.dark .ex-article strong { color: #e4e4e7; }
+.dark .ex-article a { color: #818cf8; }
+.dark .ex-article a:hover { color: #a5b4fc; }
+.dark .ex-article code { background: #27272a; color: #e4e4e7; }
+.dark .ex-article pre { background: #0f172a; color: #e2e8f0; }
+.dark .ex-article blockquote { border-left-color: #3f3f46; color: #a1a1aa; }
+.dark .ex-article th { border-bottom-color: #3f3f46; color: #e4e4e7; }
+.dark .ex-article td { border-bottom-color: #3f3f46; color: #d4d4d8; }
+.dark .ex-article tr { border-bottom-color: #3f3f46; }
+.dark .ex-article table { border-color: #3f3f46; }
 .dark .ex-article .images-block figure { border-color: #3f3f46; background: #18181b; }
 .dark .ex-article .images-block figure:hover { border-color: #52525b; }
 .dark .ex-article .images-block figcaption { border-top-color: #3f3f46; background: #27272a; color: #a1a1aa; }
@@ -63,3 +84,18 @@
 .dark .ex-article .ex-summary-card { background: #27272a; }
 .dark .ex-article figure.ex-fig { border-color: #3f3f46; background: #18181b; }
 .dark .ex-article figure.ex-fig figcaption { border-top-color: #3f3f46; background: #27272a; color: #a1a1aa; }
+
+.dark .ex-article svg text[fill="#334155"] { fill: #e4e4e7 !important; }
+.dark .ex-article svg text[fill="#475569"] { fill: #a1a1aa !important; }
+.dark .ex-article svg text[fill="#52525b"] { fill: #d4d4d8 !important; }
+.dark .ex-article svg text[fill="#18181b"] { fill: #f4f4f5 !important; }
+.dark .ex-article svg text[fill="#64748b"] { fill: #94a3b8 !important; }
+.dark .ex-article svg text[fill="#fff"] { fill: #fff !important; }
+.dark .ex-article svg rect[fill="#f4f4f5"] { fill: #27272a !important; }
+.dark .ex-article svg rect[fill="#94a3b8"] { fill: #52525b !important; }
+.dark .ex-article svg rect[fill="#e5e7eb"] { fill: #3f3f46 !important; }
+.dark .ex-article svg rect[fill="#fff"] { fill: #18181b !important; }
+.dark .ex-article svg rect[fill="none"][stroke="#cbd5e1"] { stroke: #3f3f46 !important; }
+.dark .ex-article svg line[stroke="#e2e8f0"] { stroke: #3f3f46 !important; }
+.dark .ex-article svg line[stroke="#cbd5e1"] { stroke: #3f3f46 !important; }
+.dark .ex-article svg .ex-card { background: #18181b; }
